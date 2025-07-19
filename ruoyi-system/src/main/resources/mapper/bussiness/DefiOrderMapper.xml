@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.DefiOrderMapper">
+    
+    <resultMap type="DefiOrder" id="DefiOrderResult">
+        <result property="id"    column="id"    />
+        <result property="amount"    column="amount"    />
+        <result property="totleAmount"    column="totle_amount"    />
+        <result property="rate"    column="rate"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="userId"    column="user_id"    />
+        <result property="searchValue"    column="search_value"    />
+    </resultMap>
+
+    <sql id="selectDefiOrderVo">
+        select id, amount, totle_amount, rate, create_by, create_time, update_by, update_time, remark, search_value ,user_id from t_defi_order
+    </sql>
+
+    <select id="selectDefiOrderList" parameterType="DefiOrder" resultMap="DefiOrderResult">
+        <include refid="selectDefiOrderVo"/>
+        <where>  
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="totleAmount != null "> and totle_amount = #{totleAmount}</if>
+            <if test="rate != null "> and rate = #{rate}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+            <if test="adminParentIds != null and adminParentIds!=''">
+                AND find_in_set(#{adminParentIds},admin_parent_ids)
+            </if>
+        </where>
+    </select>
+    <select id="getOrder" parameterType="com.ruoyi.bussiness.domain.dto.DefiOrderDTO" resultMap="DefiOrderResult">
+        <include refid="selectDefiOrderVo"/>
+        <where>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="totleAmount != null "> and totle_amount = #{totleAmount}</if>
+            <if test="rate != null "> and rate = #{rate}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+            <if test="adminParentIds != null and adminParentIds!=''">
+                AND find_in_set(#{adminParentIds},admin_parent_ids)
+            </if>
+        </where>
+    </select>
+    <select id="selectDefiOrderById" parameterType="Long" resultMap="DefiOrderResult">
+        <include refid="selectDefiOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDefiOrder" parameterType="DefiOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into t_defi_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="amount != null">amount,</if>
+            <if test="totleAmount != null">totle_amount,</if>
+            <if test="rate != null">rate,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="searchValue != null">search_value,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="amount != null">#{amount},</if>
+            <if test="totleAmount != null">#{totleAmount},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDefiOrder" parameterType="DefiOrder">
+        update t_defi_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="totleAmount != null">totle_amount = #{totleAmount},</if>
+            <if test="rate != null">rate = #{rate},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDefiOrderById" parameterType="Long">
+        delete from t_defi_order where id = #{id}
+    </delete>
+
+    <delete id="deleteDefiOrderByIds" parameterType="String">
+        delete from t_defi_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="getAllAmount" parameterType="Long" resultType="java.math.BigDecimal">
+        select sum(amount) from t_defi_order
+        where user_id = #{user_id}
+    </select>
+
+</mapper>

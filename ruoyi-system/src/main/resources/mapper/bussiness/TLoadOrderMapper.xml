@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TLoadOrderMapper">
+    
+    <resultMap type="com.ruoyi.bussiness.domain.TLoadOrder" id="TLoadOrderResult">
+        <result property="id"    column="id"    />
+        <result property="proId"    column="pro_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="amount"    column="amount"    />
+        <result property="rate"    column="rate"    />
+        <result property="interest"    column="interest"    />
+        <result property="status"    column="status"    />
+        <result property="finalRepayTime"    column="final_repay_time"    />
+        <result property="disburseTime"    column="disburse_time"    />
+        <result property="returnTime"    column="return_time"    />
+        <result property="disburseAmount"    column="disburse_amount"    />
+        <result property="adminParentIds"    column="admin_parent_ids"    />
+        <result property="cardUrl"    column="card_url"    />
+        <result property="cardBackUrl"    column="card_back_url"    />
+        <result property="capitalUrl"    column="capital_url"    />
+        <result property="licenseUrl"    column="license_url"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="cycleType"    column="cycle_type"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="searchValue"    column="search_value"    />
+        <collection property="tLoadProduct" ofType="com.ruoyi.bussiness.domain.TLoadProduct">
+            <result property="id"    column="p_id"    />
+            <result property="amountMin"    column="p_amount_min"    />
+            <result property="amountMax"    column="p_amount_max"    />
+            <result property="cycleType"    column="p_cycle_type"    />
+            <result property="repayType"    column="p_repay_type"    />
+            <result property="status"    column="p_status"    />
+            <result property="createBy"    column="p_create_by"    />
+            <result property="createTime"    column="p_create_time"    />
+            <result property="updateBy"    column="p_update_by"    />
+            <result property="updateTime"    column="p_update_time"    />
+            <result property="remark"    column="p_remark"    />
+            <result property="searchValue"    column="p_search_value"    />
+            <result property="odds"    column="p_odds"    />
+            <result property="repayOrg"    column="p_repay_org"    />
+            <result property="isFreeze"    column="p_is_freeze"    />
+        </collection>
+    </resultMap>
+
+    <sql id="selectTLoadOrderVo">
+        select a.id, a.pro_id, a.user_id, a.create_time, a.amount, a.rate, a.interest, a.status, a.final_repay_time,
+               a.disburse_time, a.return_time, a.disburse_amount, a.admin_parent_ids, a.card_url, a.card_back_url,
+               a.capital_url, a.license_url, a.order_no, a.cycle_type, a.remark, a.create_by, a.update_by, a.update_time, a.search_value,
+               p.id p_id, p.amount_min p_amount_min, p.amount_max p_amount_max, p.cycle_type p_cycle_type, p.repay_type p_repay_type, p.status p_status, p.create_by p_create_by,
+               p.create_time p_create_time, p.update_by p_update_by, p.update_time p_update_time, p.remark p_remark, p.search_value p_search_value,
+               p.odds p_odds, p.repay_org p_repay_org, p.is_freeze p_is_freeze
+        from t_load_order a
+        left join t_load_product p on p.id = a.pro_id
+    </sql>
+
+    <select id="selectTLoadOrderList" parameterType="TLoadOrder" resultMap="TLoadOrderResult">
+        <include refid="selectTLoadOrderVo"/>
+        <where>  
+            <if test="proId != null "> and a.pro_id = #{proId}</if>
+            <if test="userId != null "> and a.user_id = #{userId}</if>
+            <if test="amount != null "> and a.amount = #{amount}</if>
+            <if test="rate != null "> and a.rate = #{rate}</if>
+            <if test="interest != null "> and a.interest = #{interest}</if>
+            <if test="status != null "> and a.status = #{status}</if>
+            <if test="finalRepayTime != null "> and a.final_repay_time = #{finalRepayTime}</if>
+            <if test="disburseTime != null "> and a.disburse_time = #{disburseTime}</if>
+            <if test="returnTime != null "> and a.return_time = #{returnTime}</if>
+            <if test="disburseAmount != null "> and a.disburse_amount = #{disburseAmount}</if>
+            <if test="adminParentIds != null and adminParentIds!=''">
+                AND find_in_set(#{adminParentIds},admin_parent_ids)
+            </if>
+            <if test="cardUrl != null  and cardUrl != ''"> and a.card_url = #{cardUrl}</if>
+            <if test="cardBackUrl != null  and cardBackUrl != ''"> and a.card_back_url = #{cardBackUrl}</if>
+            <if test="capitalUrl != null  and capitalUrl != ''"> and a.capital_url = #{capitalUrl}</if>
+            <if test="licenseUrl != null  and licenseUrl != ''"> and a.license_url = #{licenseUrl}</if>
+            <if test="orderNo != null  and orderNo != ''"> and a.order_no = #{orderNo}</if>
+            <if test="cycleType != null "> and a.cycle_type = #{cycleType}</if>
+            <if test="searchValue != null  and searchValue != ''"> and a.search_value = #{searchValue}</if>
+
+             <if test="params!=null and params!=''">
+                <if test="params.amountMin!=null">
+                    and a.amount <![CDATA[ >= ]]> #{params.amountMin}
+                </if>
+                 <if test="params.amountMax!=null">
+                     and a.amount <![CDATA[ <= ]]> #{params.amountMax}
+                 </if>
+             </if>
+        </where>
+        order by a.update_time desc
+    </select>
+    
+    <select id="selectTLoadOrderById" parameterType="Long" resultMap="TLoadOrderResult">
+        <include refid="selectTLoadOrderVo"/>
+        where a.id = #{id}
+    </select>
+    <select id="selectListByUserId" resultType="com.ruoyi.bussiness.domain.TLoadOrder"
+            parameterType="com.ruoyi.bussiness.domain.TLoadOrder">
+        <include refid="selectTLoadOrderVo"/>
+        <where>
+            and p.is_freeze = '2'
+            and a.status != '3'
+            and a.status != '2'
+            <if test="userId!=null">
+                and a.user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertTLoadOrder" parameterType="TLoadOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into t_load_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proId != null">pro_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="amount != null">amount,</if>
+            <if test="rate != null">rate,</if>
+            <if test="interest != null">interest,</if>
+            <if test="status != null">status,</if>
+            <if test="finalRepayTime != null">final_repay_time,</if>
+            <if test="disburseTime != null">disburse_time,</if>
+            <if test="returnTime != null">return_time,</if>
+            <if test="disburseAmount != null">disburse_amount,</if>
+            <if test="adminParentIds != null">admin_parent_ids,</if>
+            <if test="cardUrl != null">card_url,</if>
+            <if test="cardBackUrl != null">card_back_url,</if>
+            <if test="capitalUrl != null">capital_url,</if>
+            <if test="licenseUrl != null">license_url,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="cycleType != null">cycle_type,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="searchValue != null">search_value,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proId != null">#{proId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="interest != null">#{interest},</if>
+            <if test="status != null">#{status},</if>
+            <if test="finalRepayTime != null">#{finalRepayTime},</if>
+            <if test="disburseTime != null">#{disburseTime},</if>
+            <if test="returnTime != null">#{returnTime},</if>
+            <if test="disburseAmount != null">#{disburseAmount},</if>
+            <if test="adminParentIds != null">#{adminParentIds},</if>
+            <if test="cardUrl != null">#{cardUrl},</if>
+            <if test="cardBackUrl != null">#{cardBackUrl},</if>
+            <if test="capitalUrl != null">#{capitalUrl},</if>
+            <if test="licenseUrl != null">#{licenseUrl},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="cycleType != null">#{cycleType},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTLoadOrder" parameterType="TLoadOrder">
+        update t_load_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="proId != null">pro_id = #{proId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="rate != null">rate = #{rate},</if>
+            <if test="interest != null">interest = #{interest},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="finalRepayTime != null">final_repay_time = #{finalRepayTime},</if>
+            <if test="disburseTime != null">disburse_time = #{disburseTime},</if>
+            <if test="returnTime != null">return_time = #{returnTime},</if>
+            <if test="disburseAmount != null">disburse_amount = #{disburseAmount},</if>
+            <if test="adminParentIds != null">admin_parent_ids = #{adminParentIds},</if>
+            <if test="cardUrl != null">card_url = #{cardUrl},</if>
+            <if test="cardBackUrl != null">card_back_url = #{cardBackUrl},</if>
+            <if test="capitalUrl != null">capital_url = #{capitalUrl},</if>
+            <if test="licenseUrl != null">license_url = #{licenseUrl},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="cycleType != null">cycle_type = #{cycleType},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTLoadOrderById" parameterType="Long">
+        delete from t_load_order where id = #{id}
+    </delete>
+
+    <delete id="deleteTLoadOrderByIds" parameterType="String">
+        delete from t_load_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

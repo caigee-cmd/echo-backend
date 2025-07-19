@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TMarketsMapper">
+    
+    <resultMap type="com.ruoyi.bussiness.domain.TMarkets" id="TMarketsResult">
+        <result property="slug"    column="slug"    />
+        <result property="fullname"    column="fullname"    />
+        <result property="websiteUrl"    column="website_url"    />
+        <result property="status"    column="status"    />
+        <result property="kline"    column="kline"    />
+        <result property="spot"    column="spot"    />
+        <result property="futures"    column="futures"    />
+    </resultMap>
+
+    <sql id="selectTMarketsVo">
+        select slug, fullname, website_url, status, kline, spot, futures from t_markets
+    </sql>
+
+    <select id="selectTMarketsList" parameterType="TMarkets" resultMap="TMarketsResult">
+        <include refid="selectTMarketsVo"/>
+        <where>  
+            <if test="fullname != null  and fullname != ''"> and fullname like concat('%', #{fullname}, '%')</if>
+            <if test="websiteUrl != null  and websiteUrl != ''"> and website_url = #{websiteUrl}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="kline != null "> and kline = #{kline}</if>
+            <if test="spot != null "> and spot = #{spot}</if>
+            <if test="futures != null "> and futures = #{futures}</if>
+        </where>
+    </select>
+    
+    <select id="selectTMarketsBySlug" parameterType="String" resultMap="TMarketsResult">
+        <include refid="selectTMarketsVo"/>
+        where slug = #{slug}
+    </select>
+        
+    <insert id="insertTMarkets" parameterType="TMarkets">
+        insert into t_markets
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="slug != null">slug,</if>
+            <if test="fullname != null">fullname,</if>
+            <if test="websiteUrl != null">website_url,</if>
+            <if test="status != null">status,</if>
+            <if test="kline != null">kline,</if>
+            <if test="spot != null">spot,</if>
+            <if test="futures != null">futures,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="slug != null">#{slug},</if>
+            <if test="fullname != null">#{fullname},</if>
+            <if test="websiteUrl != null">#{websiteUrl},</if>
+            <if test="status != null">#{status},</if>
+            <if test="kline != null">#{kline},</if>
+            <if test="spot != null">#{spot},</if>
+            <if test="futures != null">#{futures},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTMarkets" parameterType="TMarkets">
+        update t_markets
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fullname != null">fullname = #{fullname},</if>
+            <if test="websiteUrl != null">website_url = #{websiteUrl},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="kline != null">kline = #{kline},</if>
+            <if test="spot != null">spot = #{spot},</if>
+            <if test="futures != null">futures = #{futures},</if>
+        </trim>
+        where slug = #{slug}
+    </update>
+
+    <delete id="deleteTMarketsBySlug" parameterType="String">
+        delete from t_markets where slug = #{slug}
+    </delete>
+
+    <delete id="deleteTMarketsBySlugs" parameterType="String">
+        delete from t_markets where slug in 
+        <foreach item="slug" collection="array" open="(" separator="," close=")">
+            #{slug}
+        </foreach>
+    </delete>
+</mapper>

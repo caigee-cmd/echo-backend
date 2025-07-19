@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.DefiRateMapper">
+    
+    <resultMap type="DefiRate" id="DefiRateResult">
+        <result property="id"    column="id"    />
+        <result property="minAmount"    column="min_amount"    />
+        <result property="maxAmount"    column="max_amount"    />
+        <result property="rate"    column="rate"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="searchValue"    column="search_value"    />
+    </resultMap>
+
+    <sql id="selectDefiRateVo">
+        select id, min_amount, max_amount, rate, create_by, create_time, update_by, update_time, remark, search_value from t_defi_rate
+    </sql>
+
+    <select id="selectDefiRateList" parameterType="DefiRate" resultMap="DefiRateResult">
+        <include refid="selectDefiRateVo"/>
+        <where>  
+            <if test="minAmount != null "> and min_amount = #{minAmount}</if>
+            <if test="maxAmount != null "> and max_amount = #{maxAmount}</if>
+            <if test="rate != null "> and rate = #{rate}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+        </where>
+    </select>
+    
+    <select id="selectDefiRateById" parameterType="Long" resultMap="DefiRateResult">
+        <include refid="selectDefiRateVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDefiRate" parameterType="DefiRate">
+        insert into t_defi_rate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="minAmount != null">min_amount,</if>
+            <if test="maxAmount != null">max_amount,</if>
+            <if test="rate != null">rate,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="searchValue != null">search_value,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="minAmount != null">#{minAmount},</if>
+            <if test="maxAmount != null">#{maxAmount},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDefiRate" parameterType="DefiRate">
+        update t_defi_rate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="minAmount != null">min_amount = #{minAmount},</if>
+            <if test="maxAmount != null">max_amount = #{maxAmount},</if>
+            <if test="rate != null">rate = #{rate},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDefiRateById" parameterType="Long">
+        delete from t_defi_rate where id = #{id}
+    </delete>
+
+    <delete id="deleteDefiRateByIds" parameterType="String">
+        delete from t_defi_rate where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectAllOrderBy"  resultMap="DefiRateResult">
+        <include refid="selectDefiRateVo"/>
+        order by min_amount
+    </select>
+    <select id="getDefiRateByAmount"  resultMap="DefiRateResult">
+        <include refid="selectDefiRateVo"/>
+         where max_Amount &gt; #{amount}  and  min_Amount   &lt;=#{amount}
+    </select>
+
+</mapper>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TContractOrderMapper">
+    
+    <resultMap type="TContractOrder" id="TContractOrderResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="delegateType"    column="delegate_type"    />
+        <result property="status"    column="status"    />
+        <result property="delegateTotal"    column="delegate_total"    />
+        <result property="delegatePrice"    column="delegate_price"    />
+        <result property="dealNum"    column="deal_num"    />
+        <result property="dealPrice"    column="deal_price"    />
+        <result property="delegateValue"    column="delegate_value"    />
+        <result property="dealValue"    column="deal_value"    />
+        <result property="delegateTime"    column="delegate_time"    />
+        <result property="dealTime"    column="deal_time"    />
+        <result property="coinSymbol"    column="coin_symbol"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="userId"    column="user_id"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="fee"    column="fee"    />
+        <result property="baseCoin"    column="base_coin"    />
+        <result property="leverage"    column="leverage"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="adminParentIds"    column="admin_parent_ids"    />
+    </resultMap>
+
+    <sql id="selectTContractOrderVo">
+        select id, type, delegate_type, status, delegate_total, delegate_price, deal_num, deal_price, delegate_value, deal_value, delegate_time, deal_time, coin_symbol, create_time, order_no, user_id, update_time, fee, base_coin, leverage, symbol ,admin_parent_ids from t_contract_order
+    </sql>
+
+    <select id="selectTContractOrderList" parameterType="TContractOrder" resultMap="TContractOrderResult">
+        <include refid="selectTContractOrderVo"/>
+        <where>  
+            <if test="type != null "> and type = #{type}</if>
+            <if test="delegateType != null "> and delegate_type = #{delegateType}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="delegateTotal != null "> and delegate_total = #{delegateTotal}</if>
+            <if test="delegatePrice != null "> and delegate_price = #{delegatePrice}</if>
+            <if test="dealNum != null "> and deal_num = #{dealNum}</if>
+            <if test="dealPrice != null "> and deal_price = #{dealPrice}</if>
+            <if test="delegateValue != null "> and delegate_value = #{delegateValue}</if>
+            <if test="dealValue != null "> and deal_value = #{dealValue}</if>
+            <if test="delegateTime != null "> and delegate_time = #{delegateTime}</if>
+            <if test="dealTime != null "> and deal_time = #{dealTime}</if>
+            <if test="coinSymbol != null  and coinSymbol != ''"> and coin_symbol = #{coinSymbol}</if>
+            <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="fee != null "> and fee = #{fee}</if>
+            <if test="baseCoin != null  and baseCoin != ''"> and base_coin = #{baseCoin}</if>
+            <if test="leverage != null "> and leverage = #{leverage}</if>
+            <if test="symbol != null  and symbol != ''"> and symbol = #{symbol}</if>
+            <if test="adminParentIds != null and adminParentIds!=''">
+                AND find_in_set(#{adminParentIds},admin_parent_ids)
+            </if>
+        </where>
+        ORDER BY   create_time  DESC
+    </select>
+    
+    <select id="selectTContractOrderById" parameterType="Long" resultMap="TContractOrderResult">
+        <include refid="selectTContractOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTContractOrder" parameterType="TContractOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into t_contract_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">type,</if>
+            <if test="delegateType != null">delegate_type,</if>
+            <if test="status != null">status,</if>
+            <if test="delegateTotal != null">delegate_total,</if>
+            <if test="delegatePrice != null">delegate_price,</if>
+            <if test="dealNum != null">deal_num,</if>
+            <if test="dealPrice != null">deal_price,</if>
+            <if test="delegateValue != null">delegate_value,</if>
+            <if test="dealValue != null">deal_value,</if>
+            <if test="delegateTime != null">delegate_time,</if>
+            <if test="dealTime != null">deal_time,</if>
+            <if test="coinSymbol != null">coin_symbol,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="orderNo != null and orderNo != ''">order_no,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="fee != null">fee,</if>
+            <if test="baseCoin != null">base_coin,</if>
+            <if test="leverage != null">leverage,</if>
+            <if test="symbol != null">symbol,</if>
+            <if test="adminParentIds != null">admin_parent_ids,</if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">#{type},</if>
+            <if test="delegateType != null">#{delegateType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delegateTotal != null">#{delegateTotal},</if>
+            <if test="delegatePrice != null">#{delegatePrice},</if>
+            <if test="dealNum != null">#{dealNum},</if>
+            <if test="dealPrice != null">#{dealPrice},</if>
+            <if test="delegateValue != null">#{delegateValue},</if>
+            <if test="dealValue != null">#{dealValue},</if>
+            <if test="delegateTime != null">#{delegateTime},</if>
+            <if test="dealTime != null">#{dealTime},</if>
+            <if test="coinSymbol != null">#{coinSymbol},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="orderNo != null and orderNo != ''">#{orderNo},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="fee != null">#{fee},</if>
+            <if test="baseCoin != null">#{baseCoin},</if>
+            <if test="leverage != null">#{leverage},</if>
+            <if test="symbol != null">#{symbol},</if>
+            <if test="adminParentIds != null">#{adminParentIds},</if>
+
+        </trim>
+    </insert>
+
+    <update id="updateTContractOrder" parameterType="TContractOrder">
+        update t_contract_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="delegateType != null">delegate_type = #{delegateType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delegateTotal != null">delegate_total = #{delegateTotal},</if>
+            <if test="delegatePrice != null">delegate_price = #{delegatePrice},</if>
+            <if test="dealNum != null">deal_num = #{dealNum},</if>
+            <if test="dealPrice != null">deal_price = #{dealPrice},</if>
+            <if test="delegateValue != null">delegate_value = #{delegateValue},</if>
+            <if test="dealValue != null">deal_value = #{dealValue},</if>
+            <if test="delegateTime != null">delegate_time = #{delegateTime},</if>
+            <if test="dealTime != null">deal_time = #{dealTime},</if>
+            <if test="coinSymbol != null">coin_symbol = #{coinSymbol},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="orderNo != null and orderNo != ''">order_no = #{orderNo},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="fee != null">fee = #{fee},</if>
+            <if test="baseCoin != null">base_coin = #{baseCoin},</if>
+            <if test="leverage != null">leverage = #{leverage},</if>
+            <if test="symbol != null">symbol = #{symbol},</if>
+            <if test="adminParentIds != null">admin_parent_ids = #{adminParentIds},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTContractOrderById" parameterType="Long">
+        delete from t_contract_order where id = #{id}
+    </delete>
+
+    <delete id="deleteTContractOrderByIds" parameterType="String">
+        delete from t_contract_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

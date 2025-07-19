@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TLoadProductMapper">
+    
+    <resultMap type="com.ruoyi.bussiness.domain.TLoadProduct" id="TLoadProductResult">
+        <result property="id"    column="id"    />
+        <result property="amountMin"    column="amount_min"    />
+        <result property="amountMax"    column="amount_max"    />
+        <result property="cycleType"    column="cycle_type"    />
+        <result property="repayType"    column="repay_type"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="searchValue"    column="search_value"    />
+        <result property="odds"    column="odds"    />
+        <result property="repayOrg"    column="repay_org"    />
+        <result property="isFreeze"    column="is_freeze"    />
+
+    </resultMap>
+
+    <sql id="selectTLoadProductVo">
+        select id, amount_min, amount_max, cycle_type, repay_type, status, create_by, create_time, update_by, update_time, remark, search_value, odds, repay_org, is_freeze from t_load_product
+    </sql>
+
+    <select id="selectTLoadProductList" parameterType="TLoadProduct" resultMap="TLoadProductResult">
+        <include refid="selectTLoadProductVo"/>
+        <where>  
+            <if test="cycleType != null "> and cycle_type = #{cycleType}</if>
+            <if test="repayType != null "> and repay_type = #{repayType}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+            <if test="odds != null "> and odds = #{odds}</if>
+            <if test="repayOrg != null  and repayOrg != ''"> and repay_org = #{repayOrg}</if>
+            <if test="params!=null and params!=''">
+                <if test="params.amountMin!=null">
+                    and amount_min <![CDATA[ >= ]]> #{params.amountMin}
+                </if>
+                <if test="params.amountMax!=null">
+                    and amount_max <![CDATA[ <= ]]> #{params.amountMax}
+                </if>
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectTLoadProductById" parameterType="Long" resultMap="TLoadProductResult">
+        <include refid="selectTLoadProductVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTLoadProduct" parameterType="TLoadProduct" useGeneratedKeys="true" keyProperty="id">
+        insert into t_load_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="amountMin != null">amount_min,</if>
+            <if test="amountMax != null">amount_max,</if>
+            <if test="cycleType != null">cycle_type,</if>
+            <if test="repayType != null">repay_type,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="searchValue != null">search_value,</if>
+            <if test="odds != null">odds,</if>
+            <if test="repayOrg != null">repay_org,</if>
+            <if test="isFreeze != null">is_freeze,</if>
+
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="amountMin != null">#{amountMin},</if>
+            <if test="amountMax != null">#{amountMax},</if>
+            <if test="cycleType != null">#{cycleType},</if>
+            <if test="repayType != null">#{repayType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+            <if test="odds != null">#{odds},</if>
+            <if test="repayOrg != null">#{repayOrg},</if>
+            <if test="isFreeze != null">#{isFreeze},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTLoadProduct" parameterType="TLoadProduct">
+        update t_load_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="amountMin != null">amount_min = #{amountMin},</if>
+            <if test="amountMax != null">amount_max = #{amountMax},</if>
+            <if test="cycleType != null">cycle_type = #{cycleType},</if>
+            <if test="repayType != null">repay_type = #{repayType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+            <if test="odds != null">odds = #{odds},</if>
+            <if test="repayOrg != null">repay_org = #{repayOrg},</if>
+            <if test="isFreeze != null">is_freeze = #{isFreeze},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTLoadProductById" parameterType="Long">
+        delete from t_load_product where id = #{id}
+    </delete>
+
+    <delete id="deleteTLoadProductByIds" parameterType="String">
+        delete from t_load_product where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

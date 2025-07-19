@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.DefiActivityMapper">
+    
+    <resultMap type="DefiActivity" id="DefiActivityResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="totleAmount"    column="totle_amount"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="amount"    column="amount"    />
+        <result property="type"    column="type"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="searchValue"    column="search_value"    />
+    </resultMap>
+
+    <sql id="selectDefiActivityVo">
+        select id, totle_amount, end_time, amount, type, create_by, create_time,user_id, update_by, update_time,status, remark, search_value from t_defi_activity
+    </sql>
+
+    <select id="selectDefiActivityList" parameterType="DefiActivity" resultMap="DefiActivityResult">
+        <include refid="selectDefiActivityVo"/>
+        <where>  
+            <if test="totleAmount != null "> and totle_amount = #{totleAmount}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+
+        </where>
+    </select>
+    
+    <select id="selectDefiActivityById" parameterType="Long" resultMap="DefiActivityResult">
+        <include refid="selectDefiActivityVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDefiActivity" parameterType="DefiActivity" useGeneratedKeys="true" keyProperty="id">
+        insert into t_defi_activity
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="totleAmount != null">totle_amount,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="amount != null">amount,</if>
+            <if test="type != null">type,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="searchValue != null">search_value,</if>
+            <if test="status != null">status,</if>
+            <if test="userId != null">user_id,</if>
+
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="totleAmount != null">#{totleAmount},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="type != null">#{type},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+            <if test="status != null">#{status},</if>
+            <if test="userId != null">#{userId},</if>
+
+         </trim>
+    </insert>
+
+    <update id="updateDefiActivity" parameterType="DefiActivity">
+        update t_defi_activity
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="totleAmount != null">totle_amount = #{totleAmount},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDefiActivityById" parameterType="Long">
+        delete from t_defi_activity where id = #{id}
+    </delete>
+
+    <delete id="deleteDefiActivityByIds" parameterType="String">
+        delete from t_defi_activity where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="showDefiActivity" resultMap="DefiActivityResult">
+        <include refid="selectDefiActivityVo"/>
+        where user_id = #{userId}  and status =#{status}
+    </select>
+
+</mapper>

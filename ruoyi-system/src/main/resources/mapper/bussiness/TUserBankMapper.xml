@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TUserBankMapper">
+    
+    <resultMap type="com.ruoyi.bussiness.domain.TUserBank" id="TUserBankResult">
+        <result property="id"    column="id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="cardNumber"    column="card_number"    />
+        <result property="bankName"    column="bank_name"    />
+        <result property="bankAddress"    column="bank_address"    />
+        <result property="bankBranch"    column="bank_branch"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="searchValue"    column="search_value"    />
+        <result property="bankCode"    column="bank_code"    />
+        <result property="userAddress"    column="user_address"    />
+        <result property="adminParentIds"    column="admin_parent_ids"    />
+<!--        <result property="coin"    column="coin"    />-->
+    </resultMap>
+
+    <sql id="selectTUserBankVo">
+        select id, user_name, card_number, bank_name, bank_address, bank_branch, user_id, create_by, create_time, update_by, update_time, remark, search_value, bank_code, user_address, admin_parent_ids from t_user_bank
+    </sql>
+
+    <select id="selectTUserBankList" parameterType="TUserBank" resultMap="TUserBankResult">
+        <include refid="selectTUserBankVo"/>
+        <where>  
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="cardNumber != null  and cardNumber != ''"> and card_number = #{cardNumber}</if>
+            <if test="bankName != null  and bankName != ''"> and bank_name like concat('%', #{bankName}, '%')</if>
+            <if test="bankAddress != null  and bankAddress != ''"> and bank_address = #{bankAddress}</if>
+            <if test="bankBranch != null  and bankBranch != ''"> and bank_branch = #{bankBranch}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+            <if test="bankCode != null  and bankCode != ''"> and bank_code = #{bankCode}</if>
+            <if test="userAddress != null  and userAddress != ''"> and user_address = #{userAddress}</if>
+            <if test="adminParentIds != null  and adminParentIds != ''"> and find_in_set(#{adminParentIds},admin_parent_ids)</if>
+<!--            <if test="coin != null  and coin != ''"> and coin = #{coin}</if>-->
+        </where>
+    </select>
+    
+    <select id="selectTUserBankById" parameterType="Long" resultMap="TUserBankResult">
+        <include refid="selectTUserBankVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTUserBank" parameterType="TUserBank" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user_bank
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName != null">user_name,</if>
+            <if test="cardNumber != null">card_number,</if>
+            <if test="bankName != null">bank_name,</if>
+            <if test="bankAddress != null">bank_address,</if>
+            <if test="bankBranch != null">bank_branch,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="searchValue != null">search_value,</if>
+            <if test="bankCode != null">bank_code,</if>
+            <if test="userAddress != null">user_address,</if>
+            <if test="adminParentIds != null">admin_parent_ids,</if>
+<!--            <if test="coin != null">coin,</if>-->
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userName != null">#{userName},</if>
+            <if test="cardNumber != null">#{cardNumber},</if>
+            <if test="bankName != null">#{bankName},</if>
+            <if test="bankAddress != null">#{bankAddress},</if>
+            <if test="bankBranch != null">#{bankBranch},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+            <if test="bankCode != null">#{bankCode},</if>
+            <if test="userAddress != null">#{userAddress},</if>
+            <if test="adminParentIds != null">#{adminParentIds},</if>
+<!--            <if test="coin != null">#{coin},</if>-->
+         </trim>
+    </insert>
+
+    <update id="updateTUserBank" parameterType="TUserBank">
+        update t_user_bank
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="cardNumber != null">card_number = #{cardNumber},</if>
+            <if test="bankName != null">bank_name = #{bankName},</if>
+            <if test="bankAddress != null">bank_address = #{bankAddress},</if>
+            <if test="bankBranch != null">bank_branch = #{bankBranch},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+            <if test="bankCode != null">bank_code = #{bankCode},</if>
+            <if test="userAddress != null">user_address = #{userAddress},</if>
+            <if test="adminParentIds != null">admin_parent_ids = #{adminParentIds},</if>
+<!--            <if test="coin != null">coin = #{coin},</if>-->
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTUserBankById" parameterType="Long">
+        delete from t_user_bank where id = #{id}
+    </delete>
+
+    <delete id="deleteTUserBankByIds" parameterType="String">
+        delete from t_user_bank where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

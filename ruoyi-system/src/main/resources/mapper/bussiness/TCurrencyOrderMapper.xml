@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TCurrencyOrderMapper">
+    
+    <resultMap type="com.ruoyi.bussiness.domain.TCurrencyOrder" id="TCurrencyOrderResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="delegateType"    column="delegate_type"    />
+        <result property="status"    column="status"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="coin"    column="coin"    />
+        <result property="fee"    column="fee"    />
+        <result property="delegateTotal"    column="delegate_total"    />
+        <result property="delegatePrice"    column="delegate_price"    />
+        <result property="dealNum"    column="deal_num"    />
+        <result property="dealPrice"    column="deal_price"    />
+        <result property="delegateValue"    column="delegate_value"    />
+        <result property="dealValue"    column="deal_value"    />
+        <result property="delegateTime"    column="delegate_time"    />
+        <result property="dealTime"    column="deal_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="searchValue"    column="search_value"    />
+        <result property="adminParentIds"    column="admin_parent_ids"    />
+    </resultMap>
+
+    <sql id="selectTCurrencyOrderVo">
+        select id, type, delegate_type, status, order_no, symbol, coin, fee, delegate_total, delegate_price, deal_num, deal_price, delegate_value, deal_value, delegate_time, deal_time, user_id, create_time, update_time, search_value,admin_parent_ids from t_currency_order
+    </sql>
+
+    <select id="selectTCurrencyOrderList" parameterType="TCurrencyOrder" resultMap="TCurrencyOrderResult">
+        <include refid="selectTCurrencyOrderVo"/>
+        <where>  
+            <if test="type != null "> and type = #{type}</if>
+            <if test="delegateType != null "> and delegate_type = #{delegateType}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="orderNo != null  and orderNo != ''"> and order_no like concat('%',#{orderNo},'%') </if>
+            <if test="symbol != null  and symbol != ''"> and symbol = #{symbol}</if>
+            <if test="coin != null  and coin != ''"> and coin = #{coin}</if>
+            <if test="fee != null "> and fee = #{fee}</if>
+            <if test="delegateTotal != null "> and delegate_total = #{delegateTotal}</if>
+            <if test="delegatePrice != null "> and delegate_price = #{delegatePrice}</if>
+            <if test="dealNum != null "> and deal_num = #{dealNum}</if>
+            <if test="dealPrice != null "> and deal_price = #{dealPrice}</if>
+            <if test="delegateValue != null "> and delegate_value = #{delegateValue}</if>
+            <if test="dealValue != null "> and deal_value = #{dealValue}</if>
+            <if test="delegateTime != null "> and delegate_time = #{delegateTime}</if>
+            <if test="dealTime != null "> and deal_time = #{dealTime}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+            <if test="adminParentIds != null  and adminParentIds != ''"> and find_in_set(#{adminParentIds},admin_parent_ids)</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectTCurrencyOrderById" parameterType="Long" resultMap="TCurrencyOrderResult">
+        <include refid="selectTCurrencyOrderVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectOrderList" resultType="com.ruoyi.bussiness.domain.TCurrencyOrder"
+            parameterType="com.ruoyi.bussiness.domain.TCurrencyOrder">
+        <include refid="selectTCurrencyOrderVo"/>
+        <where>
+            <if test="type != null">
+                and type=#{type}
+            </if>
+            <if test="delegateType != null">
+                and   delegate_type=#{delegateType}
+            </if>
+            <if test="status != null and status==0">
+                and   status=#{status}
+            </if>
+            <if test="status != null and status==1">
+                and   status!=0
+            </if>
+            <if test="coin != null and coin !='' ">
+                and   coin=#{coin}
+            </if>
+            <if test="userId != null">
+                and user_id=#{userId}
+            </if>
+            <if test="adminParentIds != null  and adminParentIds != ''">
+                and find_in_set(#{adminParentIds},admin_parent_ids)
+            </if>
+
+        </where>
+    </select>
+
+    <insert id="insertTCurrencyOrder" parameterType="TCurrencyOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into t_currency_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">type,</if>
+            <if test="delegateType != null">delegate_type,</if>
+            <if test="status != null">status,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="symbol != null">symbol,</if>
+            <if test="coin != null">coin,</if>
+            <if test="fee != null">fee,</if>
+            <if test="delegateTotal != null">delegate_total,</if>
+            <if test="delegatePrice != null">delegate_price,</if>
+            <if test="dealNum != null">deal_num,</if>
+            <if test="dealPrice != null">deal_price,</if>
+            <if test="delegateValue != null">delegate_value,</if>
+            <if test="dealValue != null">deal_value,</if>
+            <if test="delegateTime != null">delegate_time,</if>
+            <if test="dealTime != null">deal_time,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="searchValue != null">search_value,</if>
+            <if test="adminParentIds != null">admin_parent_ids,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">#{type},</if>
+            <if test="delegateType != null">#{delegateType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="symbol != null">#{symbol},</if>
+            <if test="coin != null">#{coin},</if>
+            <if test="fee != null">#{fee},</if>
+            <if test="delegateTotal != null">#{delegateTotal},</if>
+            <if test="delegatePrice != null">#{delegatePrice},</if>
+            <if test="dealNum != null">#{dealNum},</if>
+            <if test="dealPrice != null">#{dealPrice},</if>
+            <if test="delegateValue != null">#{delegateValue},</if>
+            <if test="dealValue != null">#{dealValue},</if>
+            <if test="delegateTime != null">#{delegateTime},</if>
+            <if test="dealTime != null">#{dealTime},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+            <if test="adminParentIds != null">#{adminParentIds},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTCurrencyOrder" parameterType="TCurrencyOrder">
+        update t_currency_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="delegateType != null">delegate_type = #{delegateType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="symbol != null">symbol = #{symbol},</if>
+            <if test="coin != null">coin = #{coin},</if>
+            <if test="fee != null">fee = #{fee},</if>
+            <if test="delegateTotal != null">delegate_total = #{delegateTotal},</if>
+            <if test="delegatePrice != null">delegate_price = #{delegatePrice},</if>
+            <if test="dealNum != null">deal_num = #{dealNum},</if>
+            <if test="dealPrice != null">deal_price = #{dealPrice},</if>
+            <if test="delegateValue != null">delegate_value = #{delegateValue},</if>
+            <if test="dealValue != null">deal_value = #{dealValue},</if>
+            <if test="delegateTime != null">delegate_time = #{delegateTime},</if>
+            <if test="dealTime != null">deal_time = #{dealTime},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+            <if test="adminParentIds != null">admin_parent_ids = #{adminParentIds},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTCurrencyOrderById" parameterType="Long">
+        delete from t_currency_order where id = #{id}
+    </delete>
+
+    <delete id="deleteTCurrencyOrderByIds" parameterType="String">
+        delete from t_currency_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

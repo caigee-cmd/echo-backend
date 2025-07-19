@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TAppUserDetailMapper">
+    
+    <resultMap type="TAppUserDetail" id="TAppUserDetailResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="realName"    column="real_name"    />
+        <result property="idCard"    column="id_card"    />
+        <result property="frontUrl"    column="front_url"    />
+        <result property="country"    column="country"    />
+        <result property="cardType"    column="card_type"    />
+        <result property="handelUrl"    column="handel_url"    />
+        <result property="backUrl"    column="back_url"    />
+        <result property="userTardPwd"    column="user_tard_pwd"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="searchValue"    column="search_value"    />
+        <result property="auditStatusPrimary"    column="audit_status_primary"    />
+        <result property="auditStatusAdvanced"    column="audit_status_advanced"    />
+        <result property="credits"    column="credits"    />
+        <result property="userRechargeAddress"    column="user_recharge_address"    />
+        <result property="winNum"    column="win_num"    />
+        <result property="loseNum"    column="lose_num"    />
+    </resultMap>
+
+    <sql id="selectTAppUserDetailVo">
+        select id, user_id, real_name, id_card, front_url, country, card_type, handel_url, back_url, user_tard_pwd, create_by, create_time, update_by, update_time, remark, search_value, audit_status_primary, audit_status_advanced, credits, user_recharge_address, win_num, lose_num from t_app_user_detail
+    </sql>
+
+    <select id="selectTAppUserDetailList" parameterType="TAppUserDetail" resultMap="TAppUserDetailResult">
+        <include refid="selectTAppUserDetailVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="realName != null  and realName != ''"> and real_name like concat('%', #{realName}, '%')</if>
+            <if test="idCard != null  and idCard != ''"> and id_card = #{idCard}</if>
+            <if test="frontUrl != null  and frontUrl != ''"> and front_url = #{frontUrl}</if>
+            <if test="country != null  and country != ''"> and country = #{country}</if>
+            <if test="cardType != null  and cardType != ''"> and card_type = #{cardType}</if>
+            <if test="handelUrl != null  and handelUrl != ''"> and handel_url = #{handelUrl}</if>
+            <if test="backUrl != null  and backUrl != ''"> and back_url = #{backUrl}</if>
+            <if test="userTardPwd != null  and userTardPwd != ''"> and user_tard_pwd = #{userTardPwd}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+            <if test="auditStatusPrimary != null "> and audit_status_primary = #{auditStatusPrimary}</if>
+            <if test="auditStatusAdvanced != null "> and audit_status_advanced = #{auditStatusAdvanced}</if>
+            <if test="credits != null "> and credits = #{credits}</if>
+            <if test="userRechargeAddress != null  and userRechargeAddress != ''"> and user_recharge_address = #{userRechargeAddress}</if>
+            <if test="winNum != null "> and win_num = #{winNum}</if>
+            <if test="loseNum != null "> and lose_num = #{loseNum}</if>
+        </where>
+    </select>
+    
+    <select id="selectTAppUserDetailById" parameterType="Long" resultMap="TAppUserDetailResult">
+        <include refid="selectTAppUserDetailVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectTAppUserDetailByUserId" parameterType="Long" resultMap="TAppUserDetailResult">
+        <include refid="selectTAppUserDetailVo"/>
+        where user_id = #{id}
+    </select>
+    <select id="selectTAppUserDetailLists" resultType="com.ruoyi.bussiness.domain.TAppUserDetail">
+        select d.id, d.user_id, d.real_name, d.id_card, d.front_url, d.country, d.card_type,
+        d.handel_url, d.back_url, d.user_tard_pwd, d.create_by, d.create_time, d.update_by,
+        d.update_time, d.remark, d.search_value, d.audit_status_primary, d.audit_status_advanced,
+        d.credits, d.user_recharge_address, d.win_num, d.lose_num
+        from t_app_user_detail d left join t_app_user u on d.user_id=u.user_id
+        <where>
+            <if test="userId != null "> and d.user_id = #{userId}</if>
+            <if test="realName != null  and realName != ''"> and d.real_name like concat('%', #{realName}, '%')</if>
+            <if test="idCard != null  and idCard != ''"> and d.id_card = #{idCard}</if>
+            <if test="frontUrl != null  and frontUrl != ''"> and d.front_url = #{frontUrl}</if>
+            <if test="country != null  and country != ''"> and d.country = #{country}</if>
+            <if test="cardType != null  and cardType != ''"> and d.card_type = #{cardType}</if>
+            <if test="handelUrl != null  and handelUrl != ''"> and d.handel_url = #{handelUrl}</if>
+            <if test="backUrl != null  and backUrl != ''"> and d.back_url = #{backUrl}</if>
+            <if test="userTardPwd != null  and userTardPwd != ''"> and d.user_tard_pwd = #{userTardPwd}</if>
+            <if test="searchValue != null  and searchValue != ''"> and d.search_value = #{searchValue}</if>
+            <if test="credits != null "> and d.credits = #{credits}</if>
+            <if test="userRechargeAddress != null  and userRechargeAddress != ''"> and d.user_recharge_address = #{userRechargeAddress}</if>
+            <if test="winNum != null "> and d.win_num = #{winNum}</if>
+            <if test="loseNum != null "> and d.lose_num = #{loseNum}</if>
+            <if test="auditStatusPrimary != null "> and d.audit_status_primary = #{auditStatusPrimary}</if>
+            <if test="auditStatusAdvanced != null "> and d.audit_status_advanced = #{auditStatusAdvanced}</if>
+            <if test="adminParentIds != null and adminParentIds!=''">
+                AND find_in_set(#{adminParentIds},u.admin_parent_ids)
+            </if>
+            and
+            (d.audit_status_primary is not null or d.audit_status_advanced is not null)
+            order by  d.operate_time desc
+        </where>
+    </select>
+    <select id="selectVerifiedVoice" resultType="com.ruoyi.bussiness.domain.TAppUserDetail">
+
+        select d.id, d.user_id, d.real_name, d.id_card, d.front_url, d.country, d.card_type,
+               d.handel_url, d.back_url, d.user_tard_pwd, d.create_by, d.create_time, d.update_by,
+               d.update_time, d.remark, d.search_value, d.audit_status_primary, d.audit_status_advanced,
+               d.credits, d.user_recharge_address, d.win_num, d.lose_num
+        from t_app_user_detail d left join t_app_user u on d.user_id=u.user_id
+        where
+        (d.audit_status_primary is not null or d.audit_status_advanced is not null)
+        and   (d.audit_status_primary =3 or d.audit_status_advanced=3)
+        <if test="adminParentIds != null and adminParentIds!=''">
+            AND find_in_set(#{parentId},u.admin_parent_ids)
+        </if>
+    </select>
+
+    <insert id="insertTAppUserDetail" parameterType="TAppUserDetail">
+        insert into t_app_user_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="realName != null">real_name,</if>
+            <if test="idCard != null">id_card,</if>
+            <if test="frontUrl != null">front_url,</if>
+            <if test="country != null">country,</if>
+            <if test="cardType != null">card_type,</if>
+            <if test="handelUrl != null">handel_url,</if>
+            <if test="backUrl != null">back_url,</if>
+            <if test="userTardPwd != null">user_tard_pwd,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="searchValue != null">search_value,</if>
+            <if test="auditStatusPrimary != null">audit_status_primary,</if>
+            <if test="auditStatusAdvanced != null">audit_status_advanced,</if>
+            <if test="credits != null">credits,</if>
+            <if test="userRechargeAddress != null">user_recharge_address,</if>
+            <if test="winNum != null">win_num,</if>
+            <if test="loseNum != null">lose_num,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="realName != null">#{realName},</if>
+            <if test="idCard != null">#{idCard},</if>
+            <if test="frontUrl != null">#{frontUrl},</if>
+            <if test="country != null">#{country},</if>
+            <if test="cardType != null">#{cardType},</if>
+            <if test="handelUrl != null">#{handelUrl},</if>
+            <if test="backUrl != null">#{backUrl},</if>
+            <if test="userTardPwd != null">#{userTardPwd},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+            <if test="auditStatusPrimary != null">#{auditStatusPrimary},</if>
+            <if test="auditStatusAdvanced != null">#{auditStatusAdvanced},</if>
+            <if test="credits != null">#{credits},</if>
+            <if test="userRechargeAddress != null">#{userRechargeAddress},</if>
+            <if test="winNum != null">#{winNum},</if>
+            <if test="loseNum != null">#{loseNum},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTAppUserDetail" parameterType="TAppUserDetail">
+        update t_app_user_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="realName != null">real_name = #{realName},</if>
+            <if test="idCard != null">id_card = #{idCard},</if>
+            <if test="frontUrl != null">front_url = #{frontUrl},</if>
+            <if test="country != null">country = #{country},</if>
+            <if test="cardType != null">card_type = #{cardType},</if>
+            <if test="handelUrl != null">handel_url = #{handelUrl},</if>
+            <if test="backUrl != null">back_url = #{backUrl},</if>
+            <if test="userTardPwd != null">user_tard_pwd = #{userTardPwd},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+            <if test="auditStatusPrimary != null">audit_status_primary = #{auditStatusPrimary},</if>
+            <if test="auditStatusAdvanced != null">audit_status_advanced = #{auditStatusAdvanced},</if>
+            <if test="credits != null">credits = #{credits},</if>
+            <if test="userRechargeAddress != null">user_recharge_address = #{userRechargeAddress},</if>
+            <if test="winNum != null">win_num = #{winNum},</if>
+            <if test="loseNum != null">lose_num = #{loseNum},</if>
+            <if test="operateTime != null">operate_time = #{operateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="resetAppUserRealMameStatus" parameterType="TAppUserDetail">
+        UPDATE t_app_user_detail
+        SET audit_status_primary = #{auditStatusPrimary}, audit_status_advanced = #{auditStatusAdvanced}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteTAppUserDetailById" parameterType="Long">
+        delete from t_app_user_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteTAppUserDetailByIds" parameterType="String">
+        delete from t_app_user_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

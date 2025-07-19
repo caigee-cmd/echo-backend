@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TSecondContractOrderMapper">
+    
+    <resultMap type="TSecondContractOrder" id="TSecondContractOrderResult">
+        <result property="id"    column="id"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="type"    column="type"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userAddress"    column="user_address"    />
+        <result property="betContent"    column="bet_content"    />
+        <result property="openResult"    column="open_result"    />
+        <result property="status"    column="status"    />
+        <result property="betAmount"    column="bet_amount"    />
+        <result property="rewardAmount"    column="reward_amount"    />
+        <result property="compensationAmount"    column="compensation_amount"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="openPrice"    column="open_price"    />
+        <result property="closePrice"    column="close_price"    />
+        <result property="openTime"    column="open_time"    />
+        <result property="closeTime"    column="close_time"    />
+        <result property="coinSymbol"    column="coin_symbol"    />
+        <result property="baseSymbol"    column="base_symbol"    />
+        <result property="sign"    column="sign"    />
+        <result property="manualIntervention"    column="manual_intervention"    />
+        <result property="rate"    column="rate"    />
+        <result property="rateFlag"    column="rate_flag"    />
+    </resultMap>
+
+    <sql id="selectTSecondContractOrderVo">
+        select id, order_no, symbol, type, user_id, user_address, bet_content, open_result, status, bet_amount, reward_amount, compensation_amount, create_time, open_price, close_price, open_time, close_time, coin_symbol, base_symbol, sign, manual_intervention, rate ,admin_parent_ids ,rate_flag from t_second_contract_order
+    </sql>
+
+    <select id="selectTSecondContractOrderList" parameterType="TSecondContractOrder" resultMap="TSecondContractOrderResult">
+        <include refid="selectTSecondContractOrderVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+            <if test="symbol != null  and symbol != ''"> and symbol = #{symbol}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userAddress != null  and userAddress != ''"> and user_address = #{userAddress}</if>
+            <if test="betContent != null  and betContent != ''"> and bet_content = #{betContent}</if>
+            <if test="openResult != null  and openResult != ''"> and open_result = #{openResult}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="betAmount != null "> and bet_amount = #{betAmount}</if>
+            <if test="rewardAmount != null "> and reward_amount = #{rewardAmount}</if>
+            <if test="compensationAmount != null "> and compensation_amount = #{compensationAmount}</if>
+            <if test="openPrice != null "> and open_price = #{openPrice}</if>
+            <if test="closePrice != null "> and close_price = #{closePrice}</if>
+            <if test="openTime != null "> and open_time = #{openTime}</if>
+            <if test="closeTime != null "> and close_time = #{closeTime}</if>
+            <if test="coinSymbol != null  and coinSymbol != ''"> and coin_symbol = #{coinSymbol}</if>
+            <if test="baseSymbol != null  and baseSymbol != ''"> and base_symbol = #{baseSymbol}</if>
+            <if test="sign != null "> and sign = #{sign}</if>
+            <if test="manualIntervention != null "> and manual_intervention = #{manualIntervention}</if>
+            <if test="rate != null "> and rate = #{rate}</if>
+            <if test="rateFlag != null "> and rate_flag = #{rateFlag}</if>
+            <if test="adminParentIds != null and adminParentIds!=''">
+                AND find_in_set(#{adminParentIds},admin_parent_ids)
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectTSecondContractOrderById" parameterType="Long" resultMap="TSecondContractOrderResult">
+        <include refid="selectTSecondContractOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTSecondContractOrder" parameterType="TSecondContractOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into t_second_contract_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNo != null and orderNo != ''">order_no,</if>
+            <if test="symbol != null and symbol != ''">symbol,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userAddress != null and userAddress != ''">user_address,</if>
+            <if test="betContent != null and betContent != ''">bet_content,</if>
+            <if test="openResult != null">open_result,</if>
+            <if test="status != null">status,</if>
+            <if test="betAmount != null">bet_amount,</if>
+            <if test="rewardAmount != null">reward_amount,</if>
+            <if test="compensationAmount != null">compensation_amount,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="openPrice != null">open_price,</if>
+            <if test="closePrice != null">close_price,</if>
+            <if test="openTime != null">open_time,</if>
+            <if test="closeTime != null">close_time,</if>
+            <if test="coinSymbol != null">coin_symbol,</if>
+            <if test="baseSymbol != null">base_symbol,</if>
+            <if test="sign != null">sign,</if>
+            <if test="manualIntervention != null">manual_intervention,</if>
+            <if test="adminParentIds != null">admin_parent_ids,</if>
+            <if test="rate != null">rate,</if>
+            <if test="rateFlag != null">rate_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderNo != null and orderNo != ''">#{orderNo},</if>
+            <if test="symbol != null and symbol != ''">#{symbol},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userAddress != null and userAddress != ''">#{userAddress},</if>
+            <if test="betContent != null and betContent != ''">#{betContent},</if>
+            <if test="openResult != null">#{openResult},</if>
+            <if test="status != null">#{status},</if>
+            <if test="betAmount != null">#{betAmount},</if>
+            <if test="rewardAmount != null">#{rewardAmount},</if>
+            <if test="compensationAmount != null">#{compensationAmount},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="openPrice != null">#{openPrice},</if>
+            <if test="closePrice != null">#{closePrice},</if>
+            <if test="openTime != null">#{openTime},</if>
+            <if test="closeTime != null">#{closeTime},</if>
+            <if test="coinSymbol != null">#{coinSymbol},</if>
+            <if test="baseSymbol != null">#{baseSymbol},</if>
+            <if test="sign != null">#{sign},</if>
+            <if test="manualIntervention != null">#{manualIntervention},</if>
+            <if test="adminParentIds != null">#{adminParentIds},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="rateFlag != null">#{rateFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTSecondContractOrder" parameterType="TSecondContractOrder">
+        update t_second_contract_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderNo != null and orderNo != ''">order_no = #{orderNo},</if>
+            <if test="symbol != null and symbol != ''">symbol = #{symbol},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userAddress != null and userAddress != ''">user_address = #{userAddress},</if>
+            <if test="betContent != null and betContent != ''">bet_content = #{betContent},</if>
+            <if test="openResult != null">open_result = #{openResult},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="betAmount != null">bet_amount = #{betAmount},</if>
+            <if test="rewardAmount != null">reward_amount = #{rewardAmount},</if>
+            <if test="compensationAmount != null">compensation_amount = #{compensationAmount},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="openPrice != null">open_price = #{openPrice},</if>
+            <if test="closePrice != null">close_price = #{closePrice},</if>
+            <if test="openTime != null">open_time = #{openTime},</if>
+            <if test="closeTime != null">close_time = #{closeTime},</if>
+            <if test="coinSymbol != null">coin_symbol = #{coinSymbol},</if>
+            <if test="baseSymbol != null">base_symbol = #{baseSymbol},</if>
+            <if test="sign != null">sign = #{sign},</if>
+            <if test="manualIntervention != null">manual_intervention = #{manualIntervention},</if>
+            <if test="rate != null">rate = #{rate},</if>
+            <if test="rateFlag != null">rate_flag = #{rateFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTSecondContractOrderById" parameterType="Long">
+        delete from t_second_contract_order where id = #{id}
+    </delete>
+
+    <delete id="deleteTSecondContractOrderByIds" parameterType="String">
+        delete from t_second_contract_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

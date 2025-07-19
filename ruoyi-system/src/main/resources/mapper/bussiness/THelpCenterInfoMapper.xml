@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.THelpCenterInfoMapper">
+    
+    <resultMap type="com.ruoyi.bussiness.domain.THelpCenterInfo" id="THelpCenterInfoResult">
+        <result property="id"    column="id"    />
+        <result property="helpCenterId"    column="help_center_id"    />
+        <result property="question"    column="question"    />
+        <result property="content"    column="content"    />
+        <result property="language"    column="language"    />
+        <result property="enable"    column="enable"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="showSymbol"    column="show_symbol"    />
+    </resultMap>
+
+    <sql id="selectTHelpCenterInfoVo">
+        select id, help_center_id, question, content, language, enable, del_flag, create_time, create_by, update_time, update_by, remark, show_symbol from t_help_center_info
+    </sql>
+
+    <select id="selectTHelpCenterInfoList" parameterType="THelpCenterInfo" resultMap="THelpCenterInfoResult">
+        <include refid="selectTHelpCenterInfoVo"/>
+        <where>
+            and del_flag = '0'
+            <if test="helpCenterId != null "> and help_center_id = #{helpCenterId}</if>
+            <if test="question != null  and question != ''"> and question = #{question}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="language != null  and language != ''"> and language = #{language}</if>
+            <if test="enable != null  and enable != ''"> and enable = #{enable}</if>
+            <if test="showSymbol != null  and showSymbol != ''"> and show_symbol = #{showSymbol}</if>
+        </where>
+    </select>
+    
+    <select id="selectTHelpCenterInfoById" parameterType="Long" resultMap="THelpCenterInfoResult">
+        <include refid="selectTHelpCenterInfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTHelpCenterInfo" parameterType="THelpCenterInfo">
+        insert into t_help_center_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="helpCenterId != null">help_center_id,</if>
+            <if test="question != null">question,</if>
+            <if test="content != null">content,</if>
+            <if test="language != null">language,</if>
+            <if test="enable != null">enable,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="showSymbol != null">show_symbol,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="helpCenterId != null">#{helpCenterId},</if>
+            <if test="question != null">#{question},</if>
+            <if test="content != null">#{content},</if>
+            <if test="language != null">#{language},</if>
+            <if test="enable != null">#{enable},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="showSymbol != null">#{showSymbol},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTHelpCenterInfo" parameterType="THelpCenterInfo">
+        update t_help_center_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="helpCenterId != null">help_center_id = #{helpCenterId},</if>
+            <if test="question != null">question = #{question},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="language != null">language = #{language},</if>
+            <if test="enable != null">enable = #{enable},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="showSymbol != null">show_symbol = #{showSymbol},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTHelpCenterInfoById" parameterType="Long">
+        delete from t_help_center_info where id = #{id}
+    </delete>
+
+    <delete id="deleteTHelpCenterInfoByIds" parameterType="String">
+        update t_help_center_info set del_flag = '1' where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TAppuserLoginLogMapper">
+    
+    <resultMap type="TAppuserLoginLog" id="TAppuserLoginLogResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="username"    column="username"    />
+        <result property="ipaddr"    column="ipaddr"    />
+        <result property="loginLocation"    column="login_location"    />
+        <result property="browser"    column="browser"    />
+        <result property="os"    column="os"    />
+        <result property="status"    column="status"    />
+        <result property="msg"    column="msg"    />
+        <result property="loginTime"    column="login_time"    />
+    </resultMap>
+
+    <sql id="selectTAppuserLoginLogVo">
+        select id, user_id, username, ipaddr, login_location, browser, os, status, msg, login_time from t_appuser_login_log
+    </sql>
+
+    <select id="selectTAppuserLoginLogList" parameterType="TAppuserLoginLog" resultMap="TAppuserLoginLogResult">
+        <include refid="selectTAppuserLoginLogVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="username != null  and username != ''"> and username like concat('%', #{username}, '%')</if>
+            <if test="ipaddr != null  and ipaddr != ''"> and ipaddr = #{ipaddr}</if>
+            <if test="loginLocation != null  and loginLocation != ''"> and login_location = #{loginLocation}</if>
+            <if test="browser != null  and browser != ''"> and browser = #{browser}</if>
+            <if test="os != null  and os != ''"> and os = #{os}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="msg != null  and msg != ''"> and msg = #{msg}</if>
+            <if test="loginTime != null "> and login_time = #{loginTime}</if>
+        </where>
+        order by login_time desc
+    </select>
+    
+    <select id="selectTAppuserLoginLogById" parameterType="Long" resultMap="TAppuserLoginLogResult">
+        <include refid="selectTAppuserLoginLogVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTAppuserLoginLog" parameterType="TAppuserLoginLog" useGeneratedKeys="true" keyProperty="id">
+        insert into t_appuser_login_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="username != null">username,</if>
+            <if test="ipaddr != null">ipaddr,</if>
+            <if test="loginLocation != null">login_location,</if>
+            <if test="browser != null">browser,</if>
+            <if test="os != null">os,</if>
+            <if test="status != null">status,</if>
+            <if test="msg != null">msg,</if>
+            <if test="loginTime != null">login_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="username != null">#{username},</if>
+            <if test="ipaddr != null">#{ipaddr},</if>
+            <if test="loginLocation != null">#{loginLocation},</if>
+            <if test="browser != null">#{browser},</if>
+            <if test="os != null">#{os},</if>
+            <if test="status != null">#{status},</if>
+            <if test="msg != null">#{msg},</if>
+            <if test="loginTime != null">#{loginTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTAppuserLoginLog" parameterType="TAppuserLoginLog">
+        update t_appuser_login_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="username != null">username = #{username},</if>
+            <if test="ipaddr != null">ipaddr = #{ipaddr},</if>
+            <if test="loginLocation != null">login_location = #{loginLocation},</if>
+            <if test="browser != null">browser = #{browser},</if>
+            <if test="os != null">os = #{os},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="msg != null">msg = #{msg},</if>
+            <if test="loginTime != null">login_time = #{loginTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTAppuserLoginLogById" parameterType="Long">
+        delete from t_appuser_login_log where id = #{id}
+    </delete>
+
+    <delete id="deleteTAppuserLoginLogByIds" parameterType="String">
+        delete from t_appuser_login_log where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TOptionRulesMapper">
+    
+    <resultMap type="com.ruoyi.bussiness.domain.TOptionRules" id="TOptionRulesResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="language"    column="language"    />
+        <result property="content"    column="content"    />
+        <result property="isShow"    column="is_show"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="type"    column="type"    />
+        <result property="searchValue"    column="search_value"    />
+    </resultMap>
+
+    <sql id="selectTOptionRulesVo">
+        select id, title, language, content, is_show, create_time, search_value, type from t_option_rules
+    </sql>
+
+    <select id="selectTOptionRulesList" parameterType="TOptionRules" resultMap="TOptionRulesResult">
+        <include refid="selectTOptionRulesVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title like concat('%',#{title},'%') </if>
+            <if test="language != null  and language != ''"> and language = #{language}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="isShow != null "> and is_show = #{isShow}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+        </where>
+    </select>
+    
+    <select id="selectTOptionRulesById" parameterType="Long" resultMap="TOptionRulesResult">
+        <include refid="selectTOptionRulesVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTOptionRules" parameterType="TOptionRules" useGeneratedKeys="true" keyProperty="id">
+        insert into t_option_rules
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">title,</if>
+            <if test="language != null">language,</if>
+            <if test="content != null">content,</if>
+            <if test="isShow != null">is_show,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="type != null">type,</if>
+            <if test="searchValue != null">search_value,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">#{title},</if>
+            <if test="language != null">#{language},</if>
+            <if test="content != null">#{content},</if>
+            <if test="isShow != null">#{isShow},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="type != null">#{type},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTOptionRules" parameterType="TOptionRules">
+        update t_option_rules
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="language != null">language = #{language},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="isShow != null">is_show = #{isShow},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTOptionRulesById" parameterType="Long">
+        delete from t_option_rules where id = #{id}
+    </delete>
+
+    <delete id="deleteTOptionRulesByIds" parameterType="String">
+        delete from t_option_rules where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

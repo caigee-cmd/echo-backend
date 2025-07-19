@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TSecondCoinConfigMapper">
+    
+    <resultMap type="TSecondCoinConfig" id="TSecondCoinConfigResult">
+        <result property="id"    column="id"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="market"    column="market"    />
+        <result property="status"    column="status"    />
+        <result property="showFlag"    column="show_flag"    />
+        <result property="coin"    column="coin"    />
+        <result property="sort"    column="sort"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="searchValue"    column="search_value"    />
+        <result property="logo"    column="logo"    />
+        <result property="showSymbol"    column="show_symbol"    />
+        <result property="baseCoin"    column="base_coin"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectTSecondCoinConfigVo">
+        select id, symbol,market, status,show_flag, coin, sort, create_by, create_time, update_by, update_time, remark, search_value,logo, show_symbol,base_coin,type from t_second_coin_config
+    </sql>
+
+    <select id="selectTSecondCoinConfigList" parameterType="TSecondCoinConfig" resultMap="TSecondCoinConfigResult">
+        <include refid="selectTSecondCoinConfigVo"/>
+        <where>  
+            <if test="symbol != null  and symbol != ''"> and symbol = #{symbol}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="market != null "> and market = #{market}</if>
+            <if test="showFlag != null "> and show_flag = #{showFlag}</if>
+            <if test="coin != null  and coin != ''"> and coin = #{coin}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+        </where>
+        order by sort
+    </select>
+    
+    <select id="selectTSecondCoinConfigById" parameterType="Long" resultMap="TSecondCoinConfigResult">
+        <include refid="selectTSecondCoinConfigVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectBathCopySecondCoinConfigList" resultType="com.ruoyi.bussiness.domain.TSecondCoinConfig">
+        SELECT
+            a.*
+        FROM
+            (
+                SELECT
+                    c.id,
+                    c.symbol,
+                    c.show_symbol,
+                    count( p.id ) AS count
+                FROM
+                    t_second_coin_config c
+                    LEFT JOIN t_second_period_config p ON c.id = p.second_id
+                GROUP BY
+                    c.id,
+                    c.symbol,
+                    c.show_symbol
+            ) a
+        WHERE
+            a.count > 0
+    </select>
+
+    <insert id="insertTSecondCoinConfig" parameterType="TSecondCoinConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into t_second_coin_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="symbol != null">symbol,</if>
+            <if test="market != null">market,</if>
+            <if test="status != null">status,</if>
+            <if test="showFlag != null">show_flag,</if>
+            <if test="coin != null">coin,</if>
+            <if test="sort != null">sort,</if>
+            <if test="type != null">type,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="searchValue != null">search_value,</if>
+            <if test="logo != null">logo,</if>
+            <if test="showSymbol != null">show_symbol,</if>
+            <if test="baseCoin != null">base_coin,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="symbol != null">#{symbol},</if>
+            <if test="market != null">#{market},</if>
+            <if test="status != null">#{status},</if>
+            <if test="showFlag != null">#{showFlag},</if>
+            <if test="coin != null">#{coin},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="type != null">#{type},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+            <if test="logo != null">#{logo},</if>
+            <if test="showSymbol != null">#{showSymbol},</if>
+            <if test="baseCoin != null">#{baseCoin},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTSecondCoinConfig" parameterType="TSecondCoinConfig">
+        update t_second_coin_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="symbol != null">symbol = #{symbol},</if>
+            <if test="market != null">market = #{market},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="showFlag != null">show_flag = #{showFlag},</if>
+            <if test="coin != null">coin = #{coin},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+            <if test="logo != null">logo = #{logo},</if>
+            <if test="showSymbol != null">show_symbol = #{showSymbol},</if>
+            <if test="baseCoin != null">base_coin = #{baseCoin},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTSecondCoinConfigById" parameterType="Long">
+        delete from t_second_coin_config where id = #{id}
+    </delete>
+
+    <delete id="deleteTSecondCoinConfigByIds" parameterType="String">
+        delete from t_second_coin_config where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

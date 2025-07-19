@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TOwnCoinMapper">
+
+    <resultMap type="TOwnCoin" id="TOwnCoinResult">
+        <result property="id"    column="id"    />
+        <result property="coin"    column="coin"    />
+        <result property="referCoin"    column="refer_coin"    />
+        <result property="referMarket"    column="refer_market"    />
+        <result property="showSymbol"    column="show_symbol"    />
+        <result property="price"    column="price"    />
+        <result property="proportion"    column="proportion"    />
+        <result property="introduce"    column="introduce"    />
+        <result property="logo"    column="logo"    />
+        <result property="totalAmount"    column="total_amount"    />
+        <result property="purchaseLimit"    column="purchase_limit"    />
+        <result property="raisingAmount"    column="raising_amount"    />
+        <result property="raisedAmount"    column="raised_amount"    />
+        <result property="participantsNum"    column="participants_num"    />
+        <result property="raisingTime"    column="raising_time"    />
+        <result property="beginTime"    column="begin_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTOwnCoinVo">
+        select id, coin,logo,introduce, total_amount,purchase_limit,proportion,refer_coin, refer_market, show_symbol, price, raising_amount, raised_amount, participants_num, raising_time, begin_time, end_time, status, create_by, create_time, update_by, update_time, remark from t_own_coin
+    </sql>
+
+    <select id="selectTOwnCoinList" parameterType="TOwnCoin" resultMap="TOwnCoinResult">
+        <include refid="selectTOwnCoinVo"/>
+        <where>  
+            <if test="coin != null  and coin != ''"> and coin = #{coin}</if>
+            <if test="referCoin != null  and referCoin != ''"> and refer_coin = #{referCoin}</if>
+            <if test="referMarket != null  and referMarket != ''"> and refer_market = #{referMarket}</if>
+            <if test="showSymbol != null  and showSymbol != ''"> and show_symbol = #{showSymbol}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="proportion != null "> and proportion = #{proportion}</if>
+            <if test="raisingAmount != null "> and raising_amount = #{raisingAmount}</if>
+            <if test="raisedAmount != null "> and raised_amount = #{raisedAmount}</if>
+            <if test="participantsNum != null "> and participants_num = #{participantsNum}</if>
+            <if test="raisingTime != null "> and raising_time = #{raisingTime}</if>
+            <if test="beginTime != null "> and begin_time = #{beginTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectTOwnCoinById" parameterType="Long" resultMap="TOwnCoinResult">
+        <include refid="selectTOwnCoinVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTOwnCoin" parameterType="TOwnCoin" useGeneratedKeys="true" keyProperty="id">
+        insert into t_own_coin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="coin != null">coin,</if>
+            <if test="introduce != null">introduce,</if>
+            <if test="logo != null">logo,</if>
+            <if test="totalAmount != null">total_amount,</if>
+            <if test="purchaseLimit != null">purchase_limit,</if>
+            <if test="referCoin != null">refer_coin,</if>
+            <if test="referMarket != null">refer_market,</if>
+            <if test="showSymbol != null">show_symbol,</if>
+            <if test="price != null">price,</if>
+            <if test="proportion != null">proportion,</if>
+            <if test="raisingAmount != null">raising_amount,</if>
+            <if test="raisedAmount != null">raised_amount,</if>
+            <if test="participantsNum != null">participants_num,</if>
+            <if test="raisingTime != null">raising_time,</if>
+            <if test="beginTime != null">begin_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="coin != null">#{coin},</if>
+            <if test="introduce != null">#{introduce},</if>
+            <if test="logo != null">#{logo},</if>
+            <if test="totalAmount != null">#{totalAmount},</if>
+            <if test="purchaseLimit != null">#{purchaseLimit},</if>
+            <if test="referCoin != null">#{referCoin},</if>
+            <if test="referMarket != null">#{referMarket},</if>
+            <if test="showSymbol != null">#{showSymbol},</if>
+            <if test="price != null">#{price},</if>
+            <if test="proportion != null">#{proportion},</if>
+            <if test="raisingAmount != null">#{raisingAmount},</if>
+            <if test="raisedAmount != null">#{raisedAmount},</if>
+            <if test="participantsNum != null">#{participantsNum},</if>
+            <if test="raisingTime != null">#{raisingTime},</if>
+            <if test="beginTime != null">#{beginTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTOwnCoin" parameterType="TOwnCoin">
+        update t_own_coin
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="coin != null">coin = #{coin},</if>
+            <if test="introduce != null">introduce = #{introduce},</if>
+            <if test="logo != null">logo = #{logo},</if>
+            <if test="totalAmount != null">total_amount = #{totalAmount},</if>
+            <if test="purchaseLimit != null">purchase_limit = #{purchaseLimit},</if>
+            <if test="referCoin != null">refer_coin = #{referCoin},</if>
+            <if test="referMarket != null">refer_market = #{referMarket},</if>
+            <if test="showSymbol != null">show_symbol = #{showSymbol},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="proportion != null">proportion = #{proportion},</if>
+            <if test="raisingAmount != null">raising_amount = #{raisingAmount},</if>
+            <if test="raisedAmount != null">raised_amount = #{raisedAmount},</if>
+            <if test="participantsNum != null">participants_num = #{participantsNum},</if>
+            <if test="raisingTime != null">raising_time = #{raisingTime},</if>
+            <if test="beginTime != null">begin_time = #{beginTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTOwnCoinById" parameterType="Long">
+        delete from t_own_coin where id = #{id}
+    </delete>
+
+    <delete id="deleteTOwnCoinByIds" parameterType="String">
+        delete from t_own_coin where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

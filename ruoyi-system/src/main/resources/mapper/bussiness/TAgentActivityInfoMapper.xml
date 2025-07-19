@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TAgentActivityInfoMapper">
+    
+    <resultMap type="com.ruoyi.bussiness.domain.TAgentActivityInfo" id="TAgentActivityInfoResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="amount"    column="amount"    />
+        <result property="coinType"    column="coin_type"    />
+        <result property="fromId"    column="from_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="status"    column="status"    />
+        <result property="loginName"    column="login_name"    />
+        <result property="serialId"    column="serial_id"    />
+    </resultMap>
+
+    <sql id="selectTAgentActivityInfoVo">
+        select id, type, amount, coin_type, from_id, user_id, create_by, create_time, update_by, update_time, status, login_name, serial_id from t_agent_activity_info
+    </sql>
+
+    <select id="selectTAgentActivityInfoList" parameterType="TAgentActivityInfo" resultMap="TAgentActivityInfoResult">
+        <include refid="selectTAgentActivityInfoVo"/>
+        <where>  
+            <if test="type != null "> and type = #{type}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="coinType != null "> and coin_type = #{coinType}</if>
+            <if test="fromId != null "> and from_id = #{fromId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="loginName != null  and loginName != ''"> and login_name like concat('%', #{loginName}, '%')</if>
+            <if test="serialId != null  and serialId != ''"> and serial_id = #{serialId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTAgentActivityInfoById" parameterType="String" resultMap="TAgentActivityInfoResult">
+        <include refid="selectTAgentActivityInfoVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectListByLeve" parameterType="com.ruoyi.bussiness.domain.TAgentActivityInfo" resultType="int">
+       select
+           count(1)
+       from t_app_user
+        where #{userId} = REGEXP_SUBSTR(app_parent_ids,'[^,]+',1,#{params.leve})
+    </select>
+
+    <select id="selectAmountCountByUserId" resultType="java.math.BigDecimal"
+            parameterType="com.ruoyi.bussiness.domain.TAgentActivityInfo">
+        select sum(amount) from t_agent_activity_info a
+        left join t_app_user u  on a.from_id = u.user_id
+        <where>
+            <if test="userId !=null">
+                and FIND_IN_SET(#{userId},u.app_parent_ids)
+            </if>
+            <if test="type !=null">
+                and a.type = #{type}
+            </if>
+            <if test="status !=null">
+                and a.status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="getAgentList" resultType="com.ruoyi.bussiness.domain.vo.TAgentActivityInfoVo">
+
+        SELECT
+            b.user_id fromId,
+            i.user_id userId,
+            i.coin_type coinType,
+            i.id,
+            i.`status`,
+            i.type,
+            i.serial_id serialId,
+            b.create_time createTime,
+            sum( i.amount ) sumAmount
+        FROM
+            (
+                SELECT
+                    a.user_id,
+                    a.create_time
+                FROM
+                    t_app_user a
+                WHERE
+                    #{userId} = REGEXP_SUBSTR ( a.app_parent_ids, '[^,]+', 1, #{params.leve} )
+            ) b
+         LEFT JOIN t_agent_activity_info i ON b.user_id = i.from_id
+        GROUP BY b.user_id
+    </select>
+
+    <insert id="insertTAgentActivityInfo" parameterType="TAgentActivityInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_agent_activity_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">type,</if>
+            <if test="amount != null">amount,</if>
+            <if test="coinType != null">coin_type,</if>
+            <if test="fromId != null">from_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="status != null">status,</if>
+            <if test="loginName != null">login_name,</if>
+            <if test="serialId != null">serial_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">#{type},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="coinType != null">#{coinType},</if>
+            <if test="fromId != null">#{fromId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="loginName != null">#{loginName},</if>
+            <if test="serialId != null">#{serialId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTAgentActivityInfo" parameterType="TAgentActivityInfo">
+        update t_agent_activity_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="coinType != null">coin_type = #{coinType},</if>
+            <if test="fromId != null">from_id = #{fromId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="loginName != null">login_name = #{loginName},</if>
+            <if test="serialId != null">serial_id = #{serialId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTAgentActivityInfoById" parameterType="String">
+        delete from t_agent_activity_info where id = #{id}
+    </delete>
+
+    <delete id="deleteTAgentActivityInfoByIds" parameterType="String">
+        delete from t_agent_activity_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

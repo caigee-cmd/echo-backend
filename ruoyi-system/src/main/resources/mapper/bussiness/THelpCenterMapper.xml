@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.THelpCenterMapper">
+    
+    <resultMap type="com.ruoyi.bussiness.domain.THelpCenter" id="THelpCenterResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="language"    column="language"    />
+        <result property="enable"    column="enable"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="showSymbol"    column="show_symbol"    />
+    </resultMap>
+
+    <sql id="selectTHelpCenterVo">
+        select id, title, language, enable, del_flag, create_time, create_by, update_time, update_by, remark, show_symbol from t_help_center
+    </sql>
+
+    <select id="selectTHelpCenterList" parameterType="THelpCenter" resultMap="THelpCenterResult">
+        <include refid="selectTHelpCenterVo"/>
+        <where>
+            and del_flag = '0'
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="language != null  and language != ''"> and language = #{language}</if>
+            <if test="enable != null  and enable != ''"> and enable = #{enable}</if>
+            <if test="showSymbol != null  and showSymbol != ''"> and show_symbol = #{showSymbol}</if>
+        </where>
+    </select>
+    
+    <select id="selectTHelpCenterById" parameterType="Long" resultMap="THelpCenterResult">
+        <include refid="selectTHelpCenterVo"/>
+        where id = #{id}
+    </select>
+
+
+    <resultMap type="com.ruoyi.bussiness.domain.THelpCenter" id="THelpCenterResultVo">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="language"    column="language"    />
+        <result property="enable"    column="enable"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="showSymbol"    column="show_symbol"    />
+        <collection property="infoList" ofType="com.ruoyi.bussiness.domain.THelpCenterInfo">
+            <result property="id"    column="i_id"    />
+            <result property="helpCenterId"    column="i_help_center_id"    />
+            <result property="question"    column="i_question"    />
+            <result property="language"    column="i_language"    />
+            <result property="enable"    column="i_enable"    />
+            <result property="delFlag"    column="i_del_flag"    />
+            <result property="createTime"    column="i_create_time"    />
+            <result property="createBy"    column="i_create_by"    />
+            <result property="updateTime"    column="i_update_time"    />
+            <result property="updateBy"    column="i_update_by"    />
+            <result property="remark"    column="i_remark"    />
+            <result property="showSymbol"    column="i_show_symbol"    />
+        </collection>
+    </resultMap>
+
+    <select id="getCenterList" resultMap="THelpCenterResultVo"
+            parameterType="com.ruoyi.bussiness.domain.THelpCenter">
+        select
+            a.id, a.title, a.language, a.enable, a.del_flag, a.create_time,
+            a.create_by, a.update_time, a.update_by, a.remark, a.show_symbol,
+            i.id i_id, i.help_center_id i_help_center_id, i.question i_question, i.language i_language,
+            i.enable i_enable, i.create_time i_create_time, i.create_by i_create_by, i.update_time i_update_time, i.update_by i_update_by,
+            i.remark i_remark, i.show_symbol i_show_symbol
+
+        from t_help_center a
+        left join t_help_center_info i on i.help_center_id = a.id and i.del_flag = '0' and i.enable = '1'
+        <where>
+            and a.enable = '1' and a.del_flag = '0'
+            <if test="language!=null and language1=''">
+                and a.language = #{language}
+            </if>
+        </where>
+
+    </select>
+
+    <insert id="insertTHelpCenter" parameterType="THelpCenter">
+        insert into t_help_center
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="title != null">title,</if>
+            <if test="language != null">language,</if>
+            <if test="enable != null">enable,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="showSymbol != null">show_symbol,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="title != null">#{title},</if>
+            <if test="language != null">#{language},</if>
+            <if test="enable != null">#{enable},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="showSymbol != null">#{showSymbol},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTHelpCenter" parameterType="THelpCenter">
+        update t_help_center
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="language != null">language = #{language},</if>
+            <if test="enable != null">enable = #{enable},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="showSymbol != null">show_symbol = #{showSymbol},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTHelpCenterById" parameterType="Long">
+        update t_help_center set del_flag = '1' where id = #{id}
+    </delete>
+
+    <delete id="deleteTHelpCenterByIds" parameterType="String">
+        update t_help_center set del_flag = '1' where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

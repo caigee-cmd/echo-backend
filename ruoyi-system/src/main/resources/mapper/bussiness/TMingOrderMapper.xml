@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TMingOrderMapper">
+    
+    <resultMap type="TMingOrder" id="TMingOrderResult">
+        <result property="id"    column="id"    />
+        <result property="amount"    column="amount"    />
+        <result property="days"    column="days"    />
+        <result property="status"    column="status"    />
+        <result property="planId"    column="plan_id"    />
+        <result property="planTitle"    column="plan_title"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="settleTime"    column="settle_time"    />
+        <result property="accumulaEarn"    column="accumula_earn"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="minOdds"    column="min_odds"    />
+        <result property="maxOdds"    column="max_odds"    />
+        <result property="adminUserIds"    column="admin_user_ids"    />
+        <result property="collectionOrder"    column="collection_order"    />
+        <result property="userId"    column="user_id"    />
+        <result property="orderAmount"    column="order_amount"    />
+    </resultMap>
+
+    <sql id="selectTMingOrderVo">
+        select id, amount, days, status, plan_id, plan_title, order_no, create_time, end_time, settle_time, accumula_earn, update_time, min_odds, max_odds, admin_user_ids, collection_order, user_id, order_amount from t_ming_order
+    </sql>
+
+    <select id="selectTMingOrderList" parameterType="TMingOrder" resultMap="TMingOrderResult">
+        <include refid="selectTMingOrderVo"/>
+        <where>  
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="days != null "> and days = #{days}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="planId != null "> and plan_id = #{planId}</if>
+            <if test="planTitle != null  and planTitle != ''"> and plan_title = #{planTitle}</if>
+            <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="settleTime != null "> and settle_time = #{settleTime}</if>
+            <if test="accumulaEarn != null "> and accumula_earn = #{accumulaEarn}</if>
+            <if test="minOdds != null "> and min_odds = #{minOdds}</if>
+            <if test="maxOdds != null "> and max_odds = #{maxOdds}</if>
+            <if test="adminUserIds != null  and adminUserIds != ''">and find_in_set(#{adminUserIds},admin_user_ids)</if>
+            <if test="collectionOrder != null  and collectionOrder != ''"> and collection_order = #{collectionOrder}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="orderAmount != null "> and order_amount = #{orderAmount}</if>
+        </where>
+        ORDER BY   create_time DESC
+    </select>
+    
+    <select id="selectTMingOrderById" parameterType="Long" resultMap="TMingOrderResult">
+        <include refid="selectTMingOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTMingOrder" parameterType="TMingOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into t_ming_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="amount != null">amount,</if>
+            <if test="days != null">days,</if>
+            <if test="status != null">status,</if>
+            <if test="planId != null">plan_id,</if>
+            <if test="planTitle != null">plan_title,</if>
+            <if test="orderNo != null and orderNo != ''">order_no,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="settleTime != null">settle_time,</if>
+            <if test="accumulaEarn != null">accumula_earn,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="minOdds != null">min_odds,</if>
+            <if test="maxOdds != null">max_odds,</if>
+            <if test="adminUserIds != null">admin_user_ids,</if>
+            <if test="collectionOrder != null">collection_order,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="orderAmount != null">order_amount,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="amount != null">#{amount},</if>
+            <if test="days != null">#{days},</if>
+            <if test="status != null">#{status},</if>
+            <if test="planId != null">#{planId},</if>
+            <if test="planTitle != null">#{planTitle},</if>
+            <if test="orderNo != null and orderNo != ''">#{orderNo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="settleTime != null">#{settleTime},</if>
+            <if test="accumulaEarn != null">#{accumulaEarn},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="minOdds != null">#{minOdds},</if>
+            <if test="maxOdds != null">#{maxOdds},</if>
+            <if test="adminUserIds != null">#{adminUserIds},</if>
+            <if test="collectionOrder != null">#{collectionOrder},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="orderAmount != null">#{orderAmount},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTMingOrder" parameterType="TMingOrder">
+        update t_ming_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="days != null">days = #{days},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="planId != null">plan_id = #{planId},</if>
+            <if test="planTitle != null">plan_title = #{planTitle},</if>
+            <if test="orderNo != null and orderNo != ''">order_no = #{orderNo},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="settleTime != null">settle_time = #{settleTime},</if>
+            <if test="accumulaEarn != null">accumula_earn = #{accumulaEarn},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="minOdds != null">min_odds = #{minOdds},</if>
+            <if test="maxOdds != null">max_odds = #{maxOdds},</if>
+            <if test="adminUserIds != null">admin_user_ids = #{adminUserIds},</if>
+            <if test="collectionOrder != null">collection_order = #{collectionOrder},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="orderAmount != null">order_amount = #{orderAmount},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTMingOrderById" parameterType="Long">
+        delete from t_ming_order where id = #{id}
+    </delete>
+
+    <delete id="deleteTMingOrderByIds" parameterType="String">
+        delete from t_ming_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectMingOrderSumList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            SUM(if(o.`status`=0,o.amount,0)) as amount,
+            SUM(IF(o.`status`=0,1,0)) as orderNum,
+            IFNULL(SUM(o.accumula_earn),0) as profitMoney,
+            SUM(IF( o.`status` = 0, o.amount * o.max_odds * 0.01, 0 )) AS todayProfit
+        FROM
+            t_ming_order o
+        where o.user_id=#{userId}
+    </select>
+</mapper>

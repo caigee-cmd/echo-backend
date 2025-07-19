@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TMingProductMapper">
+    
+    <resultMap type="TMingProduct" id="TMingProductResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="icon"    column="icon"    />
+        <result property="status"    column="status"    />
+        <result property="days"    column="days"    />
+        <result property="defaultOdds"    column="default_odds"    />
+        <result property="minOdds"    column="min_odds"    />
+        <result property="maxOdds"    column="max_odds"    />
+        <result property="timeLimit"    column="time_limit"    />
+        <result property="limitMin"    column="limit_min"    />
+        <result property="limitMax"    column="limit_max"    />
+        <result property="sort"    column="sort"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="buyPurchase"    column="buy_purchase"    />
+        <result property="coin"    column="coin"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTMingProductVo">
+        select id, title, icon, status, days, default_odds, min_odds, max_odds, time_limit, limit_min, limit_max, sort, create_by, create_time, update_by, update_time, buy_purchase, coin, remark from t_ming_product
+    </sql>
+
+    <select id="selectTMingProductList" parameterType="TMingProduct" resultMap="TMingProductResult">
+        <include refid="selectTMingProductVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="icon != null  and icon != ''"> and icon = #{icon}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="days != null  and days != ''"> and days = #{days}</if>
+            <if test="defaultOdds != null "> and default_odds = #{defaultOdds}</if>
+            <if test="minOdds != null "> and min_odds = #{minOdds}</if>
+            <if test="maxOdds != null "> and max_odds = #{maxOdds}</if>
+            <if test="timeLimit != null "> and time_limit = #{timeLimit}</if>
+            <if test="limitMin != null "> and limit_min = #{limitMin}</if>
+            <if test="limitMax != null "> and limit_max = #{limitMax}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="buyPurchase != null "> and buy_purchase = #{buyPurchase}</if>
+            <if test="coin != null  and coin != ''"> and coin = #{coin}</if>
+        </where>
+        ORDER BY   sort
+    </select>
+    
+    <select id="selectTMingProductById" parameterType="Long" resultMap="TMingProductResult">
+        <include refid="selectTMingProductVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTMingProduct" parameterType="TMingProduct" useGeneratedKeys="true" keyProperty="id">
+        insert into t_ming_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="icon != null">icon,</if>
+            <if test="status != null">status,</if>
+            <if test="days != null and days != ''">days,</if>
+            <if test="defaultOdds != null">default_odds,</if>
+            <if test="minOdds != null">min_odds,</if>
+            <if test="maxOdds != null">max_odds,</if>
+            <if test="timeLimit != null">time_limit,</if>
+            <if test="limitMin != null">limit_min,</if>
+            <if test="limitMax != null">limit_max,</if>
+            <if test="sort != null">sort,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="buyPurchase != null">buy_purchase,</if>
+            <if test="coin != null">coin,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="icon != null">#{icon},</if>
+            <if test="status != null">#{status},</if>
+            <if test="days != null and days != ''">#{days},</if>
+            <if test="defaultOdds != null">#{defaultOdds},</if>
+            <if test="minOdds != null">#{minOdds},</if>
+            <if test="maxOdds != null">#{maxOdds},</if>
+            <if test="timeLimit != null">#{timeLimit},</if>
+            <if test="limitMin != null">#{limitMin},</if>
+            <if test="limitMax != null">#{limitMax},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="buyPurchase != null">#{buyPurchase},</if>
+            <if test="coin != null">#{coin},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTMingProduct" parameterType="TMingProduct">
+        update t_ming_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="days != null and days != ''">days = #{days},</if>
+            <if test="defaultOdds != null">default_odds = #{defaultOdds},</if>
+            <if test="minOdds != null">min_odds = #{minOdds},</if>
+            <if test="maxOdds != null">max_odds = #{maxOdds},</if>
+            <if test="timeLimit != null">time_limit = #{timeLimit},</if>
+            <if test="limitMin != null">limit_min = #{limitMin},</if>
+            <if test="limitMax != null">limit_max = #{limitMax},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="buyPurchase != null">buy_purchase = #{buyPurchase},</if>
+            <if test="coin != null">coin = #{coin},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTMingProductById" parameterType="Long">
+        delete from t_ming_product where id = #{id}
+    </delete>
+
+    <delete id="deleteTMingProductByIds" parameterType="String">
+        delete from t_ming_product where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

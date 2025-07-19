@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TNftOrderMapper">
+    
+    <resultMap type="TNftOrder" id="TNftOrderResult">
+        <result property="id"    column="id"    />
+        <result property="seriesId"    column="series_id"    />
+        <result property="productId"    column="product_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="amount"    column="amount"    />
+        <result property="status"    column="status"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="searchValue"    column="search_value"    />
+    </resultMap>
+
+    <sql id="selectTNftOrderVo">
+        select id, series_id, product_id, user_id, amount, status, remark, create_by, create_time, update_by, update_time, search_value from t_nft_order
+    </sql>
+
+    <select id="selectTNftOrderList" parameterType="TNftOrder" resultMap="TNftOrderResult">
+        <include refid="selectTNftOrderVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="seriesId != null "> and series_id = #{seriesId}</if>
+            <if test="productId != null "> and product_id = #{productId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+        </where>
+    </select>
+    
+    <select id="selectTNftOrderById" parameterType="Long" resultMap="TNftOrderResult">
+        <include refid="selectTNftOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTNftOrder" parameterType="TNftOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into t_nft_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="seriesId != null">series_id,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="amount != null">amount,</if>
+            <if test="status != null">status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="searchValue != null">search_value,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="seriesId != null">#{seriesId},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="status != null">#{status},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTNftOrder" parameterType="TNftOrder">
+        update t_nft_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="seriesId != null">series_id = #{seriesId},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTNftOrderById" parameterType="Long">
+        delete from t_nft_order where id = #{id}
+    </delete>
+
+    <delete id="deleteTNftOrderByIds" parameterType="String">
+        delete from t_nft_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

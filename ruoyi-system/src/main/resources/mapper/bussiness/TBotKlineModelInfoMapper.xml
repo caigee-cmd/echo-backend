@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TBotKlineModelInfoMapper">
+
+    <resultMap type="TBotKlineModelInfo" id="TBotKlineModelInfoResult">
+        <result property="id" column="id"/>
+        <result property="modelId" column="model_id"/>
+        <result property="dateTime" column="date_time"/>
+        <result property="open" column="open"/>
+        <result property="close" column="close"/>
+        <result property="high" column="high"/>
+        <result property="low" column="low"/>
+        <result property="x" column="x"/>
+        <result property="y" column="y"/>
+    </resultMap>
+
+    <sql id="selectTBotKlineModelInfoVo">
+        select id, model_id, date_time, open, close, high, low, x, y
+        from t_bot_kline_model_info
+    </sql>
+
+    <select id="selectTBotKlineModelInfoList" parameterType="TBotKlineModelInfo" resultMap="TBotKlineModelInfoResult">
+        <include refid="selectTBotKlineModelInfoVo"/>
+        <where>
+            <if test="modelId != null ">and model_id = #{modelId}</if>
+            <if test="dateTime != null ">and date_time = #{dateTime}</if>
+            <if test="open != null ">and open = #{open}</if>
+            <if test="close != null ">and close = #{close}</if>
+            <if test="high != null ">and high = #{high}</if>
+            <if test="low != null ">and low = #{low}</if>
+        </where>
+    </select>
+
+    <select id="selectTBotKlineModelInfoById" parameterType="Long" resultMap="TBotKlineModelInfoResult">
+        <include refid="selectTBotKlineModelInfoVo"/>
+        where id = #{id}
+    </select>
+    <insert id="insertModelInfo" parameterType="java.util.List">
+        insert into t_bot_kline_model_info (model_id, date_time, open, close, high, low ,x,y) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.modelId}, #{item.dateTime}, #{item.open}, #{item.close}, #{item.high}, #{item.low}, #{item.x},
+            #{item.y} )
+        </foreach>
+    </insert>
+    <insert id="insertTBotKlineModelInfo" parameterType="TBotKlineModelInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_bot_kline_model_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="modelId != null">model_id,</if>
+            <if test="dateTime != null">date_time,</if>
+            <if test="open != null">open,</if>
+            <if test="close != null">close,</if>
+            <if test="high != null">high,</if>
+            <if test="low != null">low,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="modelId != null">#{modelId},</if>
+            <if test="dateTime != null">#{dateTime},</if>
+            <if test="open != null">#{open},</if>
+            <if test="close != null">#{close},</if>
+            <if test="high != null">#{high},</if>
+            <if test="low != null">#{low},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTBotKlineModelInfo" parameterType="TBotKlineModelInfo">
+        update t_bot_kline_model_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="modelId != null">model_id = #{modelId},</if>
+            <if test="dateTime != null">date_time = #{dateTime},</if>
+            <if test="open != null">open = #{open},</if>
+            <if test="close != null">close = #{close},</if>
+            <if test="high != null">high = #{high},</if>
+            <if test="low != null">low = #{low},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTBotKlineModelInfoById" parameterType="Long">
+        delete
+        from t_bot_kline_model_info
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTBotKlineModelInfoByIds" parameterType="String">
+        delete from t_bot_kline_model_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="selectBotLineList" parameterType="java.util.HashMap" resultMap="TBotKlineModelInfoResult">
+        SELECT t.date_time as   date_time,
+            t.`open`     as   open,
+            t.`close`    as   close,
+            t.high       as    high,
+            t.low        as    low ,
+            t.model_id   as   model_id
+        FROM
+            t_bot_kline_model_info t
+            INNER JOIN
+            t_bot_kline_model l
+        ON t.model_id=l.id
+        WHERE l.symbol=#{symbol}
+        and  t.date_time &lt;=#{nowTime}
+        and t.y != 0
+        order BY t.date_time ASC
+    </select>
+
+</mapper>

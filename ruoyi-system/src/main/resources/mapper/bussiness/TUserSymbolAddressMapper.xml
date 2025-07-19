@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TUserSymbolAddressMapper">
+
+    <resultMap type="com.ruoyi.bussiness.domain.TUserSymbolAddress" id="TUserSymbolAddressResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="address"    column="address"    />
+    </resultMap>
+
+    <sql id="selectTUserSymbolAddressVo">
+        select id, user_id, symbol, address from t_user_symbol_address
+    </sql>
+
+    <select id="selectTUserSymbolAddressList" parameterType="TUserSymbolAddress" resultMap="TUserSymbolAddressResult">
+        <include refid="selectTUserSymbolAddressVo"/>
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="symbol != null  and symbol != ''"> and symbol = #{symbol}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+        </where>
+    </select>
+
+    <select id="selectTUserSymbolAddressById" parameterType="Long" resultMap="TUserSymbolAddressResult">
+        <include refid="selectTUserSymbolAddressVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTUserSymbolAddress" parameterType="TUserSymbolAddress">
+        insert into t_user_symbol_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="symbol != null">symbol,</if>
+            <if test="address != null">address,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="symbol != null">#{symbol},</if>
+            <if test="address != null">#{address},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTUserSymbolAddress" parameterType="TUserSymbolAddress">
+        update t_user_symbol_address
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="symbol != null">symbol = #{symbol},</if>
+            <if test="address != null">address = #{address},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTUserSymbolAddressById" parameterType="Long">
+        delete from t_user_symbol_address where id = #{id}
+    </delete>
+
+    <delete id="deleteTUserSymbolAddressByIds" parameterType="String">
+        delete from t_user_symbol_address where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

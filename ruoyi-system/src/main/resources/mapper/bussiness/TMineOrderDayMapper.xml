@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TMineOrderDayMapper">
+    
+    <resultMap type="TMineOrderDay" id="TMineOrderDayResult">
+        <result property="amount"    column="amount"    />
+        <result property="odds"    column="odds"    />
+        <result property="earn"    column="earn"    />
+        <result property="planId"    column="plan_id"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="address"    column="address"    />
+        <result property="type"    column="type"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTMineOrderDayVo">
+        select amount, odds, earn, plan_id, order_no, create_time, address, type, update_time from t_mine_order_day
+    </sql>
+
+    <select id="selectTMineOrderDayList" parameterType="TMineOrderDay" resultMap="TMineOrderDayResult">
+        <include refid="selectTMineOrderDayVo"/>
+        <where>  
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="odds != null "> and odds = #{odds}</if>
+            <if test="earn != null "> and earn = #{earn}</if>
+            <if test="planId != null "> and plan_id = #{planId}</if>
+            <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="type != null "> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectTMineOrderDayByAmount" parameterType="BigDecimal" resultMap="TMineOrderDayResult">
+        <include refid="selectTMineOrderDayVo"/>
+        where amount = #{amount}
+    </select>
+        
+    <insert id="insertTMineOrderDay" parameterType="TMineOrderDay">
+        insert into t_mine_order_day
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="amount != null">amount,</if>
+            <if test="odds != null">odds,</if>
+            <if test="earn != null">earn,</if>
+            <if test="planId != null">plan_id,</if>
+            <if test="orderNo != null and orderNo != ''">order_no,</if>
+            <if test="createTime != null and createTime != ''">create_time,</if>
+            <if test="address != null">address,</if>
+            <if test="type != null">type,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="amount != null">#{amount},</if>
+            <if test="odds != null">#{odds},</if>
+            <if test="earn != null">#{earn},</if>
+            <if test="planId != null">#{planId},</if>
+            <if test="orderNo != null and orderNo != ''">#{orderNo},</if>
+            <if test="createTime != null and createTime != ''">#{createTime},</if>
+            <if test="address != null">#{address},</if>
+            <if test="type != null">#{type},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTMineOrderDay" parameterType="TMineOrderDay">
+        update t_mine_order_day
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="odds != null">odds = #{odds},</if>
+            <if test="earn != null">earn = #{earn},</if>
+            <if test="planId != null">plan_id = #{planId},</if>
+            <if test="orderNo != null and orderNo != ''">order_no = #{orderNo},</if>
+            <if test="createTime != null and createTime != ''">create_time = #{createTime},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where amount = #{amount}
+    </update>
+
+    <delete id="deleteTMineOrderDayByAmount" parameterType="BigDecimal">
+        delete from t_mine_order_day where amount = #{amount}
+    </delete>
+
+    <delete id="deleteTMineOrderDayByAmounts" parameterType="String">
+        delete from t_mine_order_day where amount in 
+        <foreach item="amount" collection="array" open="(" separator="," close=")">
+            #{amount}
+        </foreach>
+    </delete>
+</mapper>

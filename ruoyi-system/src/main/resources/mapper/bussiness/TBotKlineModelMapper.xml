@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TBotKlineModelMapper">
+    
+    <resultMap type="TBotKlineModel" id="TBotKlineModelResult">
+        <result property="id"    column="id"/>
+        <result property="decline"    column="decline"/>
+        <result property="granularity"    column="granularity"/>
+        <result property="increase"    column="increase"/>
+        <result property="model"    column="model"/>
+        <result property="pricePencent"    column="price_pencent"/>
+        <result property="symbol"    column="symbol"/>
+        <result property="createBy"    column="create_by"/>
+        <result property="createTime"    column="create_time"/>
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="searchValue"    column="search_value"    />
+        <result property="beginTime"    column="begin_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="lineChartData"    column="line_chart_data"/>
+        <result property="conPrice"    column="con_price"/>
+
+    </resultMap>
+
+    <sql id="selectTBotKlineModelVo">
+        select id, decline, granularity, increase, model, price_pencent, symbol, create_by, create_time, update_by, update_time, search_value, begin_time, end_time ,line_chart_data,con_price from t_bot_kline_model
+    </sql>
+
+    <select id="selectTBotKlineModelList" parameterType="TBotKlineModel" resultMap="TBotKlineModelResult">
+        <include refid="selectTBotKlineModelVo"/>
+        <where>  
+            <if test="decline != null "> and decline = #{decline}</if>
+            <if test="granularity != null "> and granularity = #{granularity}</if>
+            <if test="increase != null "> and increase = #{increase}</if>
+            <if test="model != null "> and model = #{model}</if>
+            <if test="pricePencent != null "> and price_pencent = #{pricePencent}</if>
+            <if test="symbol != null  and symbol != ''"> and symbol = #{symbol}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+            <if test="beginTime != null "> and begin_time = #{beginTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+        </where>
+
+    </select>
+    
+    <select id="selectTBotKlineModelById" parameterType="Long" resultMap="TBotKlineModelResult">
+        <include refid="selectTBotKlineModelVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTBotKlineModel" parameterType="TBotKlineModel" useGeneratedKeys="true" keyProperty="id">
+        insert into t_bot_kline_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="decline != null">decline,</if>
+            <if test="granularity != null">granularity,</if>
+            <if test="increase != null">increase,</if>
+            <if test="model != null">model,</if>
+            <if test="pricePencent != null">price_pencent,</if>
+            <if test="symbol != null">symbol,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="searchValue != null">search_value,</if>
+            <if test="beginTime != null">begin_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="lineChartData != null">line_chart_data,</if>
+            <if test="conPrice != null">con_price,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="decline != null">#{decline},</if>
+            <if test="granularity != null">#{granularity},</if>
+            <if test="increase != null">#{increase},</if>
+            <if test="model != null">#{model},</if>
+            <if test="pricePencent != null">#{pricePencent},</if>
+            <if test="symbol != null">#{symbol},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+            <if test="beginTime != null">#{beginTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="lineChartData != null">#{lineChartData},</if>
+            <if test="conPrice != null">#{conPrice},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTBotKlineModel" parameterType="TBotKlineModel">
+        update t_bot_kline_model
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="decline != null">decline = #{decline},</if>
+            <if test="granularity != null">granularity = #{granularity},</if>
+            <if test="increase != null">increase = #{increase},</if>
+            <if test="model != null">model = #{model},</if>
+            <if test="pricePencent != null">price_pencent = #{pricePencent},</if>
+            <if test="symbol != null">symbol = #{symbol},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+            <if test="beginTime != null">begin_time = #{beginTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="lineChartData != null">line_chart_data = #{lineChartData},</if>
+            <if test="conPrice != null">con_price = #{conPrice},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTBotKlineModelById" parameterType="Long">
+        delete from t_bot_kline_model where id = #{id}
+    </delete>
+
+    <delete id="deleteTBotKlineModelByIds" parameterType="String">
+        delete from t_bot_kline_model where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getBotModelListByTime"  resultMap="TBotKlineModelResult">
+        <include refid="selectTBotKlineModelVo"/>
+        where  TIMESTAMPDIFF(SECOND, #{beginTime} , begin_time) &lt; 60
+        and  TIMESTAMPDIFF(SECOND, #{beginTime} , begin_time) &gt; 0
+        and model =2
+    </select>
+    <select id="getBotModelPriceByTime"  resultMap="TBotKlineModelResult">
+        <include refid="selectTBotKlineModelVo"/>
+        where model=0
+    </select>
+
+    <select id="getBotModelListBeforTime" resultMap="TBotKlineModelResult">
+        <include refid="selectTBotKlineModelVo"/>
+        where  TIMESTAMPDIFF(SECOND,  #{beginTime},end_time) &lt; 60
+    </select>
+
+    <select id="getBotModelListBetByTime"  parameterType="java.util.HashMap" resultMap="TBotKlineModelResult">
+        <include refid="selectTBotKlineModelVo"/>
+        WHERE  symbol=#{symbol}
+        and   begin_time &lt;=NOW()
+        and   end_time  &gt;=NOW()
+        order BY  end_time  ASC
+    </select>
+    <select id="getBotModelListBySymbol"  resultMap="TBotKlineModelResult">
+        <include refid="selectTBotKlineModelVo"/>
+        where symbol= #{symbol}
+        and  model = 2
+    </select>
+    <select id="getyesterdayPrice"  resultType="com.ruoyi.bussiness.domain.SymbolPrice">
+        SELECT symbol, SUM(con_price) AS price
+        FROM t_bot_kline_model
+        WHERE begin_time &lt;= DATE_SUB(NOW(), INTERVAL 24 HOUR)  and model = 0
+        GROUP BY symbol;
+    </select>
+</mapper>

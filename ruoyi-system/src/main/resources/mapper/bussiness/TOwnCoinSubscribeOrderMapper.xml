@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TOwnCoinSubscribeOrderMapper">
+
+    <resultMap type="TOwnCoinSubscribeOrder" id="TOwnCoinSubscribeOrderResult">
+        <result property="id"    column="id"    />
+        <result property="subscribeId"    column="subscribe_id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="ownId"    column="own_id"    />
+        <result property="ownCoin"    column="own_coin"    />
+        <result property="amountLimit"    column="amount_limit"    />
+        <result property="numLimit"    column="num_limit"    />
+        <result property="price"    column="price"    />
+        <result property="status"    column="status"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTOwnCoinSubscribeOrderVo">
+        select id, subscribe_id, user_id, order_id, own_id, own_coin, amount_limit, num_limit, price, status, remark, create_time, update_time from t_own_coin_subscribe_order
+    </sql>
+
+    <select id="selectTOwnCoinSubscribeOrderList" parameterType="TOwnCoinSubscribeOrder" resultMap="TOwnCoinSubscribeOrderResult">
+        <include refid="selectTOwnCoinSubscribeOrderVo"/>
+        <where>
+            <if test="subscribeId != null  and subscribeId != ''"> and subscribe_id = #{subscribeId}</if>
+            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="ownId != null "> and own_id = #{ownId}</if>
+            <if test="ownCoin != null  and ownCoin != ''"> and own_coin = #{ownCoin}</if>
+            <if test="amountLimit != null "> and amount_limit = #{amountLimit}</if>
+            <if test="numLimit != null "> and num_limit = #{numLimit}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="remark != null  and remark != ''"> and remark = #{remark}</if>
+        </where>
+    </select>
+
+    <select id="selectTOwnCoinSubscribeOrderById" parameterType="Long" resultMap="TOwnCoinSubscribeOrderResult">
+        <include refid="selectTOwnCoinSubscribeOrderVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectTOwnCoinSubscribeOrderRecord" parameterType="TOwnCoinSubscribeOrder" resultType="int">
+       select
+           count(1)
+       from t_own_coin_subscribe_order
+        where user_id = #{userId} and own_id = #{ownId}
+    </select>
+
+    <select id="getOrderById" parameterType="Long" resultMap="TOwnCoinSubscribeOrderResult">
+        <include refid="selectTOwnCoinSubscribeOrderVo"/>
+        where user_id = #{userId} and own_id = #{ownId}
+    </select>
+
+    <insert id="insertTOwnCoinSubscribeOrder" parameterType="TOwnCoinSubscribeOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into t_own_coin_subscribe_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="subscribeId != null">subscribe_id,</if>
+            <if test="orderId != null">order_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="ownId != null">own_id,</if>
+            <if test="ownCoin != null">own_coin,</if>
+            <if test="amountLimit != null">amount_limit,</if>
+            <if test="numLimit != null">num_limit,</if>
+            <if test="price != null">price,</if>
+            <if test="status != null">status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="subscribeId != null">#{subscribeId},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="ownId != null">#{ownId},</if>
+            <if test="ownCoin != null">#{ownCoin},</if>
+            <if test="amountLimit != null">#{amountLimit},</if>
+            <if test="numLimit != null">#{numLimit},</if>
+            <if test="price != null">#{price},</if>
+            <if test="status != null">#{status},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTOwnCoinSubscribeOrder" parameterType="TOwnCoinSubscribeOrder">
+        update t_own_coin_subscribe_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="subscribeId != null">subscribe_id = #{subscribeId},</if>
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="ownId != null">own_id = #{ownId},</if>
+            <if test="ownCoin != null">own_coin = #{ownCoin},</if>
+            <if test="amountLimit != null">amount_limit = #{amountLimit},</if>
+            <if test="numLimit != null">num_limit = #{numLimit},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateTOwnCoinSubscribeOrderById">
+        update t_own_coin_subscribe_order
+        set order_id = #{orderId}
+        where user_id = #{userId} and own_id = #{ownId}
+    </update>
+
+</mapper>

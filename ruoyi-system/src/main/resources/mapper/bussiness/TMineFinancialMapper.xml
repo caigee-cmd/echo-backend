@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TMineFinancialMapper">
+    
+    <resultMap type="TMineFinancial" id="TMineFinancialResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="icon"    column="icon"    />
+        <result property="status"    column="status"    />
+        <result property="days"    column="days"    />
+        <result property="defaultOdds"    column="default_odds"    />
+        <result property="minOdds"    column="min_odds"    />
+        <result property="maxOdds"    column="max_odds"    />
+        <result property="timeLimit"    column="time_limit"    />
+        <result property="limitMin"    column="limit_min"    />
+        <result property="limitMax"    column="limit_max"    />
+        <result property="isHot"    column="is_hot"    />
+        <result property="sort"    column="sort"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="buyPurchase"    column="buy_purchase"    />
+        <result property="avgRate"    column="avg_rate"    />
+        <result property="coin"    column="coin"    />
+        <result property="classify"    column="classify"    />
+        <result property="basicInvestAmount"    column="basic_invest_amount"    />
+        <result property="totalInvestAmount"    column="total_invest_amount"    />
+        <result property="level"    column="level"    />
+        <result property="process"    column="process"    />
+        <result property="remainAmount"    column="remain_amount"    />
+        <result property="remark"    column="remark"    />
+        <result property="purchasedAmount"    column="purchased_amount"    />
+        <result property="problem"    column="problem"    />
+        <result property="prodectIntroduction"    column="prodect_introduction"    />
+    </resultMap>
+
+    <sql id="selectTMineFinancialVo">
+        select id, title, icon, status, days, default_odds, min_odds, max_odds, time_limit, limit_min, limit_max, is_hot, sort, create_by, create_time, update_by, update_time, buy_purchase, avg_rate, coin, classify, basic_invest_amount, total_invest_amount, level, process, remain_amount, remark, purchased_amount, problem, prodect_introduction from t_mine_financial
+    </sql>
+
+    <select id="selectTMineFinancialList" parameterType="TMineFinancial" resultMap="TMineFinancialResult">
+        <include refid="selectTMineFinancialVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="icon != null  and icon != ''"> and icon = #{icon}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="days != null  and days != ''"> and days = #{days}</if>
+            <if test="defaultOdds != null "> and default_odds = #{defaultOdds}</if>
+            <if test="minOdds != null "> and min_odds = #{minOdds}</if>
+            <if test="maxOdds != null "> and max_odds = #{maxOdds}</if>
+            <if test="timeLimit != null "> and time_limit = #{timeLimit}</if>
+            <if test="limitMin != null "> and limit_min = #{limitMin}</if>
+            <if test="limitMax != null "> and limit_max = #{limitMax}</if>
+            <if test="isHot != null "> and is_hot = #{isHot}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="buyPurchase != null "> and buy_purchase = #{buyPurchase}</if>
+            <if test="avgRate != null "> and avg_rate = #{avgRate}</if>
+            <if test="coin != null  and coin != ''"> and coin = #{coin}</if>
+            <if test="classify != null  and classify != ''"> and classify = #{classify}</if>
+            <if test="basicInvestAmount != null "> and basic_invest_amount = #{basicInvestAmount}</if>
+            <if test="totalInvestAmount != null "> and total_invest_amount = #{totalInvestAmount}</if>
+            <if test="level != null "> and level = #{level}</if>
+            <if test="process != null "> and process = #{process}</if>
+            <if test="remainAmount != null "> and remain_amount = #{remainAmount}</if>
+            <if test="purchasedAmount != null "> and purchased_amount = #{purchasedAmount}</if>
+            <if test="problem != null  and problem != ''"> and problem = #{problem}</if>
+            <if test="prodectIntroduction != null  and prodectIntroduction != ''"> and prodect_introduction = #{prodectIntroduction}</if>
+        </where>
+    </select>
+    
+    <select id="selectTMineFinancialById" parameterType="Long" resultMap="TMineFinancialResult">
+        <include refid="selectTMineFinancialVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTMineFinancial" parameterType="TMineFinancial" useGeneratedKeys="true" keyProperty="id">
+        insert into t_mine_financial
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="icon != null">icon,</if>
+            <if test="status != null">status,</if>
+            <if test="days != null and days != ''">days,</if>
+            <if test="defaultOdds != null">default_odds,</if>
+            <if test="minOdds != null">min_odds,</if>
+            <if test="maxOdds != null">max_odds,</if>
+            <if test="timeLimit != null">time_limit,</if>
+            <if test="limitMin != null">limit_min,</if>
+            <if test="limitMax != null">limit_max,</if>
+            <if test="isHot != null">is_hot,</if>
+            <if test="sort != null">sort,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="buyPurchase != null">buy_purchase,</if>
+            <if test="avgRate != null">avg_rate,</if>
+            <if test="coin != null">coin,</if>
+            <if test="classify != null">classify,</if>
+            <if test="basicInvestAmount != null">basic_invest_amount,</if>
+            <if test="totalInvestAmount != null">total_invest_amount,</if>
+            <if test="level != null">level,</if>
+            <if test="process != null">process,</if>
+            <if test="remainAmount != null">remain_amount,</if>
+            <if test="remark != null">remark,</if>
+            <if test="purchasedAmount != null">purchased_amount,</if>
+            <if test="problem != null">problem,</if>
+            <if test="prodectIntroduction != null">prodect_introduction,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="icon != null">#{icon},</if>
+            <if test="status != null">#{status},</if>
+            <if test="days != null and days != ''">#{days},</if>
+            <if test="defaultOdds != null">#{defaultOdds},</if>
+            <if test="minOdds != null">#{minOdds},</if>
+            <if test="maxOdds != null">#{maxOdds},</if>
+            <if test="timeLimit != null">#{timeLimit},</if>
+            <if test="limitMin != null">#{limitMin},</if>
+            <if test="limitMax != null">#{limitMax},</if>
+            <if test="isHot != null">#{isHot},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="buyPurchase != null">#{buyPurchase},</if>
+            <if test="avgRate != null">#{avgRate},</if>
+            <if test="coin != null">#{coin},</if>
+            <if test="classify != null">#{classify},</if>
+            <if test="basicInvestAmount != null">#{basicInvestAmount},</if>
+            <if test="totalInvestAmount != null">#{totalInvestAmount},</if>
+            <if test="level != null">#{level},</if>
+            <if test="process != null">#{process},</if>
+            <if test="remainAmount != null">#{remainAmount},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="purchasedAmount != null">#{purchasedAmount},</if>
+            <if test="problem != null">#{problem},</if>
+            <if test="prodectIntroduction != null">#{prodectIntroduction},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTMineFinancial" parameterType="TMineFinancial">
+        update t_mine_financial
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="days != null and days != ''">days = #{days},</if>
+            <if test="defaultOdds != null">default_odds = #{defaultOdds},</if>
+            <if test="minOdds != null">min_odds = #{minOdds},</if>
+            <if test="maxOdds != null">max_odds = #{maxOdds},</if>
+            <if test="timeLimit != null">time_limit = #{timeLimit},</if>
+            <if test="limitMin != null">limit_min = #{limitMin},</if>
+            <if test="limitMax != null">limit_max = #{limitMax},</if>
+            <if test="isHot != null">is_hot = #{isHot},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="buyPurchase != null">buy_purchase = #{buyPurchase},</if>
+            <if test="avgRate != null">avg_rate = #{avgRate},</if>
+            <if test="coin != null">coin = #{coin},</if>
+            <if test="classify != null">classify = #{classify},</if>
+            <if test="basicInvestAmount != null">basic_invest_amount = #{basicInvestAmount},</if>
+            <if test="totalInvestAmount != null">total_invest_amount = #{totalInvestAmount},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="process != null">process = #{process},</if>
+            <if test="remainAmount != null">remain_amount = #{remainAmount},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="purchasedAmount != null">purchased_amount = #{purchasedAmount},</if>
+            <if test="problem != null">problem = #{problem},</if>
+            <if test="prodectIntroduction != null">prodect_introduction = #{prodectIntroduction},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTMineFinancialById" parameterType="Long">
+        delete from t_mine_financial where id = #{id}
+    </delete>
+
+    <delete id="deleteTMineFinancialByIds" parameterType="String">
+        delete from t_mine_financial where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

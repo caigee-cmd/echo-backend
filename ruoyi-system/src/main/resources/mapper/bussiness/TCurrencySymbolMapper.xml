@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TCurrencySymbolMapper">
+    
+    <resultMap type="com.ruoyi.bussiness.domain.TCurrencySymbol" id="TCurrencySymbolResult">
+        <result property="id"    column="id"    />
+        <result property="coin"    column="coin"    />
+        <result property="showSymbol"    column="show_symbol"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="baseCoin"    column="base_coin"    />
+        <result property="feeRate"    column="fee_rate"    />
+        <result property="coinPrecision"    column="coin_precision"    />
+        <result property="basePrecision"    column="base_precision"    />
+        <result property="sellMin"    column="sell_min"    />
+        <result property="buyMax"    column="buy_max"    />
+        <result property="orderMin"    column="order_min"    />
+        <result property="orderMax"    column="order_max"    />
+        <result property="enable"    column="enable"    />
+        <result property="isShow"    column="is_show"    />
+        <result property="isDeal"    column="is_deal"    />
+        <result property="marketBuy"    column="market_buy"    />
+        <result property="marketSell"    column="market_sell"    />
+        <result property="limitedBuy"    column="limited_buy"    />
+        <result property="limitedSell"    column="limited_sell"    />
+        <result property="logo"    column="logo"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="searchValue"    column="search_value"    />
+        <result property="searchValue"    column="search_value"    />
+        <result property="market"    column="market"    />
+        <result property="minSell"    column="min_sell"    />
+
+    </resultMap>
+
+    <sql id="selectTCurrencySymbolVo">
+        select id, symbol, show_symbol,min_sell, coin, base_coin, fee_rate, coin_precision, base_precision, sell_min, buy_max, order_min, order_max, enable, is_show, is_deal, market_buy, market_sell, limited_buy, limited_sell, logo, create_by, create_time, update_by, update_time, search_value, market from t_currency_symbol
+    </sql>
+
+    <select id="selectTCurrencySymbolList" parameterType="TCurrencySymbol" resultMap="TCurrencySymbolResult">
+        <include refid="selectTCurrencySymbolVo"/>
+        <where>  
+            <if test="symbol != null  and symbol != ''"> and symbol like concat('%',#{symbol},'%') </if>
+            <if test="showSymbol != null  and showSymbol != ''"> and show_symbol = #{showSymbol}</if>
+            <if test="coin != null  and coin != ''"> and coin = #{coin}</if>
+            <if test="baseCoin != null  and baseCoin != ''"> and base_coin = #{baseCoin}</if>
+            <if test="feeRate != null "> and fee_rate = #{feeRate}</if>
+            <if test="coinPrecision != null "> and coin_precision = #{coinPrecision}</if>
+            <if test="basePrecision != null "> and base_precision = #{basePrecision}</if>
+            <if test="sellMin != null "> and sell_min = #{sellMin}</if>
+            <if test="buyMax != null "> and buy_max = #{buyMax}</if>
+            <if test="orderMin != null "> and order_min = #{orderMin}</if>
+            <if test="orderMax != null "> and order_max = #{orderMax}</if>
+            <if test="enable != null  and enable != ''"> and enable = #{enable}</if>
+            <if test="isShow != null  and isShow != ''"> and is_show = #{isShow}</if>
+            <if test="isDeal != null  and isDeal != ''"> and is_deal = #{isDeal}</if>
+            <if test="marketBuy != null  and marketBuy != ''"> and market_buy = #{marketBuy}</if>
+            <if test="marketSell != null  and marketSell != ''"> and market_sell = #{marketSell}</if>
+            <if test="limitedBuy != null  and limitedBuy != ''"> and limited_buy = #{limitedBuy}</if>
+            <if test="limitedSell != null  and limitedSell != ''"> and limited_sell = #{limitedSell}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+            <if test="market != null  and market != ''"> and market = #{market}</if>
+        </where>
+    </select>
+    
+    <select id="selectTCurrencySymbolById" parameterType="Long" resultMap="TCurrencySymbolResult">
+        <include refid="selectTCurrencySymbolVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectInfo" resultType="com.ruoyi.bussiness.domain.TCurrencySymbol"
+            parameterType="com.ruoyi.bussiness.domain.TCurrencySymbol">
+        <include refid="selectTCurrencySymbolVo"/>
+        <where>
+            <if test="coin != null  and coin != ''"> and coin = #{coin}</if>
+            <if test="baseCoin != null  and baseCoin != ''"> and base_coin = #{baseCoin}</if>
+            <if test="enable != null  and enable != ''"> and enable = #{enable}</if>
+        </where>
+    </select>
+    <select id="selectByCoin" resultType="com.ruoyi.bussiness.domain.TCurrencySymbol"
+            parameterType="java.lang.String">
+        <include refid="selectTCurrencySymbolVo"/>
+        where coin = #{coin}
+    </select>
+
+    <insert id="insertTCurrencySymbol" parameterType="TCurrencySymbol" useGeneratedKeys="true" keyProperty="id">
+        insert into t_currency_symbol
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="symbol != null">symbol,</if>
+            <if test="showSymbol != null">show_symbol,</if>
+            <if test="coin != null">coin,</if>
+            <if test="baseCoin != null">base_coin,</if>
+            <if test="feeRate != null">fee_rate,</if>
+            <if test="coinPrecision != null">coin_precision,</if>
+            <if test="basePrecision != null">base_precision,</if>
+            <if test="sellMin != null">sell_min,</if>
+            <if test="buyMax != null">buy_max,</if>
+            <if test="orderMin != null">order_min,</if>
+            <if test="orderMax != null">order_max,</if>
+            <if test="enable != null">enable,</if>
+            <if test="isShow != null">is_show,</if>
+            <if test="isDeal != null">is_deal,</if>
+            <if test="marketBuy != null">market_buy,</if>
+            <if test="marketSell != null">market_sell,</if>
+            <if test="limitedBuy != null">limited_buy,</if>
+            <if test="limitedSell != null">limited_sell,</if>
+            <if test="logo != null">logo,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="searchValue != null">search_value,</if>
+            <if test="market != null">market,</if>
+            <if test="minSell != null">min_sell,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="symbol != null">#{symbol},</if>
+            <if test="showSymbol != null">#{showSymbol},</if>
+            <if test="coin != null">#{coin},</if>
+            <if test="baseCoin != null">#{baseCoin},</if>
+            <if test="feeRate != null">#{feeRate},</if>
+            <if test="coinPrecision != null">#{coinPrecision},</if>
+            <if test="basePrecision != null">#{basePrecision},</if>
+            <if test="sellMin != null">#{sellMin},</if>
+            <if test="buyMax != null">#{buyMax},</if>
+            <if test="orderMin != null">#{orderMin},</if>
+            <if test="orderMax != null">#{orderMax},</if>
+            <if test="enable != null">#{enable},</if>
+            <if test="isShow != null">#{isShow},</if>
+            <if test="isDeal != null">#{isDeal},</if>
+            <if test="marketBuy != null">#{marketBuy},</if>
+            <if test="marketSell != null">#{marketSell},</if>
+            <if test="limitedBuy != null">#{limitedBuy},</if>
+            <if test="limitedSell != null">#{limitedSell},</if>
+            <if test="logo != null">#{logo},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+            <if test="market != null">#{market},</if>
+            <if test="minSell != null">#{minSell},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTCurrencySymbol" parameterType="TCurrencySymbol">
+        update t_currency_symbol
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="symbol != null">symbol = #{symbol},</if>
+            <if test="showSymbol != null">show_symbol = #{showSymbol},</if>
+            <if test="coin != null">coin = #{coin},</if>
+            <if test="baseCoin != null">base_coin = #{baseCoin},</if>
+            <if test="feeRate != null">fee_rate = #{feeRate},</if>
+            <if test="coinPrecision != null">coin_precision = #{coinPrecision},</if>
+            <if test="basePrecision != null">base_precision = #{basePrecision},</if>
+            <if test="sellMin != null">sell_min = #{sellMin},</if>
+            <if test="buyMax != null">buy_max = #{buyMax},</if>
+            <if test="orderMin != null">order_min = #{orderMin},</if>
+            <if test="orderMax != null">order_max = #{orderMax},</if>
+            <if test="enable != null">enable = #{enable},</if>
+            <if test="isShow != null">is_show = #{isShow},</if>
+            <if test="isDeal != null">is_deal = #{isDeal},</if>
+            <if test="marketBuy != null">market_buy = #{marketBuy},</if>
+            <if test="marketSell != null">market_sell = #{marketSell},</if>
+            <if test="limitedBuy != null">limited_buy = #{limitedBuy},</if>
+            <if test="limitedSell != null">limited_sell = #{limitedSell},</if>
+            <if test="logo != null">logo = #{logo},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+            <if test="market != null">market = #{market},</if>
+            <if test="minSell != null">min_sell=#{minSell},</if>
+
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTCurrencySymbolById" parameterType="Long">
+        delete from t_currency_symbol where id = #{id}
+    </delete>
+
+    <delete id="deleteTCurrencySymbolByIds" parameterType="String">
+        delete from t_currency_symbol where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

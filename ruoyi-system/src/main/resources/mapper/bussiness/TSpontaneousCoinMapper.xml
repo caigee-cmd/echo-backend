@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TSpontaneousCoinMapper">
+    
+    <resultMap type="TSpontaneousCoin" id="TSpontaneousCoinResult">
+        <result property="id"    column="id"    />
+        <result property="coin"    column="coin"    />
+        <result property="logo"    column="logo"    />
+        <result property="referCoin"    column="refer_coin"    />
+        <result property="referMarket"    column="refer_market"    />
+        <result property="showSymbol"    column="show_symbol"    />
+        <result property="price"    column="price"    />
+        <result property="proportion"    column="proportion"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTSpontaneousCoinVo">
+        select id, coin, logo, refer_coin, refer_market, show_symbol, price, proportion, create_by, create_time, update_by, update_time, remark from t_spontaneous_coin
+    </sql>
+
+    <select id="selectTSpontaneousCoinList" parameterType="TSpontaneousCoin" resultMap="TSpontaneousCoinResult">
+        <include refid="selectTSpontaneousCoinVo"/>
+        <where>  
+            <if test="coin != null  and coin != ''"> and coin = #{coin}</if>
+            <if test="logo != null  and logo != ''"> and logo = #{logo}</if>
+            <if test="referCoin != null  and referCoin != ''"> and refer_coin = #{referCoin}</if>
+            <if test="referMarket != null  and referMarket != ''"> and refer_market = #{referMarket}</if>
+            <if test="showSymbol != null  and showSymbol != ''"> and show_symbol = #{showSymbol}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="proportion != null "> and proportion = #{proportion}</if>
+        </where>
+    </select>
+    
+    <select id="selectTSpontaneousCoinById" parameterType="Long" resultMap="TSpontaneousCoinResult">
+        <include refid="selectTSpontaneousCoinVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTSpontaneousCoin" parameterType="TSpontaneousCoin" useGeneratedKeys="true" keyProperty="id">
+        insert into t_spontaneous_coin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="coin != null">coin,</if>
+            <if test="logo != null">logo,</if>
+            <if test="referCoin != null">refer_coin,</if>
+            <if test="referMarket != null">refer_market,</if>
+            <if test="showSymbol != null">show_symbol,</if>
+            <if test="price != null">price,</if>
+            <if test="proportion != null">proportion,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="coin != null">#{coin},</if>
+            <if test="logo != null">#{logo},</if>
+            <if test="referCoin != null">#{referCoin},</if>
+            <if test="referMarket != null">#{referMarket},</if>
+            <if test="showSymbol != null">#{showSymbol},</if>
+            <if test="price != null">#{price},</if>
+            <if test="proportion != null">#{proportion},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTSpontaneousCoin" parameterType="TSpontaneousCoin">
+        update t_spontaneous_coin
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="coin != null">coin = #{coin},</if>
+            <if test="logo != null">logo = #{logo},</if>
+            <if test="referCoin != null">refer_coin = #{referCoin},</if>
+            <if test="referMarket != null">refer_market = #{referMarket},</if>
+            <if test="showSymbol != null">show_symbol = #{showSymbol},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="proportion != null">proportion = #{proportion},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTSpontaneousCoinById" parameterType="Long">
+        delete from t_spontaneous_coin where id = #{id}
+    </delete>
+
+    <delete id="deleteTSpontaneousCoinByIds" parameterType="String">
+        delete from t_spontaneous_coin where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

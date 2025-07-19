@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TSymbolsMapper">
+    
+    <resultMap type="TSymbols" id="TSymbolsResult">
+        <result property="slug"    column="slug"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="fullname"    column="fullname"    />
+        <result property="logoUrl"    column="logo_Url"    />
+        <result property="fiat"    column="fiat"    />
+    </resultMap>
+
+    <sql id="selectTSymbolsVo">
+        select slug, symbol, fullname, logo_Url, fiat from t_symbols
+    </sql>
+
+    <select id="selectTSymbolsList" parameterType="TSymbols" resultMap="TSymbolsResult">
+        <include refid="selectTSymbolsVo"/>
+        <where>  
+            <if test="symbol != null  and symbol != ''"> and symbol = #{symbol}</if>
+            <if test="fullname != null  and fullname != ''"> and fullname like concat('%', #{fullname}, '%')</if>
+            <if test="logoUrl != null  and logoUrl != ''"> and logo_Url = #{logoUrl}</if>
+            <if test="fiat != null "> and fiat = #{fiat}</if>
+        </where>
+    </select>
+    
+    <select id="selectTSymbolsBySlug" parameterType="String" resultMap="TSymbolsResult">
+        <include refid="selectTSymbolsVo"/>
+        where slug = #{slug}
+    </select>
+        
+    <insert id="insertTSymbols" parameterType="TSymbols">
+        insert into t_symbols
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="slug != null">slug,</if>
+            <if test="symbol != null">symbol,</if>
+            <if test="fullname != null">fullname,</if>
+            <if test="logoUrl != null">logo_Url,</if>
+            <if test="fiat != null">fiat,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="slug != null">#{slug},</if>
+            <if test="symbol != null">#{symbol},</if>
+            <if test="fullname != null">#{fullname},</if>
+            <if test="logoUrl != null">#{logoUrl},</if>
+            <if test="fiat != null">#{fiat},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTSymbols" parameterType="TSymbols">
+        update t_symbols
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="symbol != null">symbol = #{symbol},</if>
+            <if test="fullname != null">fullname = #{fullname},</if>
+            <if test="logoUrl != null">logo_Url = #{logoUrl},</if>
+            <if test="fiat != null">fiat = #{fiat},</if>
+        </trim>
+        where slug = #{slug}
+    </update>
+
+    <delete id="deleteTSymbolsBySlug" parameterType="String">
+        delete from t_symbols where slug = #{slug}
+    </delete>
+
+    <delete id="deleteTSymbolsBySlugs" parameterType="String">
+        delete from t_symbols where slug in 
+        <foreach item="slug" collection="array" open="(" separator="," close=")">
+            #{slug}
+        </foreach>
+    </delete>
+</mapper>

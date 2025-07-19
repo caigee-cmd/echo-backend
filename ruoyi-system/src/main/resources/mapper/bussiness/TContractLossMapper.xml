@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TContractLossMapper">
+    
+    <resultMap type="TContractLoss" id="TContractLossResult">
+        <result property="id"    column="id"    />
+        <result property="delegateType"    column="delegate_type"    />
+        <result property="status"    column="status"    />
+        <result property="positionId"    column="position_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="earnPrice"    column="earn_price"    />
+        <result property="losePrice"    column="lose_price"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="earnDelegatePrice"    column="earn_delegate_price"    />
+        <result property="loseDelegatePrice"    column="lose_delegate_price"    />
+        <result property="earnNumber"    column="earn_number"    />
+        <result property="loseNumber"    column="lose_number"    />
+        <result property="lossType"    column="loss_type"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="type"    column="type"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="leverage"    column="leverage"    />
+
+    </resultMap>
+
+    <sql id="selectTContractLossVo">
+        select id, delegate_type, status, position_id, user_id, earn_price, lose_price, create_time, earn_delegate_price, lose_delegate_price, earn_number, lose_number, loss_type, update_time ,type,leverage, symbol from t_contract_loss
+    </sql>
+
+    <select id="selectTContractLossList" parameterType="TContractLoss" resultMap="TContractLossResult">
+        <include refid="selectTContractLossVo"/>
+        <where>  
+            <if test="delegateType != null "> and delegate_type = #{delegateType}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="positionId != null  and positionId != ''"> and position_id = #{positionId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="earnPrice != null "> and earn_price = #{earnPrice}</if>
+            <if test="losePrice != null "> and lose_price = #{losePrice}</if>
+            <if test="earnDelegatePrice != null "> and earn_delegate_price = #{earnDelegatePrice}</if>
+            <if test="loseDelegatePrice != null "> and lose_delegate_price = #{loseDelegatePrice}</if>
+            <if test="earnNumber != null "> and earn_number = #{earnNumber}</if>
+            <if test="loseNumber != null "> and lose_number = #{loseNumber}</if>
+            <if test="lossType != null "> and loss_type = #{lossType}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="symbol != null "> and symbol = #{symbol}</if>
+            <if test="leverage != null "> and leverage = #{leverage}</if>
+
+
+        </where>
+    </select>
+    
+    <select id="selectTContractLossById" parameterType="Long" resultMap="TContractLossResult">
+        <include refid="selectTContractLossVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTContractLoss" parameterType="TContractLoss" useGeneratedKeys="true" keyProperty="id">
+        insert into t_contract_loss
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="delegateType != null">delegate_type,</if>
+            <if test="status != null">status,</if>
+            <if test="positionId != null">position_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="earnPrice != null">earn_price,</if>
+            <if test="losePrice != null">lose_price,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="earnDelegatePrice != null">earn_delegate_price,</if>
+            <if test="loseDelegatePrice != null">lose_delegate_price,</if>
+            <if test="earnNumber != null">earn_number,</if>
+            <if test="loseNumber != null">lose_number,</if>
+            <if test="lossType != null">loss_type,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="symbol != null  and symbol!='' "> symbol,</if>
+            <if test="leverage != null ">leverage,</if>
+            <if test="type != null "> type,</if>
+
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="delegateType != null">#{delegateType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="positionId != null">#{positionId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="earnPrice != null">#{earnPrice},</if>
+            <if test="losePrice != null">#{losePrice},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="earnDelegatePrice != null">#{earnDelegatePrice},</if>
+            <if test="loseDelegatePrice != null">#{loseDelegatePrice},</if>
+            <if test="earnNumber != null">#{earnNumber},</if>
+            <if test="loseNumber != null">#{loseNumber},</if>
+            <if test="lossType != null">#{lossType},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="symbol != null  and symbol!='' ">#{symbol},</if>
+            <if test="leverage != null ">#{leverage},</if>
+            <if test="type != null ">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTContractLoss" parameterType="TContractLoss">
+        update t_contract_loss
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="delegateType != null">delegate_type = #{delegateType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="positionId != null">position_id = #{positionId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="earnPrice != null">earn_price = #{earnPrice},</if>
+            <if test="losePrice != null">lose_price = #{losePrice},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="earnDelegatePrice != null">earn_delegate_price = #{earnDelegatePrice},</if>
+            <if test="loseDelegatePrice != null">lose_delegate_price = #{loseDelegatePrice},</if>
+            <if test="earnNumber != null">earn_number = #{earnNumber},</if>
+            <if test="loseNumber != null">lose_number = #{loseNumber},</if>
+            <if test="lossType != null">loss_type = #{lossType},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="symbol != null  and symbol!='' ">symbol=#{symbol},</if>
+            <if test="leverage != null ">leverage=#{leverage},</if>
+            <if test="type != null ">type=#{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTContractLossById" parameterType="Long">
+        delete from t_contract_loss where id = #{id}
+    </delete>
+
+    <delete id="deleteTContractLossByIds" parameterType="String">
+        delete from t_contract_loss where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateContractLoss" parameterType="java.lang.Long">
+        update t_contract_loss
+        set status=1
+        where position_id = #{positionId}
+    </update>
+
+</mapper>

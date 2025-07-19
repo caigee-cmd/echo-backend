@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TActivityRechargeMapper">
+    
+    <resultMap type="com.ruoyi.bussiness.domain.TActivityRecharge" id="TActivityRechargeResult">
+        <result property="id"    column="id"    />
+        <result property="onOff"    column="on_off"    />
+        <result property="rechargePro"    column="recharge_pro"    />
+        <result property="maxRebate"    column="max_rebate"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTActivityRechargeVo">
+        select id, on_off, recharge_pro, max_rebate, create_by, create_time, update_by, update_time from t_activity_recharge
+    </sql>
+
+    <select id="selectTActivityRechargeList" parameterType="TActivityRecharge" resultMap="TActivityRechargeResult">
+        <include refid="selectTActivityRechargeVo"/>
+        <where>  
+            <if test="onOff != null "> and on_off = #{onOff}</if>
+            <if test="rechargePro != null "> and recharge_pro = #{rechargePro}</if>
+            <if test="maxRebate != null "> and max_rebate = #{maxRebate}</if>
+        </where>
+    </select>
+    
+    <select id="selectTActivityRechargeById" parameterType="Long" resultMap="TActivityRechargeResult">
+        <include refid="selectTActivityRechargeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTActivityRecharge" parameterType="TActivityRecharge" useGeneratedKeys="true" keyProperty="id">
+        insert into t_activity_recharge
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="onOff != null">on_off,</if>
+            <if test="rechargePro != null">recharge_pro,</if>
+            <if test="maxRebate != null">max_rebate,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="onOff != null">#{onOff},</if>
+            <if test="rechargePro != null">#{rechargePro},</if>
+            <if test="maxRebate != null">#{maxRebate},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTActivityRecharge" parameterType="TActivityRecharge">
+        update t_activity_recharge
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="onOff != null">on_off = #{onOff},</if>
+            <if test="rechargePro != null">recharge_pro = #{rechargePro},</if>
+            <if test="maxRebate != null">max_rebate = #{maxRebate},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTActivityRechargeById" parameterType="Long">
+        delete from t_activity_recharge where id = #{id}
+    </delete>
+
+    <delete id="deleteTActivityRechargeByIds" parameterType="String">
+        delete from t_activity_recharge where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

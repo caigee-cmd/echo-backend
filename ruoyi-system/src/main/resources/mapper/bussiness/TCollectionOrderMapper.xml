@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TCollectionOrderMapper">
+
+    <resultMap type="TCollectionOrder" id="TCollectionOrderResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="address"    column="address"    />
+        <result property="chain"    column="chain"    />
+        <result property="userId"    column="user_id"    />
+        <result property="hash"    column="hash"    />
+        <result property="amount"    column="amount"    />
+        <result property="status"    column="status"    />
+        <result property="clientName"    column="client_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="coin"    column="coin"    />
+        <result property="searchValue"    column="search_value"    />
+    </resultMap>
+
+    <sql id="selectTCollectionOrderVo">
+        select id, order_id, user_id,address, chain,coin, hash, amount, status, client_name, create_time, create_by, update_time, update_by, remark, search_value from t_collection_order
+    </sql>
+
+    <select id="selectTCollectionOrderList" parameterType="TCollectionOrder" resultMap="TCollectionOrderResult">
+        <include refid="selectTCollectionOrderVo"/>
+        <where>
+            <if test="orderId != null  and orderId != ''"> and order_Id = #{orderId}</if>
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="chain != null  and chain != ''"> and chain = #{chain}</if>
+            <if test="coin != null  and coin != ''"> and coin = #{coin}</if>
+            <if test="hash != null  and hash != ''"> and hash = #{hash}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="clientName != null  and clientName != ''"> and client_name like concat('%', #{clientName}, '%')</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+        </where>
+    </select>
+
+    <select id="selectTCollectionOrderById" parameterType="Long" resultMap="TCollectionOrderResult">
+        <include refid="selectTCollectionOrderVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectCollectionAmountByUserId" resultType="java.math.BigDecimal">
+        select sum(amount) as amount FROM t_collection_order WHERE status='2' and user_id=#{userId} GROUP BY user_id
+    </select>
+    <select id="selectCollectionAmountByAgencyId" resultType="java.math.BigDecimal">
+        SELECT
+            sum( amount ) AS amount
+        FROM
+            t_collection_order c
+                LEFT JOIN t_app_user u ON c.user_id = u.user_id
+        WHERE
+            c.STATUS = '2'    AND find_in_set(#{agencyId},u.admin_parent_ids)
+    </select>
+    <select id="selectCollectionAmountDetail" resultType="java.math.BigDecimal">
+        SELECT
+            sum( amount ) AS amount
+        FROM
+            t_collection_order c
+                LEFT JOIN t_app_user u ON c.user_id = u.user_id
+        WHERE
+            c.STATUS = '2'
+          AND find_in_set( #{adminParentIds}, u.admin_parent_ids )
+          AND u.user_id = #{appUserId}
+    </select>
+    <select id="getDayCollectionAmount" resultType="java.math.BigDecimal">
+        SELECT
+        sum( amount ) AS amount
+        FROM
+        t_collection_order
+        where
+        create_time  &gt;=  #{beginTime}
+        and create_time &lt;= #{endTime}
+
+
+    </select>
+
+    <insert id="insertTCollectionOrder" parameterType="TCollectionOrder">
+        insert into t_collection_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orderId != null">order_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="address != null">address,</if>
+            <if test="chain != null">chain,</if>
+            <if test="coin != null">coin,</if>
+            <if test="hash != null">hash,</if>
+            <if test="amount != null">amount,</if>
+            <if test="status != null">status,</if>
+            <if test="clientName != null">client_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="searchValue != null">search_value,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="address != null">#{address},</if>
+            <if test="chain != null">#{chain},</if>
+            <if test="coin != null">#{coin},</if>
+            <if test="hash != null">#{hash},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="status != null">#{status},</if>
+            <if test="clientName != null">#{clientName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTCollectionOrder" parameterType="TCollectionOrder">
+        update t_collection_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="coin != null">coin = #{coin},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="chain != null">chain = #{chain},</if>
+            <if test="hash != null">hash = #{hash},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="clientName != null">client_name = #{clientName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTCollectionOrderById" parameterType="Long">
+        delete from t_collection_order where id = #{id}
+    </delete>
+
+    <delete id="deleteTCollectionOrderByIds" parameterType="String">
+        delete from t_collection_order where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TMineUserMapper">
+    
+    <resultMap type="TMineUser" id="TMineUserResult">
+        <result property="userId"    column="user_id"    />
+        <result property="id"    column="id"    />
+        <result property="timeLimit"    column="time_limit"    />
+    </resultMap>
+
+    <sql id="selectTMineUserVo">
+        select user_id, id, time_limit from t_mine_user
+    </sql>
+
+    <select id="selectTMineUserList" parameterType="TMineUser" resultMap="TMineUserResult">
+        <include refid="selectTMineUserVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="timeLimit != null "> and time_limit = #{timeLimit}</if>
+        </where>
+    </select>
+    
+    <select id="selectTMineUserByUserId" parameterType="Long" resultMap="TMineUserResult">
+        <include refid="selectTMineUserVo"/>
+        where user_id = #{userId}
+    </select>
+        
+    <insert id="insertTMineUser" parameterType="TMineUser">
+        insert into t_mine_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="id != null">id,</if>
+            <if test="timeLimit != null">time_limit,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="id != null">#{id},</if>
+            <if test="timeLimit != null">#{timeLimit},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTMineUser" parameterType="TMineUser">
+        update t_mine_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="id != null">id = #{id},</if>
+            <if test="timeLimit != null">time_limit = #{timeLimit},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="deleteTMineUserByUserId" parameterType="Long">
+        delete from t_mine_user where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteTMineUserByUserIds" parameterType="String">
+        delete from t_mine_user where user_id in 
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+</mapper>

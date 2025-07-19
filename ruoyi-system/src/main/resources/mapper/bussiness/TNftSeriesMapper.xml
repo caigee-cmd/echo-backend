@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TNftSeriesMapper">
+    
+    <resultMap type="TNftSeries" id="TNftSeriesResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="chainType"    column="chain_type"    />
+        <result property="coinUrl"    column="coin_url"    />
+        <result property="tradeAmount"    column="trade_amount"    />
+        <result property="tradeNum"    column="trade_num"    />
+        <result property="aveAmount"    column="ave_amount"    />
+        <result property="logoUrl"    column="logo_url"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="searchValue"    column="search_value"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectTNftSeriesVo">
+        select id, name, chain_type, coin_url, trade_amount, trade_num, ave_amount, logo_url, create_by, create_time, update_by, update_time, remark, search_value, del_flag from t_nft_series
+    </sql>
+
+    <select id="selectTNftSeriesList" parameterType="TNftSeries" resultMap="TNftSeriesResult">
+        <include refid="selectTNftSeriesVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="chainType != null  and chainType != ''"> and chain_type = #{chainType}</if>
+            <if test="coinUrl != null  and coinUrl != ''"> and coin_url = #{coinUrl}</if>
+            <if test="tradeAmount != null "> and trade_amount = #{tradeAmount}</if>
+            <if test="tradeNum != null "> and trade_num = #{tradeNum}</if>
+            <if test="aveAmount != null "> and ave_amount = #{aveAmount}</if>
+            <if test="logoUrl != null  and logoUrl != ''"> and logo_url = #{logoUrl}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+        </where>
+    </select>
+    
+    <select id="selectTNftSeriesById" parameterType="Long" resultMap="TNftSeriesResult">
+        <include refid="selectTNftSeriesVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTNftSeries" parameterType="TNftSeries" useGeneratedKeys="true" keyProperty="id">
+        insert into t_nft_series
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="chainType != null">chain_type,</if>
+            <if test="coinUrl != null">coin_url,</if>
+            <if test="tradeAmount != null">trade_amount,</if>
+            <if test="tradeNum != null">trade_num,</if>
+            <if test="aveAmount != null">ave_amount,</if>
+            <if test="logoUrl != null">logo_url,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="searchValue != null">search_value,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="chainType != null">#{chainType},</if>
+            <if test="coinUrl != null">#{coinUrl},</if>
+            <if test="tradeAmount != null">#{tradeAmount},</if>
+            <if test="tradeNum != null">#{tradeNum},</if>
+            <if test="aveAmount != null">#{aveAmount},</if>
+            <if test="logoUrl != null">#{logoUrl},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTNftSeries" parameterType="TNftSeries">
+        update t_nft_series
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="chainType != null">chain_type = #{chainType},</if>
+            <if test="coinUrl != null">coin_url = #{coinUrl},</if>
+            <if test="tradeAmount != null">trade_amount = #{tradeAmount},</if>
+            <if test="tradeNum != null">trade_num = #{tradeNum},</if>
+            <if test="aveAmount != null">ave_amount = #{aveAmount},</if>
+            <if test="logoUrl != null">logo_url = #{logoUrl},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTNftSeriesById" parameterType="Long">
+        delete from t_nft_series where id = #{id}
+    </delete>
+
+    <delete id="deleteTNftSeriesByIds" parameterType="String">
+        delete from t_nft_series where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

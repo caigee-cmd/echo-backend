@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TAppUserMapper">
+
+    <resultMap type="com.ruoyi.bussiness.domain.TAppUser" id="TAppUserResult">
+        <result property="userId"    column="user_id"    />
+        <result property="loginName"    column="login_name"    />
+        <result property="loginPassword"    column="login_password"    />
+        <result property="phone"    column="phone"    />
+        <result property="isTest"    column="is_test"    />
+        <result property="address"    column="address"    />
+        <result property="walletType"    column="wallet_type"    />
+        <result property="status"    column="status"    />
+        <result property="totleAmont"    column="totle_amont"    />
+        <result property="buff"    column="buff"    />
+        <result property="appParentIds"    column="app_parent_ids"    />
+        <result property="activeCode"    column="active_code"    />
+        <result property="registerIp"    column="register_ip"    />
+        <result property="host"    column="host"    />
+        <result property="adminParentIds"    column="admin_parent_ids"    />
+        <result property="email"    column="email"    />
+        <result property="level"    column="level"    />
+        <result property="isFreeze"    column="is_freeze"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="searchValue"    column="search_value"    />
+        <result property="isBlack"    column="is_black"    />
+        <result property="isLimitation"    column="is_limitation"    />
+        <result property="rechargeAmont"    column="recharge_amont"    />
+    </resultMap>
+
+    <sql id="selectTAppUserVo">
+        select user_id, login_name, login_password, phone, is_test, address, wallet_type, status, totle_amont, buff, app_parent_ids, active_code, register_ip, host, admin_parent_ids, email, level, is_freeze, create_by, create_time, update_by, update_time, remark, search_value, is_black, is_limitation, recharge_amont from t_app_user
+    </sql>
+
+    <select id="selectTAppUserList" parameterType="TAppUser" resultMap="TAppUserResult">
+        <include refid="selectTAppUserVo"/>
+        <where>  
+            <if test="userId != null"> and user_id =#{userId}</if>
+            <if test="loginName != null  and loginName != ''"> and login_name like concat('%', #{loginName}, '%')</if>
+            <if test="loginPassword != null  and loginPassword != ''"> and login_password = #{loginPassword}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="isTest != null "> and is_test = #{isTest}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="walletType != null  and walletType != ''"> and wallet_type = #{walletType}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="totleAmont != null "> and totle_amont = #{totleAmont}</if>
+            <if test="buff != null "> and buff = #{buff}</if>
+            <if test="appParentIds != null  and appParentIds != ''"> and find_in_set(#{appParentIds},app_parent_ids)</if>
+            <if test="activeCode != null  and activeCode != ''"> and active_code = #{activeCode}</if>
+            <if test="registerIp != null  and registerIp != ''"> and register_ip = #{registerIp}</if>
+            <if test="host != null  and host != ''"> and host = #{host}</if>
+            <if test="adminParentIds != null and adminParentIds!=''"> and find_in_set(#{adminParentIds},admin_parent_ids)</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="level != null "> and level = #{level}</if>
+            <if test="isFreeze != null and isFreeze!=''"> and is_freeze = #{isFreeze}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+            <if test="isBlack != null "> and is_black = #{isBlack}</if>
+            <if test="isLimitation != null "> and is_limitation = #{isLimitation}</if>
+            <if test="rechargeAmont != null "> and recharge_amont = #{rechargeAmont}</if>
+        </where>
+    </select>
+    
+    <select id="selectTAppUserByUserId" parameterType="Long" resultMap="TAppUserResult">
+        <include refid="selectTAppUserVo"/>
+        where user_id = #{userId}
+    </select>
+    <select id="selectByUserLoginName" resultType="com.ruoyi.bussiness.domain.TAppUser"
+            parameterType="java.lang.String">
+        <include refid="selectTAppUserVo"/>
+        where
+        IF(wallet_type='TRON',address=#{loginName}, LOWER(address) = LOWER(#{loginName})) or login_name=#{loginName}
+    </select>
+    <select id="selectByAddress" resultType="com.ruoyi.bussiness.domain.TAppUser"
+            parameterType="java.lang.String">
+        <include refid="selectTAppUserVo"/>
+        where LOWER(address) = LOWER(#{address})
+    </select>
+    <select id="selectActiveCodeList" resultType="java.lang.String">
+        select active_code from t_app_user
+    </select>
+    <select id="selectUnboundAppUser" resultType="com.ruoyi.bussiness.domain.TAppUser"
+            parameterType="com.ruoyi.bussiness.domain.TAppUser">
+        select user_id AS userId,
+               login_name,
+               phone,
+               status,
+               create_time as creataTime,
+               update_by AS updateBy,
+               update_time AS updateTime,
+               IF(find_in_set(#{adminParentIds},admin_parent_ids),"true","false") as flag
+        from t_app_user
+        where status = '0'
+        <if test="loginName !=null and loginName !=''">
+            and login_name like CONCAT('%',#{loginName},'%')
+        </if>
+        <if test="userId !=null">
+            and user_id = #{userId}
+        </if>
+        order by flag desc
+    </select>
+    <select id="getTAppUserList" resultType="com.ruoyi.bussiness.domain.TAppUser"
+            parameterType="com.ruoyi.bussiness.domain.TAppUser">
+        select a.user_id AS userId, a.login_name AS loginName, a.login_password AS loginPassword, a.phone, a.is_test AS isTest, a.address,
+        a.wallet_type AS walletType, a.status, a.totle_amont AS totleAmont, a.buff, a.app_parent_ids AS appParentIds, a.active_code AS activeCode, a.register_ip AS registerIp,
+        a.host, a.admin_parent_ids AS adminParentIds, a.email, a.level, a.is_freeze AS isFreeze, a.create_by AS createBy, a.create_time AS createTime, a.update_by AS updateBy,
+        a.update_time AS updateTime, a.remark, a.search_value AS searchValue, a.is_black AS isBlack, a.is_limitation AS isLimitation, a.recharge_amont AS rechargeAmont,
+        (
+        SELECT
+        GROUP_CONCAT( s.user_name ORDER BY FIND_IN_SET(s.user_id,a.admin_parent_ids) )
+        FROM
+        sys_user s
+        WHERE
+        FIND_IN_SET(s.user_id,a.admin_parent_ids)
+        ) AS adminParentNames,
+        (
+        SELECT
+        GROUP_CONCAT(t.login_name ORDER BY FIND_IN_SET(t.user_id,a.app_parent_ids) )
+        from
+        t_app_user t
+        where FIND_IN_SET(t.user_id,a.app_parent_ids)
+        ) AS appParentNames ,
+        (
+        select  IFNULL(b.win_num, 0)
+        from t_app_user_detail b where  a.user_id = b.user_id
+        ) AS win_num ,
+        (
+        select  IFNULL(c.lose_num, 0)
+        from t_app_user_detail c where  a.user_id = c.user_id
+        ) AS lose_num
+
+
+        from t_app_user a
+        <where>
+            <if test="userId != null"> and a.user_id =#{userId}</if>
+            <if test="loginName != null  and loginName != ''"> and a.login_name like concat('%', #{loginName}, '%')</if>
+            <if test="loginPassword != null  and loginPassword != ''"> and a.login_password = #{loginPassword}</if>
+            <if test="phone != null  and phone != ''"> and a.phone = #{phone}</if>
+            <if test="isTest != null "> and a.is_test = #{isTest}</if>
+            <if test="address != null  and address != ''"> and a.address = #{address}</if>
+            <if test="walletType != null  and walletType != ''"> and a.wallet_type = #{walletType}</if>
+            <if test="status != null "> and a.status = #{status}</if>
+            <if test="totleAmont != null "> and a.totle_amont = #{totleAmont}</if>
+            <if test="buff != null "> and a.buff = #{buff}</if>
+            <if test="appParentIds != null  and appParentIds != ''"> and find_in_set(#{appParentIds},a.app_parent_ids)</if>
+            <if test="activeCode != null  and activeCode != ''"> and a.active_code = #{activeCode}</if>
+            <if test="registerIp != null  and registerIp != ''"> and a.register_ip = #{registerIp}</if>
+            <if test="host != null  and host != ''"> and a.host = #{host}</if>
+            <if test="adminParentIds != null and adminParentIds!=''"> and find_in_set(#{adminParentIds},a.admin_parent_ids)</if>
+            <if test="email != null  and email != ''"> and a.email = #{email}</if>
+            <if test="level != null "> and a.level = #{level}</if>
+            <if test="isFreeze != null and isFreeze!=''"> and a.is_freeze = #{isFreeze}</if>
+            <if test="searchValue != null  and searchValue != ''"> and a.search_value = #{searchValue}</if>
+        </where>
+    </select>
+    <select id="getListByPledge" resultType="com.ruoyi.bussiness.domain.TAppUser"
+            parameterType="com.ruoyi.bussiness.domain.TAppUser">
+        select a.user_id AS userId, a.login_name AS loginName, a.login_password AS loginPassword, a.phone, a.is_test AS isTest, a.address,
+        a.wallet_type AS walletType, a.status, a.totle_amont AS totleAmont, a.buff, a.app_parent_ids AS appParentIds, a.active_code AS activeCode, a.register_ip AS registerIp,
+        a.host, a.admin_parent_ids AS adminParentIds, a.email, a.level, a.is_freeze AS isFreeze, a.create_by AS createBy, a.create_time AS createTime, a.update_by AS updateBy,
+        a.update_time AS updateTime, a.remark, a.search_value AS searchValue, a.recharge_amont AS rechargeAmont,
+        (
+                SELECT
+                GROUP_CONCAT( s.user_name )
+                FROM
+                sys_user s
+                WHERE
+                FIND_IN_SET(s.user_id,a.admin_parent_ids)
+            ) AS adminParentNames,
+            (
+                SELECT
+                GROUP_CONCAT(t.login_name)
+                from
+                t_app_user t
+                where FIND_IN_SET(t.user_id,a.app_parent_ids)
+            ) AS appParentNames
+        from t_app_user a
+        <where>
+            not exists  (
+            SELECT user_id from  t_ming_product_user pu
+            LEFT JOIN t_ming_product p ON p.id = pu.product_id
+            WHERE a.user_id =pu.app_user_id
+            <if test="productId!=null"> and pu.product_id = #{productId}</if>
+             )
+            <if test="userId != null"> and a.user_id =#{userId}</if>
+            <if test="loginName != null  and loginName != ''"> and a.login_name like concat('%', #{loginName}, '%')</if>
+            <if test="loginPassword != null  and loginPassword != ''"> and a.login_password = #{loginPassword}</if>
+            <if test="phone != null  and phone != ''"> and a.phone = #{phone}</if>
+            <if test="isTest != null "> and a.is_test = #{isTest}</if>
+            <if test="address != null  and address != ''"> and a.address = #{address}</if>
+            <if test="walletType != null  and walletType != ''"> and a.wallet_type = #{walletType}</if>
+            <if test="status != null "> and a.status = #{status}</if>
+            <if test="totleAmont != null "> and a.totle_amont = #{totleAmont}</if>
+            <if test="buff != null "> and a.buff = #{buff}</if>
+            <if test="appParentIds != null  and appParentIds != ''"> and find_in_set(#{appParentIds},a.app_parent_ids)</if>
+            <if test="activeCode != null  and activeCode != ''"> and a.active_code = #{activeCode}</if>
+            <if test="registerIp != null  and registerIp != ''"> and a.register_ip = #{registerIp}</if>
+            <if test="host != null  and host != ''"> and a.host = #{host}</if>
+            <if test="adminParentIds != null and adminParentIds!=''"> and find_in_set(#{adminParentIds},a.admin_parent_ids)</if>
+            <if test="email != null  and email != ''"> and a.email = #{email}</if>
+            <if test="level != null "> and a.level = #{level}</if>
+            <if test="isFreeze != null and isFreeze!=''"> and a.is_freeze = #{isFreeze}</if>
+            <if test="searchValue != null  and searchValue != ''"> and a.search_value = #{searchValue}</if>
+        </where>
+    </select>
+
+    <insert id="insertTAppUser" parameterType="TAppUser" useGeneratedKeys="true" keyProperty="userId">
+        insert into t_app_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="loginName != null">login_name,</if>
+            <if test="loginPassword != null">login_password,</if>
+            <if test="phone != null">phone,</if>
+            <if test="isTest != null">is_test,</if>
+            <if test="address != null">address,</if>
+            <if test="walletType != null">wallet_type,</if>
+            <if test="status != null">status,</if>
+            <if test="totleAmont != null">totle_amont,</if>
+            <if test="buff != null">buff,</if>
+            <if test="appParentIds != null">app_parent_ids,</if>
+            <if test="activeCode != null and activeCode != ''">active_code,</if>
+            <if test="registerIp != null">register_ip,</if>
+            <if test="host != null">host,</if>
+            <if test="adminParentIds != null">admin_parent_ids,</if>
+            <if test="email != null">email,</if>
+            <if test="level != null">level,</if>
+            <if test="isFreeze != null">is_freeze,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="searchValue != null">search_value,</if>
+            <if test="isBlack != null">is_black,</if>
+            <if test="isLimitation != null">is_limitation,</if>
+            <if test="rechargeAmont != null">recharge_amont,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="loginName != null">#{loginName},</if>
+            <if test="loginPassword != null">#{loginPassword},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="isTest != null">#{isTest},</if>
+            <if test="address != null">#{address},</if>
+            <if test="walletType != null">#{walletType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="totleAmont != null">#{totleAmont},</if>
+            <if test="buff != null">#{buff},</if>
+            <if test="appParentIds != null">#{appParentIds},</if>
+            <if test="activeCode != null and activeCode != ''">#{activeCode},</if>
+            <if test="registerIp != null">#{registerIp},</if>
+            <if test="host != null">#{host},</if>
+            <if test="adminParentIds != null">#{adminParentIds},</if>
+            <if test="email != null">#{email},</if>
+            <if test="level != null">#{level},</if>
+            <if test="isFreeze != null">#{isFreeze},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+            <if test="isBlack != null">#{isBlack},</if>
+            <if test="isLimitation != null">#{isLimitation},</if>
+            <if test="rechargeAmont != null">#{rechargeAmont},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTAppUser" parameterType="TAppUser">
+        update t_app_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="loginName != null">login_name = #{loginName},</if>
+            <if test="loginPassword != null">login_password = #{loginPassword},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="isTest != null">is_test = #{isTest},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="walletType != null">wallet_type = #{walletType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="totleAmont != null">totle_amont = #{totleAmont},</if>
+            <if test="buff != null">buff = #{buff},</if>
+            <if test="appParentIds != null">app_parent_ids = #{appParentIds},</if>
+            <if test="activeCode != null and activeCode != ''">active_code = #{activeCode},</if>
+            <if test="registerIp != null">register_ip = #{registerIp},</if>
+            <if test="host != null">host = #{host},</if>
+            <if test="adminParentIds != null">admin_parent_ids = #{adminParentIds},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="isFreeze != null">is_freeze = #{isFreeze},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+            <if test="isBlack != null">is_black = #{isBlack},</if>
+            <if test="isLimitation != null">is_limitation = #{isLimitation},</if>
+            <if test="rechargeAmont != null">recharge_amont = #{rechargeAmont},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="deleteTAppUserByUserId" parameterType="Long">
+        delete from t_app_user where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteTAppUserByUserIds" parameterType="String">
+        delete from t_app_user where user_id in 
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+    <update id="delUpdateByAdminUserId" parameterType="java.lang.Long">
+        update t_app_user set admin_parent_ids = '' where  find_in_set(#{adminUserId},admin_parent_ids)
+    </update>
+    <update id="updateUserAppIds">
+        update t_app_user set admin_parent_ids = #{adminParentIds} where user_id = #{appUserId}
+    </update>
+    <update id="updateTotleAmont" parameterType="com.ruoyi.bussiness.domain.TAppUser">
+        update t_app_user set totle_amont = #{totleAmont} where user_id = #{userId}
+    </update>
+    <update id="updateRechargeAmont" parameterType="com.ruoyi.bussiness.domain.TAppUser">
+        update t_app_user set recharge_amont = #{rechargeAmont} where user_id = #{userId}
+    </update>
+</mapper>

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TContractPositionMapper">
+    
+    <resultMap type="TContractPosition" id="TContractPositionResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="delegateType"    column="delegate_type"    />
+        <result property="status"    column="status"    />
+        <result property="amount"    column="amount"    />
+        <result property="openNum"    column="open_num"    />
+        <result property="openPrice"    column="open_price"    />
+        <result property="closePrice"    column="close_price"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="userId"    column="user_id"    />
+        <result property="openFee"    column="open_fee"    />
+        <result property="leverage"    column="leverage"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="adjustAmount"    column="adjust_amount"    />
+        <result property="earn"    column="earn"    />
+        <result property="dealPrice"    column="deal_price"    />
+        <result property="dealNum"    column="deal_num"    />
+        <result property="dealTime"    column="deal_time"    />
+        <result property="sellFee"    column="sell_fee"    />
+        <result property="remainMargin"    column="remain_margin"    />
+        <result property="assetFee"    column="asset_fee"    />
+        <result property="entrustmentValue"    column="entrustment_value"    />
+        <result property="dealValue"    column="deal_value"    />
+        <result property="adminParentIds"    column="admin_parent_ids"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deliveryDays"    column="delivery_days"    />
+        <result property="minMargin"    column="min_margin"    />
+        <result property="earnRate"    column="earn_rate"    />
+        <result property="lossRate"    column="loss_rate"    />
+        <result property="subTime"    column="sub_time"    />
+        <result property="userName"    column="login_name"    />
+    </resultMap>
+
+    <sql id="selectTContractPositionVo">
+        select id, type, delegate_type, sub_time, earn_rate,loss_rate,delivery_days, audit_status,update_time, status, amount, open_num, open_price, close_price, order_no, user_id, open_fee, leverage, symbol, create_time, adjust_amount, earn, deal_price, deal_num, deal_time, sell_fee, remain_margin, asset_fee ,deal_value ,entrustment_value ,admin_parent_ids from t_contract_position
+    </sql>
+
+    <select id="selectTContractPositionList" parameterType="TContractPosition" resultMap="TContractPositionResult">
+
+
+        SELECT
+        u.id,
+        u.type,
+        u.delegate_type,
+        u.sub_time,
+        u.earn_rate,
+        u.loss_rate,
+        u.delivery_days,
+        u.audit_status,
+        u.update_time,
+        u.STATUS,
+        u.amount,
+        u.open_num,
+        u.open_price,
+        u.close_price,
+        u.order_no,
+        u.user_id,
+        u.open_fee,
+        u.leverage,
+        u.symbol,
+        u.create_time,
+        u.adjust_amount,
+        u.earn,
+        u.deal_price,
+        u.deal_num,
+        u.deal_time,
+        u.sell_fee,
+        u.remain_margin,
+        u.asset_fee,
+        u.deal_value,
+        u.entrustment_value,
+        u.admin_parent_ids ,
+        s.login_name
+        FROM
+        t_contract_position u
+        LEFT JOIN t_app_user s  ON
+        u.user_id =s.user_id
+        <where>  
+            <if test="type != null "> and u.type = #{type}</if>
+            <if test="delegateType != null "> and u.delegate_type = #{delegateType}</if>
+            <if test="status != null "> and u.status = #{status}</if>
+            <if test="amount != null "> and u.amount = #{amount}</if>
+            <if test="openNum != null "> and u.open_num = #{openNum}</if>
+            <if test="openPrice != null "> and u.open_price = #{openPrice}</if>
+            <if test="closePrice != null "> and u.close_price = #{closePrice}</if>
+            <if test="orderNo != null  and orderNo != ''"> and u.order_no = #{orderNo}</if>
+            <if test="userId != null "> and u.user_id = #{userId}</if>
+            <if test="openFee != null "> and u.open_fee = #{openFee}</if>
+            <if test="leverage != null "> and u.leverage = #{leverage}</if>
+            <if test="symbol != null  and symbol != ''"> and u.symbol = #{symbol}</if>
+            <if test="adjustAmount != null "> and u.adjust_amount = #{adjustAmount}</if>
+            <if test="earn != null "> and u.earn = #{earn}</if>
+            <if test="dealPrice != null "> and u.deal_price = #{dealPrice}</if>
+            <if test="dealNum != null "> and u.deal_num = #{dealNum}</if>
+            <if test="dealTime != null "> and u.deal_time = #{dealTime}</if>
+            <if test="sellFee != null "> and u.sell_fee = #{sellFee}</if>
+            <if test="remainMargin != null "> and u.remain_margin = #{remainMargin}</if>
+            <if test="assetFee != null "> and u.asset_fee = #{assetFee}</if>
+            <if test="adminParentIds != null and adminParentIds!=''">
+                AND find_in_set(#{adminParentIds},u.admin_parent_ids)
+            </if>
+            </where>
+        ORDER BY   u.create_time  DESC
+    </select>
+    
+    <select id="selectTContractPositionById" parameterType="Long" resultMap="TContractPositionResult">
+        <include refid="selectTContractPositionVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTContractPosition" parameterType="TContractPosition" useGeneratedKeys="true" keyProperty="id">
+        insert into t_contract_position
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">type,</if>
+            <if test="delegateType != null">delegate_type,</if>
+            <if test="status != null">status,</if>
+            <if test="amount != null">amount,</if>
+            <if test="openNum != null">open_num,</if>
+            <if test="openPrice != null">open_price,</if>
+            <if test="closePrice != null">close_price,</if>
+            <if test="orderNo != null and orderNo != ''">order_no,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="openFee != null">open_fee,</if>
+            <if test="leverage != null">leverage,</if>
+            <if test="symbol != null and symbol != ''">symbol,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="adjustAmount != null">adjust_amount,</if>
+            <if test="earn != null">earn,</if>
+            <if test="dealPrice != null">deal_price,</if>
+            <if test="dealNum != null">deal_num,</if>
+            <if test="dealTime != null">deal_time,</if>
+            <if test="sellFee != null">sell_fee,</if>
+            <if test="remainMargin != null">remain_margin,</if>
+            <if test="assetFee != null">asset_fee,</if>
+            <if test="entrustmentValue != null">entrustment_value,</if>
+            <if test="dealValue != null">deal_value,</if>
+            <if test="adminParentIds != null">admin_parent_ids,</if>
+             <if test="auditStatus!=null">    audit_status  ,  </if>
+            <if test="deliveryDays != null ">delivery_days,</if>
+            <if test="minMargin != null ">min_margin,</if>
+            <if test="earnRate != null ">earn_rate,</if>
+            <if test="lossRate != null ">loss_rate,</if>
+            <if test="subTime != null ">sub_time ,</if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">#{type},</if>
+            <if test="delegateType != null">#{delegateType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="openNum != null">#{openNum},</if>
+            <if test="openPrice != null">#{openPrice},</if>
+            <if test="closePrice != null">#{closePrice},</if>
+            <if test="orderNo != null and orderNo != ''">#{orderNo},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="openFee != null">#{openFee},</if>
+            <if test="leverage != null">#{leverage},</if>
+            <if test="symbol != null and symbol != ''">#{symbol},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="adjustAmount != null">#{adjustAmount},</if>
+            <if test="earn != null">#{earn},</if>
+            <if test="dealPrice != null">#{dealPrice},</if>
+            <if test="dealNum != null">#{dealNum},</if>
+            <if test="dealTime != null">#{dealTime},</if>
+            <if test="sellFee != null">#{sellFee},</if>
+            <if test="remainMargin != null">#{remainMargin},</if>
+            <if test="assetFee != null">#{assetFee},</if>
+            <if test="entrustmentValue != null">#{entrustmentValue},</if>
+            <if test="dealValue != null">#{dealValue},</if>
+            <if test="adminParentIds != null">#{adminParentIds},</if>
+             <if test="auditStatus!=null">#{auditStatus} ,  </if>
+            <if test="deliveryDays != null ">#{deliveryDays},</if>
+            <if test="minMargin != null ">#{minMargin},</if>
+            <if test="earnRate != null ">#{earnRate},</if>
+            <if test="lossRate != null ">#{lossRate},</if>
+            <if test="subTime != null ">#{subTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTContractPosition" parameterType="TContractPosition">
+        update t_contract_position
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="delegateType != null">delegate_type = #{delegateType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="openNum != null">open_num = #{openNum},</if>
+            <if test="openPrice != null">open_price = #{openPrice},</if>
+            <if test="closePrice != null">close_price = #{closePrice},</if>
+            <if test="orderNo != null and orderNo != ''">order_no = #{orderNo},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="openFee != null">open_fee = #{openFee},</if>
+            <if test="leverage != null">leverage = #{leverage},</if>
+            <if test="symbol != null and symbol != ''">symbol = #{symbol},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="adjustAmount != null">adjust_amount = #{adjustAmount},</if>
+            <if test="earn != null">earn = #{earn},</if>
+            <if test="dealPrice != null">deal_price = #{dealPrice},</if>
+            <if test="dealNum != null">deal_num = #{dealNum},</if>
+            <if test="dealTime != null">deal_time = #{dealTime},</if>
+            <if test="sellFee != null">sell_fee = #{sellFee},</if>
+            <if test="remainMargin != null">remain_margin = #{remainMargin},</if>
+            <if test="assetFee != null">asset_fee = #{assetFee},</if>
+            <if test="entrustmentValue != null">entrustment_value=#{entrustmentValue},</if>
+            <if test="dealValue != null">deal_value=#{dealValue},</if>
+            <if test="adminParentIds != null">admin_parent_ids=#{adminParentIds},</if>
+            <if test="auditStatus!=null">    audit_status =#{auditStatus} ,  </if>
+            <if test="updateTime!=null">     update_time =#{updateTime} ,  </if>
+            <if test="subTime != null ">sub_time=#{subTime},</if>
+            <if test="minMargin != null ">min_margin=#{minMargin},</if>
+            <if test="deliveryDays != null ">delivery_days=#{deliveryDays},</if>
+            <if test="earnRate != null ">earn_rate=#{earnRate},</if>
+            <if test="lossRate != null ">loss_rate=#{lossRate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTContractPositionById" parameterType="Long">
+        delete from t_contract_position where id = #{id}
+    </delete>
+
+    <delete id="deleteTContractPositionByIds" parameterType="String">
+        delete from t_contract_position where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

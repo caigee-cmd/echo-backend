@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.KlineSymbolMapper">
+    
+    <resultMap type="com.ruoyi.bussiness.domain.KlineSymbol" id="KlineSymbolResult">
+        <result property="id"    column="id"    />
+        <result property="market"    column="market"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="slug"    column="slug"    />
+        <result property="status"    column="status"    />
+        <result property="logo"    column="logo"    />
+        <result property="referMarket"    column="refer_market"    />
+        <result property="referCoin"    column="refer_coin"    />
+        <result property="proportion"    column="proportion"    />
+    </resultMap>
+
+    <sql id="selectKlineSymbolVo">
+        select id, market, symbol, slug, status ,logo, refer_coin, refer_market, proportion from t_kline_symbol
+    </sql>
+
+    <select id="selectKlineSymbolList" parameterType="KlineSymbol" resultMap="KlineSymbolResult">
+        <include refid="selectKlineSymbolVo"/>
+        <where>  
+            <if test="market != null  and market != ''"> and market = #{market}</if>
+            <if test="symbol != null  and symbol != ''"> and symbol = #{symbol}</if>
+            <if test="slug != null  and slug != ''"> and slug = #{slug}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="referCoin != null and referCoin != ''"> and refer_coin = #{referCoin}</if>
+            <if test="referMarket != null and referMarket != ''"> and refer_market = #{referMarket}</if>
+        </where>
+    </select>
+    
+    <select id="selectKlineSymbolById" parameterType="Long" resultMap="KlineSymbolResult">
+        <include refid="selectKlineSymbolVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertKlineSymbol" parameterType="KlineSymbol" useGeneratedKeys="true" keyProperty="id">
+        insert into t_kline_symbol
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="market != null">market,</if>
+            <if test="symbol != null">symbol,</if>
+            <if test="slug != null">slug,</if>
+            <if test="status != null">status,</if>
+            <if test="logo != null">logo,</if>
+            <if test="referCoin != null">refer_coin,</if>
+            <if test="referMarket != null">refer_market,</if>
+            <if test="proportion != null">proportion,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="market != null">#{market},</if>
+            <if test="symbol != null">#{symbol},</if>
+            <if test="slug != null">#{slug},</if>
+            <if test="logo != null">#{logo},</if>
+            <if test="referCoin != null">#{referCoin},</if>
+            <if test="referMarket != null">#{referMarket},</if>
+            <if test="proportion != null">#{proportion},</if>
+         </trim>
+    </insert>
+
+    <update id="updateKlineSymbol" parameterType="KlineSymbol">
+        update t_kline_symbol
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="market != null">market = #{market},</if>
+            <if test="symbol != null">symbol = #{symbol},</if>
+            <if test="slug != null">slug = #{slug},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="referCoin != null">refer_coin = #{referCoin},</if>
+            <if test="referMarket != null">refer_market = #{referMarket},</if>
+            <if test="proportion != null">proportion = #{proportion},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteKlineSymbolById" parameterType="Long">
+        delete from t_kline_symbol where id = #{id}
+    </delete>
+
+    <delete id="deleteKlineSymbolByIds" parameterType="String">
+        delete from t_kline_symbol where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TNftProductMapper">
+    
+    <resultMap type="TNftProduct" id="TNftProductResult">
+        <result property="id"    column="id"    />
+        <result property="seriesId"    column="series_id"    />
+        <result property="imgUrl"    column="img_url"    />
+        <result property="userId"    column="user_id"    />
+        <result property="price"    column="price"    />
+        <result property="chainType"    column="chain_type"    />
+        <result property="author"    column="author"    />
+        <result property="holdAddress"    column="hold_address"    />
+        <result property="handlingFee"    column="handling_fee"    />
+        <result property="copyrightFee"    column="copyright_fee"    />
+        <result property="des"    column="des"    />
+        <result property="status"    column="status"    />
+        <result property="saleStatus"    column="sale_status"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="searchValue"    column="search_value"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectTNftProductVo">
+        select id, series_id, img_url, user_id, price, chain_type, author, hold_address, handling_fee, copyright_fee, des, status, sale_status, end_date, remark, create_by, update_by, create_time, update_time, search_value, del_flag from t_nft_product
+    </sql>
+
+    <select id="selectTNftProductList" parameterType="TNftProduct" resultMap="TNftProductResult">
+        <include refid="selectTNftProductVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="seriesId != null "> and series_id = #{seriesId}</if>
+            <if test="imgUrl != null  and imgUrl != ''"> and img_url = #{imgUrl}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="chainType != null  and chainType != ''"> and chain_type = #{chainType}</if>
+            <if test="author != null  and author != ''"> and author = #{author}</if>
+            <if test="holdAddress != null  and holdAddress != ''"> and hold_address = #{holdAddress}</if>
+            <if test="handlingFee != null "> and handling_fee = #{handlingFee}</if>
+            <if test="copyrightFee != null "> and copyright_fee = #{copyrightFee}</if>
+            <if test="des != null  and des != ''"> and des = #{des}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="saleStatus != null  and saleStatus != ''"> and sale_status = #{saleStatus}</if>
+            <if test="endDate != null "> and end_date = #{endDate}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+        </where>
+    </select>
+    
+    <select id="selectTNftProductById" parameterType="Long" resultMap="TNftProductResult">
+        <include refid="selectTNftProductVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTNftProduct" parameterType="TNftProduct" useGeneratedKeys="true" keyProperty="id">
+        insert into t_nft_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="seriesId != null">series_id,</if>
+            <if test="imgUrl != null">img_url,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="price != null">price,</if>
+            <if test="chainType != null">chain_type,</if>
+            <if test="author != null">author,</if>
+            <if test="holdAddress != null">hold_address,</if>
+            <if test="handlingFee != null">handling_fee,</if>
+            <if test="copyrightFee != null">copyright_fee,</if>
+            <if test="des != null">des,</if>
+            <if test="status != null">status,</if>
+            <if test="saleStatus != null">sale_status,</if>
+            <if test="endDate != null">end_date,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="searchValue != null">search_value,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="seriesId != null">#{seriesId},</if>
+            <if test="imgUrl != null">#{imgUrl},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="price != null">#{price},</if>
+            <if test="chainType != null">#{chainType},</if>
+            <if test="author != null">#{author},</if>
+            <if test="holdAddress != null">#{holdAddress},</if>
+            <if test="handlingFee != null">#{handlingFee},</if>
+            <if test="copyrightFee != null">#{copyrightFee},</if>
+            <if test="des != null">#{des},</if>
+            <if test="status != null">#{status},</if>
+            <if test="saleStatus != null">#{saleStatus},</if>
+            <if test="endDate != null">#{endDate},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTNftProduct" parameterType="TNftProduct">
+        update t_nft_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="seriesId != null">series_id = #{seriesId},</if>
+            <if test="imgUrl != null">img_url = #{imgUrl},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="chainType != null">chain_type = #{chainType},</if>
+            <if test="author != null">author = #{author},</if>
+            <if test="holdAddress != null">hold_address = #{holdAddress},</if>
+            <if test="handlingFee != null">handling_fee = #{handlingFee},</if>
+            <if test="copyrightFee != null">copyright_fee = #{copyrightFee},</if>
+            <if test="des != null">des = #{des},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="saleStatus != null">sale_status = #{saleStatus},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTNftProductById" parameterType="Long">
+        delete from t_nft_product where id = #{id}
+    </delete>
+
+    <delete id="deleteTNftProductByIds" parameterType="String">
+        delete from t_nft_product where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

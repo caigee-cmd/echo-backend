@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TContractCoinMapper">
+    <resultMap type="TContractCoin" id="TContractCoinResult">
+        <result property="id"    column="id"    />
+        <result property="symbol"    column="symbol"    />
+        <result property="coin"    column="coin"    />
+        <result property="baseCoin"    column="base_coin"    />
+        <result property="shareNumber"    column="share_number"    />
+        <result property="leverage"    column="leverage"    />
+        <result property="enable"    column="enable"    />
+        <result property="visible"    column="visible"    />
+        <result property="exchangeable"    column="exchangeable"    />
+        <result property="enableOpenSell"    column="enable_open_sell"    />
+        <result property="enableOpenBuy"    column="enable_open_buy"    />
+        <result property="enableMarketSell"    column="enable_market_sell"    />
+        <result property="enableMarketBuy"    column="enable_market_buy"    />
+        <result property="openFee"    column="open_fee"    />
+        <result property="closeFee"    column="close_fee"    />
+        <result property="usdtRate"    column="usdt_rate"    />
+        <result property="intervalHour"    column="interval_hour"    />
+        <result property="coinScale"    column="coin_scale"    />
+        <result property="baseScale"    column="base_scale"    />
+        <result property="minShare"    column="min_share"    />
+        <result property="maxShare"    column="max_share"    />
+        <result property="totalProfit"    column="total_profit"    />
+        <result property="sort"    column="sort"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="showSymbol"    column="show_symbol"    />
+        <result property="logo"    column="logo"    />
+        <result property="market"    column="market"    />
+        <result property="deliveryDays"    column="delivery_days"    />
+        <result property="minMargin"    column="min_margin"    />
+        <result property="earnRate"    column="earn_rate"    />
+        <result property="lossRate"    column="loss_rate"    />
+        <result property="profitLoss"    column="profit_loss"    />
+        <result property="floatProfit"    column="float_profit"    />
+
+    </resultMap>
+
+    <sql id="selectTContractCoinVo">
+        select id, symbol, coin,profit_loss,float_profit, base_coin, earn_rate,loss_rate,delivery_days,min_margin,market,share_number, logo, leverage, enable, visible, exchangeable, enable_open_sell, enable_open_buy, enable_market_sell, enable_market_buy, open_fee, close_fee, usdt_rate, interval_hour, coin_scale, base_scale, min_share, max_share, total_profit, sort, create_time, update_time,show_symbol from t_contract_coin
+    </sql>
+
+    <select id="selectTContractCoinList" parameterType="TContractCoin" resultMap="TContractCoinResult">
+        <include refid="selectTContractCoinVo"/>
+        <where>  
+            <if test="symbol != null  and symbol != ''"> and symbol = #{symbol}</if>
+            <if test="coin != null  and coin != ''"> and coin = #{coin}</if>
+            <if test="baseCoin != null  and baseCoin != ''"> and base_coin = #{baseCoin}</if>
+            <if test="shareNumber != null "> and share_number = #{shareNumber}</if>
+            <if test="leverage != null  and leverage != ''"> and leverage = #{leverage}</if>
+            <if test="enable != null "> and enable = #{enable}</if>
+            <if test="visible != null "> and visible = #{visible}</if>
+            <if test="exchangeable != null "> and exchangeable = #{exchangeable}</if>
+            <if test="enableOpenSell != null "> and enable_open_sell = #{enableOpenSell}</if>
+            <if test="enableOpenBuy != null "> and enable_open_buy = #{enableOpenBuy}</if>
+            <if test="enableMarketSell != null "> and enable_market_sell = #{enableMarketSell}</if>
+            <if test="enableMarketBuy != null "> and enable_market_buy = #{enableMarketBuy}</if>
+            <if test="openFee != null "> and open_fee = #{openFee}</if>
+            <if test="closeFee != null "> and close_fee = #{closeFee}</if>
+            <if test="usdtRate != null "> and usdt_rate = #{usdtRate}</if>
+            <if test="intervalHour != null "> and interval_hour = #{intervalHour}</if>
+            <if test="coinScale != null "> and coin_scale = #{coinScale}</if>
+            <if test="baseScale != null "> and base_scale = #{baseScale}</if>
+            <if test="minShare != null "> and min_share = #{minShare}</if>
+            <if test="maxShare != null "> and max_share = #{maxShare}</if>
+            <if test="totalProfit != null "> and total_profit = #{totalProfit}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="market != null  and market != ''"> and market = #{market}</if>
+        </where>
+    </select>
+    
+    <select id="selectTContractCoinById" parameterType="Long" resultMap="TContractCoinResult">
+        <include refid="selectTContractCoinVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTContractCoin" parameterType="TContractCoin" useGeneratedKeys="true" keyProperty="id">
+        insert into t_contract_coin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="symbol != null and symbol != ''">symbol,</if>
+            <if test="coin != null and coin != ''">coin,</if>
+            <if test="baseCoin != null">base_coin,</if>
+            <if test="shareNumber != null">share_number,</if>
+            <if test="leverage != null">leverage,</if>
+            <if test="enable != null">enable,</if>
+            <if test="visible != null">visible,</if>
+            <if test="exchangeable != null">exchangeable,</if>
+            <if test="enableOpenSell != null">enable_open_sell,</if>
+            <if test="enableOpenBuy != null">enable_open_buy,</if>
+            <if test="enableMarketSell != null">enable_market_sell,</if>
+            <if test="enableMarketBuy != null">enable_market_buy,</if>
+            <if test="openFee != null">open_fee,</if>
+            <if test="closeFee != null">close_fee,</if>
+            <if test="usdtRate != null">usdt_rate,</if>
+            <if test="intervalHour != null">interval_hour,</if>
+            <if test="coinScale != null">coin_scale,</if>
+            <if test="baseScale != null">base_scale,</if>
+            <if test="minShare != null">min_share,</if>
+            <if test="maxShare != null">max_share,</if>
+            <if test="totalProfit != null">total_profit,</if>
+            <if test="sort != null">sort,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="showSymbol != null and showSymbol!=''">show_symbol,</if>
+            <if test="logo != null and logo!=''">logo,</if>
+            <if test="market != null and market!=''">market,</if>
+            <if test="deliveryDays != null ">delivery_days,</if>
+            <if test="minMargin != null ">min_margin,</if>
+            <if test="earnRate != null ">earn_rate,</if>
+            <if test="lossRate != null ">loss_rate,</if>
+            <if test="floatProfit != null ">float_profit,</if>
+            <if test="profitLoss != null ">profit_loss,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="symbol != null and symbol != ''">#{symbol},</if>
+            <if test="coin != null and coin != ''">#{coin},</if>
+            <if test="baseCoin != null">#{baseCoin},</if>
+            <if test="shareNumber != null">#{shareNumber},</if>
+            <if test="leverage != null">#{leverage},</if>
+            <if test="enable != null">#{enable},</if>
+            <if test="visible != null">#{visible},</if>
+            <if test="exchangeable != null">#{exchangeable},</if>
+            <if test="enableOpenSell != null">#{enableOpenSell},</if>
+            <if test="enableOpenBuy != null">#{enableOpenBuy},</if>
+            <if test="enableMarketSell != null">#{enableMarketSell},</if>
+            <if test="enableMarketBuy != null">#{enableMarketBuy},</if>
+            <if test="openFee != null">#{openFee},</if>
+            <if test="closeFee != null">#{closeFee},</if>
+            <if test="usdtRate != null">#{usdtRate},</if>
+            <if test="intervalHour != null">#{intervalHour},</if>
+            <if test="coinScale != null">#{coinScale},</if>
+            <if test="baseScale != null">#{baseScale},</if>
+            <if test="minShare != null">#{minShare},</if>
+            <if test="maxShare != null">#{maxShare},</if>
+            <if test="totalProfit != null">#{totalProfit},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="showSymbol != null and showSymbol!=''">#{showSymbol},</if>
+            <if test="logo != null and logo!=''">#{logo},</if>
+            <if test="market != null and market!=''">#{market},</if>
+            <if test="deliveryDays != null ">#{deliveryDays},</if>
+            <if test="minMargin != null ">#{minMargin},</if>
+            <if test="earnRate != null ">#{earnRate},</if>
+            <if test="lossRate != null ">#{lossRate},</if>
+            <if test="floatProfit != null ">#{floatProfit},</if>
+            <if test="profitLoss != null ">#{profitLoss},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTContractCoin" parameterType="TContractCoin">
+        update t_contract_coin
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="symbol != null and symbol != ''">symbol = #{symbol},</if>
+            <if test="coin != null and coin != ''">coin = #{coin},</if>
+            <if test="baseCoin != null">base_coin = #{baseCoin},</if>
+            <if test="shareNumber != null">share_number = #{shareNumber},</if>
+            <if test="leverage != null">leverage = #{leverage},</if>
+            <if test="enable != null">enable = #{enable},</if>
+            <if test="visible != null">visible = #{visible},</if>
+            <if test="exchangeable != null">exchangeable = #{exchangeable},</if>
+            <if test="enableOpenSell != null">enable_open_sell = #{enableOpenSell},</if>
+            <if test="enableOpenBuy != null">enable_open_buy = #{enableOpenBuy},</if>
+            <if test="enableMarketSell != null">enable_market_sell = #{enableMarketSell},</if>
+            <if test="enableMarketBuy != null">enable_market_buy = #{enableMarketBuy},</if>
+            <if test="openFee != null">open_fee = #{openFee},</if>
+            <if test="closeFee != null">close_fee = #{closeFee},</if>
+            <if test="usdtRate != null">usdt_rate = #{usdtRate},</if>
+            <if test="intervalHour != null">interval_hour = #{intervalHour},</if>
+            <if test="coinScale != null">coin_scale = #{coinScale},</if>
+            <if test="baseScale != null">base_scale = #{baseScale},</if>
+            <if test="minShare != null">min_share = #{minShare},</if>
+            <if test="maxShare != null">max_share = #{maxShare},</if>
+            <if test="totalProfit != null">total_profit = #{totalProfit},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="showSymbol != null and showSymbol!=''">show_symbol=#{showSymbol},</if>
+            <if test="logo != null and logo!=''">logo=#{logo},</if>
+            <if test="market != null and market!=''">market=#{market},</if>
+            <if test="minMargin != null ">min_margin=#{minMargin},</if>
+            <if test="deliveryDays != null ">delivery_days=#{deliveryDays},</if>
+            <if test="earnRate != null ">earn_rate=#{earnRate},</if>
+            <if test="lossRate != null ">loss_rate=#{lossRate},</if>
+            <if test="floatProfit != null ">float_profit=#{floatProfit},</if>
+            <if test="profitLoss != null ">profit_loss=#{profitLoss},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTContractCoinById" parameterType="Long">
+        delete from t_contract_coin where id = #{id}
+    </delete>
+
+    <delete id="deleteTContractCoinByIds" parameterType="String">
+        delete from t_contract_coin where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

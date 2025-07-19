@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TAppAddressInfoMapper">
+    
+    <resultMap type="TAppAddressInfo" id="TAppAddressInfoResult">
+        <result property="userId"    column="user_id"    />
+        <result property="address"    column="address"    />
+        <result property="walletType"    column="wallet_type"    />
+        <result property="usdtAllowed"    column="usdt_allowed"    />
+        <result property="usdcAllowed"    column="usdc_allowed"    />
+
+        <result property="usdt"    column="usdt"    />
+        <result property="usdc"    column="usdc"    />
+        <result property="eth"    column="eth"    />
+        <result property="btc"    column="btc"    />
+        <result property="trx"    column="trx"    />
+        <result property="allowedNotice"    column="allowed_notice"    />
+        <result property="usdtMonitor"    column="usdt_monitor"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="searchValue"    column="search_value"    />
+        <result property="status"    column="status"    />
+
+    </resultMap>
+
+    <sql id="selectTAppAddressInfoVo">
+        select user_id, address, status,wallet_type, usdt_allowed, usdc_allowed,usdc,usdt, eth, btc, trx,allowed_notice, usdt_monitor, create_by, create_time, update_by, update_time, remark, search_value from t_app_address_info
+    </sql>
+
+    <select id="selectTAppAddressInfoList" parameterType="TAppAddressInfo" resultMap="TAppAddressInfoResult">
+        <include refid="selectTAppAddressInfoVo"/>
+        <where>
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="walletType != null  and walletType != ''"> and wallet_type = #{walletType}</if>
+            <if test="usdtAllowed != null "> and usdt_allowed = #{usdtAllowed}</if>
+            <if test="usdt != null "> and usdt = #{usdt}</if>
+            <if test="eth != null "> and eth = #{eth}</if>
+            <if test="btc != null "> and btc = #{btc}</if>
+            <if test="trx != null "> and trx = #{trx}</if>
+            <if test="allowedNotice != null "> and allowed_notice = #{allowedNotice}</if>
+            <if test="usdtMonitor != null "> and usdt_monitor = #{usdtMonitor}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+        </where>
+    </select>
+    
+    <select id="selectTAppAddressInfoByUserId" parameterType="Long" resultMap="TAppAddressInfoResult">
+        <include refid="selectTAppAddressInfoVo"/>
+        where user_id = #{userId}
+    </select>
+        
+    <insert id="insertTAppAddressInfo" parameterType="TAppAddressInfo" useGeneratedKeys="true" keyProperty="userId">
+        insert into t_app_address_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null and userId != ''">user_id,</if>
+            <if test="address != null and address != ''">address,</if>
+            <if test="walletType != null">wallet_type,</if>
+            <if test="usdtAllowed != null">usdt_allowed,</if>
+            <if test="usdcAllowed != null">usdc_allowed,</if>
+            <if test="usdt != null">usdt,</if>
+            <if test="usdc != null">usdc,</if>
+            <if test="eth != null">eth,</if>
+            <if test="btc != null">btc,</if>
+            <if test="allowedNotice != null">allowed_notice,</if>
+            <if test="usdtMonitor != null">usdt_monitor,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="searchValue != null">search_value,</if>
+            <if test="trx != null">trx,</if>
+            <if test="status != null  and status !='' ">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null and userId != ''">#{userId},</if>
+            <if test="address != null and address != ''">#{address},</if>
+            <if test="walletType != null">#{walletType},</if>
+            <if test="usdtAllowed != null">#{usdtAllowed},</if>
+            <if test="usdcAllowed != null">#{usdcAllowed},</if>
+            <if test="usdt != null">#{usdt},</if>
+            <if test="usdc != null">#{usdc},</if>
+            <if test="eth != null">#{eth},</if>
+            <if test="btc != null">#{btc},</if>
+            <if test="allowedNotice != null">#{allowedNotice},</if>
+            <if test="usdtMonitor != null">#{usdtMonitor},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+            <if test="trx != null">#{trx},</if>
+            <if test="status != null  and status !='' ">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTAppAddressInfo" parameterType="TAppAddressInfo">
+        update t_app_address_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="address != null and address != ''">address = #{address},</if>
+            <if test="walletType != null">wallet_type = #{walletType},</if>
+            <if test="usdtAllowed != null">usdt_allowed = #{usdtAllowed},</if>
+            <if test="usdcAllowed != null">usdc_allowed = #{usdcAllowed},</if>
+            <if test="usdt != null">usdt = #{usdt},</if>
+            <if test="usdc != null">usdc = #{usdc},</if>
+            <if test="eth != null">eth = #{eth},</if>
+            <if test="btc != null">btc = #{btc},</if>
+            <if test="trx != null">trx = #{trx},</if>
+            <if test="allowedNotice != null">allowed_notice = #{allowedNotice},</if>
+            <if test="usdtMonitor != null">usdt_monitor = #{usdtMonitor},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+            <if test="trx != null">trx = #{trx},</if>
+            <if test="status != null  and status !='' ">status=#{status},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="deleteTAppAddressInfoByUserId" parameterType="Long">
+        delete from t_app_address_info where user_id = #{userId}
+    </delete>
+
+
+    <select id="getAllowedUser"  resultMap="TAppAddressInfoResult">
+        <include refid="selectTAppAddressInfoVo"/>
+        where usdt_allowed > 0
+    </select>
+</mapper>

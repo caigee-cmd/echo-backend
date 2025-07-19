@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TAppWalletRecordMapper">
+
+    <resultMap type="TAppWalletRecord" id="TAppWalletRecordResult">
+        <result property="id" column="id"/>
+        <result property="amount" column="amount"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+        <result property="userId" column="user_id"/>
+        <result property="searchValue" column="search_value"/>
+        <result property="beforeAmount" column="before_amount"/>
+        <result property="afterAmount" column="after_amount"/>
+        <result property="serialId" column="serial_id"/>
+        <result property="type" column="type"/>
+        <result property="symbol" column="symbol"/>
+        <result property="adminParentIds" column="admin_parent_ids"/>
+        <result property="uAmount" column="u_amount"/>
+    </resultMap>
+
+    <sql id="selectTAppWalletRecordVo">
+        select id,
+               amount,
+               create_by,
+               create_time,
+               update_by,
+               update_time,
+               remark,
+               user_id,
+               search_value,
+               before_amount,
+               after_amount,
+               serial_id,
+               type,
+               symbol,
+               admin_parent_ids,
+               u_amount
+        from t_app_wallet_record
+    </sql>
+
+    <select id="selectTAppWalletRecordList" parameterType="TAppWalletRecord" resultType="TAppWalletRecord">
+        select
+        r.id,
+        r.amount,
+        r.create_by createBy,
+        r.create_time createTime,
+        r.update_by updateBy,
+        r.update_time updateTime,
+        r.remark,
+        r.user_id userId,
+        r.search_value searchValue,
+        r.before_amount beforeAmount,
+        r.after_amount afterAmount,
+        r.serial_id serialId,
+        r.type,
+        r.symbol,
+        r.admin_parent_ids adminParentIds,
+        r.u_amount uAmount,
+        u.is_test isTest
+        from t_app_wallet_record r left  join  t_app_user u on r.user_id=u.user_id
+        <where>
+            <if test="amount != null ">and r.amount = #{amount}</if>
+            <if test="userId != null ">and r.user_id = #{userId}</if>
+            <if test="searchValue != null  and searchValue != ''">and r.search_value = #{searchValue}</if>
+            <if test="beforeAmount != null ">and r.before_amount = #{beforeAmount}</if>
+            <if test="afterAmount != null ">and r.after_amount = #{afterAmount}</if>
+            <if test="serialId != null  and serialId != ''">and r.serial_id = #{serialId}</if>
+            <if test="type != null  and type != ''">and r.type = #{type}</if>
+            <if test="symbol != null  and symbol != ''">and r.symbol = #{symbol}</if>
+            <if test="startTime != null and startTime != ''">
+                AND r.create_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND r.create_time &lt;= #{endTime}
+            </if>
+            <if test="maxAmount != null  ">and r.amount &lt;= #{maxAmount}</if>
+            <if test="isTest != null  ">and u.is_test= #{isTest}</if>
+            <if test="minAmount != null  ">and r.amount &gt;= #{minAmount}</if>
+            <if test="adminParentIds != null  and adminParentIds!=''">and find_in_set(#{adminParentIds},r.admin_parent_ids)</if>
+            <if test="uAmount != null">and r.u_amount = #{uAmount}</if>
+            <if test="params!=null">
+                <if test="params.startOperateTime != null and params.startOperateTime != ''"><!-- 开始时间检索 -->
+                    AND date_format(r.operate_time,'%Y-%m-%d %H:%i:%s') &gt;= date_format(#{params.startOperateTime},'%Y-%m-%d %H:%i:%s')
+                </if>
+                <if test="params.endOperateTime != null and params.endOperateTime != ''"><!-- 结束时间检索 -->
+                    AND date_format(r.operate_time,'%Y-%m-%d %H:%i:%s') &lt;= date_format(#{params.endOperateTime},'%Y-%m-%d %H:%i:%s')
+                </if>
+                <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                    AND date_format(r.create_time,'%Y-%m-%d %H:%i:%s') &gt;= date_format(#{params.beginTime},'%Y-%m-%d %H:%i:%s')
+                </if>
+                <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                    AND date_format(r.create_time,'%Y-%m-%d %H:%i:%s') &lt;= date_format(#{params.endTime},'%Y-%m-%d %H:%i:%s')
+                </if>
+            </if>
+        </where>
+        ORDER  BY  r.create_time DESC
+    </select>
+
+    <select id="selectTAppWalletRecordById" parameterType="Long" resultMap="TAppWalletRecordResult">
+        <include refid="selectTAppWalletRecordVo"/>
+
+
+        where id = #{id}
+    </select>
+
+    <insert id="insertTAppWalletRecord" parameterType="TAppWalletRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into t_app_wallet_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="amount != null">amount,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="searchValue != null">search_value,</if>
+            <if test="beforeAmount != null">before_amount,</if>
+            <if test="afterAmount != null">after_amount,</if>
+            <if test="serialId != null">serial_id,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="symbol != null">symbol,</if>
+            <if test="adminParentIds != null">admin_parent_ids,</if>
+            <if test="uAmount != null">u_amount,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="amount != null">#{amount},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+            <if test="beforeAmount != null">#{beforeAmount},</if>
+            <if test="afterAmount != null">#{afterAmount},</if>
+            <if test="serialId != null">#{serialId},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="symbol != null">#{symbol},</if>
+            <if test="adminParentIds != null">#{adminParentIds},</if>
+            <if test="uAmount != null">#{uAmount},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTAppWalletRecord" parameterType="TAppWalletRecord">
+        update t_app_wallet_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+            <if test="beforeAmount != null">before_amount = #{beforeAmount},</if>
+            <if test="afterAmount != null">after_amount = #{afterAmount},</if>
+            <if test="serialId != null">serial_id = #{serialId},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="symbol != null">symbol = #{symbol},</if>
+            <if test="adminParentIds != null">admin_parent_ids = #{adminParentIds},</if>
+            <if test="uAmount != null">u_amount = #{uAmount},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTAppWalletRecordById" parameterType="Long">
+        delete
+        from t_app_wallet_record
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTAppWalletRecordByIds" parameterType="String">
+        delete from t_app_wallet_record where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectUserDataList" parameterType="TAppWalletRecord" resultType="com.ruoyi.bussiness.domain.vo.UserDataVO">
+        SELECT
+        SUM(
+        IF
+        ( t.type = 1 ,t.u_amount, 0 )) AS totalRechargeAmount,
+        SUM(
+        IF
+        ( t.type = 3 ,t.u_amount, 0 )) AS totalWingAmount,
+        SUM(
+        IF
+        ( t.type = 50 ,t.u_amount, 0 )) AS totalSubBousAmount,
+        SUM(
+        IF
+        ( t.type = 4 ,t.u_amount, 0 )) AS totalSubAmount,
+        SUM(
+        IF
+        ( t.type = 51 ,t.u_amount, 0 )) AS totalAddAmount,
+        SUM(
+        IF
+        ( t.type = 40 ,t.u_amount, 0 )) AS totalCollectAmount,
+        SUM(
+        IF
+        ( t.type = 5 ,t.u_amount, 0 )) AS betAmount,
+        SUM(
+        IF
+        ( t.type = 9 ,t.u_amount, 0 )) AS rewardAmount,
+        SUM(
+        IF
+        ( t.type = 28 || t.type=29 ,t.u_amount, 0 )) AS totalContractAmount,
+        SUM(
+        IF
+        ( t.type = 6 ,t.u_amount, 0 )) AS totalMattersAmount,
+        t.user_id as userId
+        FROM
+        t_app_wallet_record t
+        <where>
+            <if test="userId != null ">and t.user_id = #{userId}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND date_format(t.create_time,'%Y-%m-%d %H:%i:%s') &gt;= date_format(#{params.beginTime},'%Y-%m-%d
+                %H:%i:%s')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND date_format(t.create_time,'%Y-%m-%d %H:%i:%s') &lt;= date_format(#{params.endTime},'%Y-%m-%d
+                %H:%i:%s')
+            </if>
+        </where>
+        GROUP BY user_id
+    </select>
+
+    <select id="dailyData" parameterType="com.ruoyi.bussiness.domain.TAppWalletRecord"
+            resultType="com.ruoyi.bussiness.domain.vo.DailyDataVO">
+        SELECT
+        SUM( IF( t.type = 1 &amp;&amp; (SELECT r.status FROM t_app_recharge r WHERE t.serial_id=r.serial_id )=1, t.u_amount, 0 )) AS totalRechargeAmount,
+        SUM( IF( t.type = 2 &amp;&amp; (SELECT w.status FROM t_withdraw w WHERE t.serial_id=w.serial_id )=1, t.u_amount, 0 )) AS totalWithdrawAmount,   SUM( IF( t.type = 3, t.u_amount, 0 )) AS totalWingAmount,
+        SUM( IF( t.type = 50, t.u_amount, 0 )) AS totalSubBousAmount,
+        SUM( IF( t.type = 4, t.u_amount, 0 )) AS totalSubAmount,
+        SUM( IF( t.type = 51, t.u_amount, 0 )) AS totalAddAmount,
+        SUM( IF( t.type = 40, t.u_amount, 0 )) AS totalCollectAmount,
+        SUM( IF( t.type = 5, t.u_amount, 0 )) AS betAmount,
+        SUM( IF( t.type = 9, t.u_amount, 0 )) AS rewardAmount,
+        SUM( IF( t.type = 28 || t.type = 29, t.u_amount, 0 )) AS totalContractAmount,
+        SUM( IF( t.type = 6, t.u_amount, 0 )) AS totalMattersAmount
+        FROM
+        t_app_wallet_record t ,t_app_user u
+        <where>
+            t.user_id = u.user_id and  u.is_test = 0
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND t.create_time &gt;= #{params.beginTime}
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND t.create_time &lt;= #{params.endTime}
+            </if>
+        </where>
+    </select>
+    <select id="selectAgencyList" resultType="com.ruoyi.bussiness.domain.vo.AgencyDataVo"
+            parameterType="com.ruoyi.bussiness.domain.TAppWalletRecord">
+        SELECT
+        c.agencyId,
+        c.agencyUserName,
+        IF( c.user_id IS NOT NULL, group_concat( c.user_id SEPARATOR ',' ), '' ) AS appAllUserId,
+        sum( c.recharge ) AS recharge,
+        sum( c.withdraw ) AS withdraw,
+        sum( c.sendBonus ) AS sendBonus,
+        sum( c.subBonus ) AS subBonus,
+        sum( c.btcManualScoring ) AS btcManualScoring,
+        sum( c.ethManualScoring ) AS ethManualScoring,
+        sum( c.subAmount ) AS subAmount,
+        sum( c.sendAmount ) AS sendAmount,
+        sum( c.btcManualSubdivision ) AS btcManualSubdivision,
+        sum( c.ethManualSubdivision ) AS ethManualSubdivision
+        FROM
+        (
+        SELECT
+        a.user_id AS agencyId,
+        a.user_name AS agencyUserName,
+        u.user_id,
+        sum( IF ( r.type = 1, r.amount, 0 ) ) AS recharge,
+        sum( IF ( r.type = 2, r.amount, 0 ) ) AS withdraw,
+        sum( IF ( r.type = 3, r.amount, 0 ) ) AS sendBonus,
+        sum( IF ( r.type = 50, r.amount, 0 ) ) AS subBonus,
+        sum( IF ( r.type = 16, r.amount, 0 ) ) AS btcManualScoring,
+        sum( IF ( r.type = 18, r.amount, 0 ) ) AS ethManualScoring,
+        sum( IF ( r.type = 4, r.amount, 0 ) ) AS subAmount,
+        sum( IF ( r.type = 51, r.amount, 0 ) ) AS sendAmount,
+        sum( IF ( r.type = 17, r.amount, 0 ) ) AS btcManualSubdivision,
+        sum( IF ( r.type = 19, r.amount, 0 ) ) AS ethManualSubdivision
+        FROM
+        sys_user a
+        LEFT JOIN t_app_user u ON FIND_IN_SET( a.user_id, u.admin_parent_ids )
+        LEFT JOIN t_app_wallet_record r ON r.user_id = u.user_id
+        WHERE
+        a.user_type != 0 and a.del_flag=0
+        <if test="adminParentIds != null and  adminParentIds!=''">and (a.parent_id = #{adminParentIds} or a.user_id = #{adminParentIds})</if>
+        GROUP BY
+        a.user_id,u.user_id
+        ) c
+        <where>
+            <if test="userId != null ">and c.user_id = #{userId}</if>
+        </where>
+        GROUP BY
+        c.agencyId
+    </select>
+    <select id="selectAgencyAppUserList" resultType="com.ruoyi.bussiness.domain.vo.AgencyAppUserDataVo"
+            parameterType="com.ruoyi.bussiness.domain.TAppWalletRecord">
+        SELECT
+        a.user_id AS appUserId,
+        sum( IF ( r.type = 1, r.amount, 0 ) ) AS recharge,
+        sum( IF ( r.type = 2, r.amount, 0 ) ) AS withdraw,
+        sum( IF ( r.type = 3, r.amount, 0 ) ) AS sendBonus,
+        sum( IF ( r.type = 50, r.amount, 0 ) ) AS subBonus,
+        sum( IF ( r.type = 16, r.amount, 0 ) ) AS btcManualScoring,
+        sum( IF ( r.type = 18, r.amount, 0 ) ) AS ethManualScoring,
+        sum( IF ( r.type = 4, r.amount, 0 ) ) AS subAmount,
+        sum( IF ( r.type = 51, r.amount, 0 ) ) AS sendAmount,
+        sum( IF ( r.type = 17, r.amount, 0 ) ) AS btcManualSubdivision,
+        sum( IF ( r.type = 19, r.amount, 0 ) ) AS  ethManualSubdivision
+        FROM t_app_user a
+        left join t_app_wallet_record r on r.user_id = a.user_id
+        <where>
+            <if test="adminParentIds !=null and adminParentIds !=''">
+                and FIND_IN_SET(#{adminParentIds},a.admin_parent_ids)
+            </if>
+            <if test="userId !=null">
+                and a.user_id = #{userId}
+            </if>
+        </where>
+        GROUP BY a.user_id
+    </select>
+    <select id="statisticsAmount" resultType="java.math.BigDecimal">
+        SELECT
+            sum(  r.amount ) AS statisticsAmount
+        FROM t_app_user a
+                 left join t_app_wallet_record r on r.user_id = a.user_id
+        where a.is_test=0;
+    </select>
+    <select id="getAllWithdrawOfUser" resultType="java.math.BigDecimal">
+        SELECT
+        IFNULL(SUM(t.u_amount),0) as allWithdraw
+        FROM
+        t_withdraw w
+        LEFT JOIN
+        t_app_wallet_record t ON t.serial_id = w.serial_id
+        WHERE
+        w.`status` = 1 AND w.user_id = #{userId}
+    </select>
+</mapper>

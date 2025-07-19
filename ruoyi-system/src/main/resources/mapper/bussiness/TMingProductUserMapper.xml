@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.TMingProductUserMapper">
+    
+    <resultMap type="TMingProductUser" id="TMingProductUserResult">
+        <result property="id"    column="id"    />
+        <result property="productId"    column="product_id"    />
+        <result property="appUserId"    column="app_user_id"    />
+        <result property="pledgeNum"    column="pledge_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="searchValue"    column="search_value"    />
+        <result property="remark"    column="remark"    />
+        <result property="coin"    column="coin"    />
+        <result property="icon"    column="icon"    />
+        <result property="title"    column="title"    />
+        <collection property="tAppUser" ofType="com.ruoyi.bussiness.domain.TAppUser">
+            <result property="userId"    column="user_id"    />
+            <result property="loginName"    column="login_name"    />
+            <result property="loginPassword"    column="login_password"    />
+            <result property="phone"    column="phone"    />
+            <result property="isTest"    column="is_test"    />
+            <result property="status"    column="status"    />
+            <result property="host"    column="host"    />
+            <result property="email"    column="email"    />
+        </collection>
+    </resultMap>
+
+    <sql id="selectTMingProductUserVo">
+        select a.id, a.product_id, a.app_user_id, a.pledge_num, a.create_by, a.create_time, a.update_by, a.update_time,
+               a.search_value, a.remark,
+               u.user_id, u.login_name, u.login_password, u.phone, u.is_test,  u.status, u.host,  u.email,
+               p.coin, p.icon, p.title
+        from t_ming_product_user a
+        left join t_app_user u on u.user_id = a.app_user_id
+        left join t_ming_product p on p.id = a.product_id
+    </sql>
+
+    <select id="selectTMingProductUserList" parameterType="TMingProductUser" resultMap="TMingProductUserResult">
+        <include refid="selectTMingProductUserVo"/>
+        <where>  
+            <if test="productId != null "> and a.product_id = #{productId}</if>
+            <if test="appUserId != null "> and a.app_user_id = #{appUserId}</if>
+            <if test="pledgeNum != null "> and a.pledge_num = #{pledgeNum}</if>
+            <if test="searchValue != null  and searchValue != ''"> and a.search_value = #{searchValue}</if>
+        </where>
+        order by a.update_time
+    </select>
+    
+    <select id="selectTMingProductUserById" parameterType="Long" resultMap="TMingProductUserResult">
+        <include refid="selectTMingProductUserVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTMingProductUser" parameterType="TMingProductUser" useGeneratedKeys="true" keyProperty="id">
+        insert into t_ming_product_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productId != null">product_id,</if>
+            <if test="appUserId != null">app_user_id,</if>
+            <if test="pledgeNum != null">pledge_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="searchValue != null">search_value,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productId != null">#{productId},</if>
+            <if test="appUserId != null">#{appUserId},</if>
+            <if test="pledgeNum != null">#{pledgeNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTMingProductUser" parameterType="TMingProductUser">
+        update t_ming_product_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="appUserId != null">app_user_id = #{appUserId},</if>
+            <if test="pledgeNum != null">pledge_num = #{pledgeNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTMingProductUserById" parameterType="Long">
+        delete from t_ming_product_user where id = #{id}
+    </delete>
+
+    <delete id="deleteTMingProductUserByIds" parameterType="String">
+        delete from t_ming_product_user where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

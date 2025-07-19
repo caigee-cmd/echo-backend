@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.bussiness.mapper.THomeSetterMapper">
+    
+    <resultMap type="com.ruoyi.bussiness.domain.THomeSetter" id="THomeSetterResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="author"    column="author"    />
+        <result property="content"    column="content"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="imgUrl"    column="img_url"    />
+        <result property="sort"    column="sort"    />
+        <result property="isShow"    column="is_show"    />
+        <result property="languageName"    column="language_name"    />
+        <result property="likesNum"    column="likes_num"    />
+        <result property="homeType"    column="home_type"    />
+        <result property="modelType"    column="model_type"    />
+        <result property="searchValue"    column="search_value"    />
+    </resultMap>
+
+    <sql id="selectTHomeSetterVo">
+        select id, title, author, content, create_time, img_url, sort, is_show, language_name, likes_num, home_type, model_type, search_value from t_home_setter
+    </sql>
+
+    <select id="selectTHomeSetterList" parameterType="THomeSetter" resultMap="THomeSetterResult">
+        <include refid="selectTHomeSetterVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="author != null  and author != ''"> and author = #{author}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="imgUrl != null  and imgUrl != ''"> and img_url = #{imgUrl}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="isShow != null "> and is_show = #{isShow}</if>
+            <if test="languageName != null  and languageName != ''"> and language_name like concat('%', #{languageName}, '%')</if>
+            <if test="likesNum != null "> and likes_num = #{likesNum}</if>
+            <if test="homeType != null "> and home_type = #{homeType}</if>
+            <if test="modelType != null "> and model_type = #{modelType}</if>
+            <if test="searchValue != null  and searchValue != ''"> and search_value = #{searchValue}</if>
+        </where>
+    </select>
+    
+    <select id="selectTHomeSetterById" parameterType="Long" resultMap="THomeSetterResult">
+        <include refid="selectTHomeSetterVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTHomeSetter" parameterType="THomeSetter" useGeneratedKeys="true" keyProperty="id">
+        insert into t_home_setter
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="author != null">author,</if>
+            <if test="content != null">content,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="imgUrl != null">img_url,</if>
+            <if test="sort != null">sort,</if>
+            <if test="isShow != null">is_show,</if>
+            <if test="languageName != null">language_name,</if>
+            <if test="likesNum != null">likes_num,</if>
+            <if test="homeType != null">home_type,</if>
+            <if test="modelType != null">model_type,</if>
+            <if test="searchValue != null">search_value,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="author != null">#{author},</if>
+            <if test="content != null">#{content},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="imgUrl != null">#{imgUrl},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="isShow != null">#{isShow},</if>
+            <if test="languageName != null">#{languageName},</if>
+            <if test="likesNum != null">#{likesNum},</if>
+            <if test="homeType != null">#{homeType},</if>
+            <if test="modelType != null">#{modelType},</if>
+            <if test="searchValue != null">#{searchValue},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTHomeSetter" parameterType="THomeSetter">
+        update t_home_setter
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="author != null">author = #{author},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="imgUrl != null">img_url = #{imgUrl},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="isShow != null">is_show = #{isShow},</if>
+            <if test="languageName != null">language_name = #{languageName},</if>
+            <if test="likesNum != null">likes_num = #{likesNum},</if>
+            <if test="homeType != null">home_type = #{homeType},</if>
+            <if test="modelType != null">model_type = #{modelType},</if>
+            <if test="searchValue != null">search_value = #{searchValue},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTHomeSetterById" parameterType="Long">
+        delete from t_home_setter where id = #{id}
+    </delete>
+
+    <delete id="deleteTHomeSetterByIds" parameterType="String">
+        delete from t_home_setter where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
