@@ -156,9 +156,12 @@ public class TContractPositionController extends BaseController {
 
     @PreAuthorize("@ss.hasPermi('bussiness:position:query')")
     @PostMapping("contractLoss/{id}")
-    public TableDataInfo contractLoss(@PathVariable Long id) {
+    public TableDataInfo contractLoss(@PathVariable String id) {
+        if (id == null || "undefined".equals(id) || "null".equals(id)) {
+            return getDataTable(null);
+        }
         TContractLoss tContractLoss = new TContractLoss();
-        tContractLoss.setPositionId(id);
+        tContractLoss.setPositionId(Long.valueOf(id));
         startPage();
         List<TContractLoss> list = contractLossService.selectTContractLossList(tContractLoss);
         return getDataTable(list);

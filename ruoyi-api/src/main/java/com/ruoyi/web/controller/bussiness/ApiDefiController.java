@@ -2,7 +2,6 @@ package com.ruoyi.web.controller.bussiness;
 
 import com.ruoyi.bussiness.domain.DefiActivity;
 import com.ruoyi.bussiness.domain.DefiOrder;
-import com.ruoyi.bussiness.domain.TAppAddressInfo;
 import com.ruoyi.bussiness.domain.dto.AddressHashDTO;
 import com.ruoyi.bussiness.domain.dto.DefiOrderDTO;
 import com.ruoyi.bussiness.domain.dto.UserInvestmentDto;
@@ -16,14 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-
-import static com.ruoyi.common.utils.PageUtils.startPage;
 
 @RestController
 @RequestMapping("/api/apiDefi")

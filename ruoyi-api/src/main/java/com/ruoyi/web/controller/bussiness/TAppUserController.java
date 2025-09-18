@@ -147,17 +147,17 @@ public class TAppUserController extends ApiBaseController {
             if(Objects.nonNull(massUser)){
                 return error(MessageUtils.message("user.register.phone.exisit"));
             }
-            final String registerPhoneCode = String.format("%s%s", CachePrefix.SMS_CODE.getPrefix()+UserCodeTypeEnum.REGISTER.name(), user.getPhone());
-            if (Boolean.TRUE.equals(redisCache.hasKey(registerPhoneCode))) {
-                String validCode = redisCache.getCacheObject(registerPhoneCode).toString();
-                if (!code.equalsIgnoreCase(validCode)) {
-                    return AjaxResult.error(MessageUtils.message("login.code_error"));
-                }
-            } else {
-                log.debug("register via email error");
-                return AjaxResult.error(MessageUtils.message("login.code_error"));
-            }
-            redisCache.deleteObject(registerPhoneCode);
+//            final String registerPhoneCode = String.format("%s%s", CachePrefix.SMS_CODE.getPrefix()+UserCodeTypeEnum.REGISTER.name(), user.getPhone());
+//            if (Boolean.TRUE.equals(redisCache.hasKey(registerPhoneCode))) {
+//                String validCode = redisCache.getCacheObject(registerPhoneCode).toString();
+//                if (!code.equalsIgnoreCase(validCode)) {
+//                    return AjaxResult.error(MessageUtils.message("login.code_error"));
+//                }
+//            } else {
+//                log.debug("register via email error");
+//                return AjaxResult.error(MessageUtils.message("login.code_error"));
+//            }
+//            redisCache.deleteObject(registerPhoneCode);
             user.setLoginName(phone);
             newUser.setLoginName(phone);
             newUser.setPhone(phone);
@@ -175,18 +175,18 @@ public class TAppUserController extends ApiBaseController {
             if(Objects.nonNull(massUser)){
                 return error(MessageUtils.message("user.user_name_exisit"));
             }
-            final String registerEmailCode = String.format("%s%s", CachePrefix.EMAIL_CODE.getPrefix()+UserCodeTypeEnum.REGISTER.name(), user.getEmail());
-            if (Boolean.TRUE.equals(redisCache.hasKey(registerEmailCode))) {
-                String validCode = redisCache.getCacheObject(registerEmailCode).toString();
-                if (!code.equalsIgnoreCase(validCode)) {
-                    return AjaxResult.error(MessageUtils.message("login.code_error"));
-                }
-            } else {
-                log.debug("register via email error");
-                return AjaxResult.error(MessageUtils.message("login.code_error"));
-            }
-
-            redisCache.deleteObject(registerEmailCode);
+//            final String registerEmailCode = String.format("%s%s", CachePrefix.EMAIL_CODE.getPrefix()+UserCodeTypeEnum.REGISTER.name(), user.getEmail());
+//            if (Boolean.TRUE.equals(redisCache.hasKey(registerEmailCode))) {
+//                String validCode = redisCache.getCacheObject(registerEmailCode).toString();
+//                if (!code.equalsIgnoreCase(validCode)) {
+//                    return AjaxResult.error(MessageUtils.message("login.code_error"));
+//                }
+//            } else {
+//                log.debug("register via email error");
+//                return AjaxResult.error(MessageUtils.message("login.code_error"));
+//            }
+//
+//            redisCache.deleteObject(registerEmailCode);
             user.setLoginName(email);
             newUser.setLoginName(email);
             newUser.setEmail(email);

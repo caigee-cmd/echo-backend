@@ -39,7 +39,7 @@ import javax.annotation.Resource;
 
 /**
  * 秒合约币种配置Service业务层处理
- * 
+ *
  * @author ruoyi
  * @date 2023-07-11
  */
@@ -68,7 +68,7 @@ public class TSecondCoinConfigServiceImpl extends ServiceImpl<TSecondCoinConfigM
     private String redisStreamNames;
     /**
      * 查询秒合约币种配置
-     * 
+     *
      * @param id 秒合约币种配置主键
      * @return 秒合约币种配置
      */
@@ -80,7 +80,7 @@ public class TSecondCoinConfigServiceImpl extends ServiceImpl<TSecondCoinConfigM
 
     /**
      * 查询秒合约币种配置列表
-     * 
+     *
      * @param tSecondCoinConfig 秒合约币种配置
      * @return 秒合约币种配置
      */
@@ -92,7 +92,7 @@ public class TSecondCoinConfigServiceImpl extends ServiceImpl<TSecondCoinConfigM
 
     /**
      * 新增秒合约币种配置
-     * 
+     *
      * @param tSecondCoinConfig 秒合约币种配置
      * @return 结果
      */
@@ -151,7 +151,7 @@ public class TSecondCoinConfigServiceImpl extends ServiceImpl<TSecondCoinConfigM
 
     /**
      * 修改秒合约币种配置
-     * 
+     *
      * @param tSecondCoinConfig 秒合约币种配置
      * @return 结果
      */
@@ -164,7 +164,7 @@ public class TSecondCoinConfigServiceImpl extends ServiceImpl<TSecondCoinConfigM
 
     /**
      * 批量删除秒合约币种配置
-     * 
+     *
      * @param ids 需要删除的秒合约币种配置主键
      * @return 结果
      */
@@ -176,7 +176,7 @@ public class TSecondCoinConfigServiceImpl extends ServiceImpl<TSecondCoinConfigM
 
     /**
      * 删除秒合约币种配置信息
-     * 
+     *
      * @param id 秒合约币种配置主键
      * @return 结果
      */
@@ -232,14 +232,10 @@ public class TSecondCoinConfigServiceImpl extends ServiceImpl<TSecondCoinConfigM
             BigDecimal cacheObject = redisCache.getCacheObject(CachePrefix.CURRENCY_PRICE.getPrefix() + tSecondCoinConfig1.getCoin());
             symbolCoinConfigVO.setAmount(cacheObject);
             String logo = tSecondCoinConfig1.getLogo();
-            if(logo.contains("echo-res")){
-                symbolCoinConfigVO.setLogo(logo);
-            }else {
-                symbolCoinConfigVO.setLogo("https://echo-res.oss-cn-hongkong.aliyuncs.com/waihui"+logo.substring(logo.lastIndexOf("/")));
-            }
+            symbolCoinConfigVO.setLogo(logo);
             LambdaQueryWrapper<TUserCoin> queryWrapper = new LambdaQueryWrapper<TUserCoin>();
             queryWrapper.eq(TUserCoin::getCoin, symbolCoinConfigVO.getCoin().toLowerCase());
-            if(StpUtil.isLogin()){
+            if (StpUtil.isLogin()) {
                 queryWrapper.eq(TUserCoin::getUserId, StpUtil.getLoginIdAsLong());
                 TUserCoin userCoin = userCoinMapper.selectOne(queryWrapper);
                 if(ObjectUtils.isNotEmpty(userCoin)){

@@ -46,7 +46,10 @@ public class SysSettingController extends BaseController {
         //特殊配置过滤
         configValue = filter(settingEnum, configValue);
         setting.setSettingValue(configValue);
-        settingService.saveUpdate(setting);
+        boolean savedUpdate = settingService.saveUpdate(setting);
+        if (!savedUpdate) {
+            return AjaxResult.error("保存失败");
+        }
         return AjaxResult.success();
     }
 

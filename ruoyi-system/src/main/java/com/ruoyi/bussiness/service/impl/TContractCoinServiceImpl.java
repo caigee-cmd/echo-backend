@@ -11,14 +11,11 @@ import com.ruoyi.bussiness.service.ITContractCoinService;
 import com.ruoyi.bussiness.service.ITOwnCoinService;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.RedisUtil;
-import com.ruoyi.socket.service.MarketThread;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.net.URISyntaxException;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -39,8 +36,6 @@ public class TContractCoinServiceImpl extends ServiceImpl<TContractCoinMapper, T
 
     @Resource
     private KlineSymbolMapper klineSymbolMapper;
-    @Resource
-    private ITOwnCoinService itOwnCoinService;
 
     @Resource
     private RedisUtil redisUtil;
@@ -150,12 +145,6 @@ public class TContractCoinServiceImpl extends ServiceImpl<TContractCoinMapper, T
         List<TContractCoin> list = tContractCoinMapper.selectTContractCoinList(tContractCoin);
         list =list.stream().sorted(Comparator.comparing(TContractCoin::getSort)).collect(Collectors.toList());
         for (TContractCoin tContractCoin1: list) {
-            String logo = tContractCoin1.getLogo();
-            if(logo.contains("echo-res")){
-                tContractCoin1.setLogo(logo);
-            }else {
-                tContractCoin1.setLogo(" https://echo-res.oss-cn-hongkong.aliyuncs.com/waihui"+    logo.substring(logo.lastIndexOf("/"),logo.length()));
-            }
             LambdaQueryWrapper<TUserCoin> queryWrapper = new LambdaQueryWrapper<TUserCoin>();
             queryWrapper.eq(TUserCoin::getCoin, tContractCoin1.getCoin().toLowerCase());
             if(StpUtil.isLogin()){

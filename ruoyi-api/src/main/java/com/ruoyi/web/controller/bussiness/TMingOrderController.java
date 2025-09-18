@@ -1,19 +1,15 @@
 package com.ruoyi.web.controller.bussiness;
 
 import cn.hutool.json.JSONUtil;
-import com.ruoyi.bussiness.domain.TMineOrder;
 import com.ruoyi.bussiness.domain.TMingOrder;
-import com.ruoyi.bussiness.domain.setting.FinancialSettlementSetting;
 import com.ruoyi.bussiness.domain.setting.MingSettlementSetting;
 import com.ruoyi.bussiness.domain.setting.Setting;
-import com.ruoyi.bussiness.service.ITMineOrderService;
 import com.ruoyi.bussiness.service.ITMingOrderService;
 import com.ruoyi.bussiness.service.SettingService;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.CommonEnum;
 import com.ruoyi.common.enums.SettingEnum;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.web.controller.common.ApiBaseController;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +17,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
