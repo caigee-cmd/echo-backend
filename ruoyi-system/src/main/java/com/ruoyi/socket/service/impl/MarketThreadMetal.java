@@ -81,7 +81,7 @@ public class MarketThreadMetal {
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("trace", IdUtil.randomUUID());
                     jsonObject.putObject("data").put("data_list", jsonArray);
-                    String allToken = "bb9cdc36ba2bce41a42b14abc4f71e94-c-app";
+                    String allToken = "0a67cc1e7f97f901700c76d95b4a74b3-c-app";
                     String url = "https://quote.tradeswitcher.com/quote-b-api/batch-kline?token=" + allToken;
 //                    String url = "https://quote.tradeswitcher.com/quote-b-api/batch-kline?token=alltick_token";
                     String result = HttpRequest.post(url)
