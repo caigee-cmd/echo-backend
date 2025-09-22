@@ -19,6 +19,8 @@ public enum SettingEnum {
     IM_SETTING,
     //充值通道配置
     ASSET_COIN,
+    //自定义币种
+    ASSET_CUSTOM_COIN,
     //登录注册 开关
     LOGIN_REGIS_SETTING,
     //market 地址

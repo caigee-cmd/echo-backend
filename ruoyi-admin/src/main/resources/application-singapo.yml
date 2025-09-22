@@ -11,7 +11,7 @@ spring:
     # 连接超时 毫秒
     connectTimeout: 1800
     # 地址
-    host: 127.0.0.1
+    host: 45.204.200.233
     # 端口，默认为6379
     port: 6379
     # 数据库索引
@@ -36,7 +36,7 @@ spring:
     druid:
       # 主库数据源
       master:
-        url: jdbc:mysql://127.0.0.1:3306/echo2?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+        url: jdbc:mysql://45.204.200.233:3306/echo2?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
         username: root
         password: MySecureRootPassword123!
       # 从库数据源

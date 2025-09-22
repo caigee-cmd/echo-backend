@@ -339,6 +339,10 @@ public class CommonController
         setting = settingService.get(SettingEnum.ASSET_COIN.name());
         map.put("ASSET_COIN",setting == null ? new ArrayList<AssetCoinSetting>() :
                 JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), AssetCoinSetting.class));
+        //充值通道列表
+        setting = settingService.get(SettingEnum.ASSET_CUSTOM_COIN.name());
+        map.put("ASSET_CUSTOM_COIN", setting == null ? new ArrayList<AssetCoinSetting>() :
+                JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), AssetCoinSetting.class));
         //白皮书
 /*        setting = settingService.get(SettingEnum.WHITE_PAPER_SETTING.name());
         map.put("WHITE_PAPER_SETTING",setting == null ? new WhitePaperSetting() :

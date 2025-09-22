@@ -25,14 +25,13 @@ public class SysSettingController extends BaseController {
     private SettingService settingService;
 
 
-
     @PutMapping(value = "/put/{key}")
     public AjaxResult saveConfig(@PathVariable String key, @RequestBody String configValue) {
         SettingEnum settingEnum = SettingEnum.valueOf(key);
-        if(settingEnum.equals(SettingEnum.WITHDRAWAL_CHANNEL_SETTING) || settingEnum.equals(SettingEnum.ASSET_COIN)){
+        if (settingEnum.equals(SettingEnum.WITHDRAWAL_CHANNEL_SETTING) || settingEnum.equals(SettingEnum.ASSET_COIN)) {
             LoginUser loginUser = SecurityUtils.getLoginUser();
-            if(!loginUser.getUser().isAdmin()){
-            return  AjaxResult.success("您没有操作权限，请联系管理员！");
+            if (!loginUser.getUser().isAdmin()) {
+                return AjaxResult.success("您没有操作权限，请联系管理员！");
             }
         }
 
@@ -54,7 +53,6 @@ public class SysSettingController extends BaseController {
     }
 
 
-
     @ApiOperation(value = "查看配置")
     @GetMapping(value = "/get/{key}")
 
@@ -74,37 +72,37 @@ public class SysSettingController extends BaseController {
             Setting setting = settingService.get(SettingEnum.APP_SIDEBAR_SETTING.name());
             AppSidebarSetting appSidebar = JSONUtil.toBean(configValue, AppSidebarSetting.class);
             List<AppSidebarSetting> list;
-            if (Objects.nonNull(setting)){
+            if (Objects.nonNull(setting)) {
                 list = JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), AppSidebarSetting.class);
-            }else{
+            } else {
                 list = new ArrayList<>();
             }
             List<AppSidebarSetting> copyList = new ArrayList<>();
-            if (!CollectionUtils.isEmpty(list)){
+            if (!CollectionUtils.isEmpty(list)) {
                 copyList.addAll(list);
                 Boolean flag = true;
-                for (AppSidebarSetting a:copyList) {
-                    if (appSidebar.getKey().equals(a.getKey())){
+                for (AppSidebarSetting a : copyList) {
+                    if (appSidebar.getKey().equals(a.getKey())) {
                         flag = false;
                     }
                 }
-                if (flag){
+                if (flag) {
                     list.add(appSidebar);
                     copyList.add(appSidebar);
                 }
                 //修改还是删除
-                for (AppSidebarSetting a:copyList) {
-                    if (StringUtils.isNotEmpty(appSidebar.getName()) && appSidebar.getKey().equals(a.getKey())){
+                for (AppSidebarSetting a : copyList) {
+                    if (StringUtils.isNotEmpty(appSidebar.getName()) && appSidebar.getKey().equals(a.getKey())) {
                         list.remove(a);
                         list.add(appSidebar);
                         break;
                     }
-                    if (StringUtils.isEmpty(appSidebar.getName()) && appSidebar.getKey().equals(a.getKey())){
+                    if (StringUtils.isEmpty(appSidebar.getName()) && appSidebar.getKey().equals(a.getKey())) {
                         list.remove(a);
                         break;
                     }
                 }
-            }else{
+            } else {
                 list.add(appSidebar);
             }
             configValue = JSONUtil.toJsonStr(list);
@@ -215,8 +213,8 @@ public class SysSettingController extends BaseController {
                         AjaxResult.success(JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), TabSetting.class));
             case PLAYING_SETTING:
                 return setting == null ?
-                    AjaxResult.success(new ArrayList<PlayingSetting>()) :
-                    AjaxResult.success(JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), PlayingSetting.class));
+                        AjaxResult.success(new ArrayList<PlayingSetting>()) :
+                        AjaxResult.success(JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), PlayingSetting.class));
             case BOTTOM_MENU_SETTING:
                 return setting == null ?
                         AjaxResult.success(new ArrayList<BottomMenuSetting>()) :
@@ -240,27 +238,31 @@ public class SysSettingController extends BaseController {
             case TG_BOT_SETTING:
                 return setting == null ?
                         AjaxResult.success(new HomeCoinSetting()) :
-                        AjaxResult.success( JSONUtil.toBean(setting.getSettingValue(), TgBotSetting.class));
+                        AjaxResult.success(JSONUtil.toBean(setting.getSettingValue(), TgBotSetting.class));
             case AUTH_LIMIT:
                 return setting == null ?
-                        AjaxResult.success(new AuthLimitSetting ()) :
-                        AjaxResult.success( JSONUtil.toBean(setting.getSettingValue(), AuthLimitSetting.class));
+                        AjaxResult.success(new AuthLimitSetting()) :
+                        AjaxResult.success(JSONUtil.toBean(setting.getSettingValue(), AuthLimitSetting.class));
             case THIRD_CHANNL:
                 return setting == null ?
-                        AjaxResult.success(new ArrayList<ThirdPaySetting> ()) :
-                        AjaxResult.success( (JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), ThirdPaySetting.class)));
+                        AjaxResult.success(new ArrayList<ThirdPaySetting>()) :
+                        AjaxResult.success((JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), ThirdPaySetting.class)));
             case VIP_LEVEL_SETTING:
                 return setting == null ?
-                        AjaxResult.success(new VipLevelSetting ()) :
-                        AjaxResult.success( JSONUtil.toBean(setting.getSettingValue(), VipLevelSetting.class));
+                        AjaxResult.success(new VipLevelSetting()) :
+                        AjaxResult.success(JSONUtil.toBean(setting.getSettingValue(), VipLevelSetting.class));
             case VIP_DIRECTIONS_SETTING:
                 return setting == null ?
-                        AjaxResult.success(new ArrayList<VipDirectionsSetting> ()) :
-                        AjaxResult.success( (JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), VipDirectionsSetting.class)));
+                        AjaxResult.success(new ArrayList<VipDirectionsSetting>()) :
+                        AjaxResult.success((JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), VipDirectionsSetting.class)));
             case ADD_MOSAIC_SETTING:
                 return setting == null ?
-                        AjaxResult.success(new AddMosaicSetting ()) :
-                        AjaxResult.success( JSONUtil.toBean(setting.getSettingValue(), AddMosaicSetting.class));
+                        AjaxResult.success(new AddMosaicSetting()) :
+                        AjaxResult.success(JSONUtil.toBean(setting.getSettingValue(), AddMosaicSetting.class));
+            case ASSET_CUSTOM_COIN:
+                return setting == null ?
+                        AjaxResult.success(new AssetCoinSetting()) :
+                        AjaxResult.success(JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), AssetCoinSetting.class));
             default:
                 return AjaxResult.success();
         }

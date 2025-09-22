@@ -10,6 +10,7 @@ import com.ruoyi.bussiness.mapper.SettingMapper;
 import com.ruoyi.bussiness.service.SettingService;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.SettingEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
  * @author Chopper
  * @since 2020/11/17 3:52 下午
  */
+@Slf4j
 @Service
 public class SettingServiceImpl extends ServiceImpl<SettingMapper, Setting> implements SettingService {
 
@@ -33,6 +35,11 @@ public class SettingServiceImpl extends ServiceImpl<SettingMapper, Setting> impl
 
     @Override
     public boolean saveUpdate(Setting setting) {
+        // 添加日志来跟踪 ASSET_COIN 配置的更新
+        if ("ASSET_COIN".equals(setting.getId())) {
+            log.warn("ASSET_COIN配置正在被更新! 调用栈:", new Exception("Stack trace"));
+            log.info("ASSET_COIN新的setting_value: {}", setting.getSettingValue());
+        }
         return this.saveOrUpdate(setting);
     }
 

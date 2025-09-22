@@ -48,7 +48,7 @@ public class BlockccController {
         historyKline = blockccService.getConPriceMap(klineParamVO,historyKline);
         Ticker24hVO ticker =  blockccService.getHistoryKline24hrTicker(klineParamVO);
         map.put("historyKline",historyKline);
-        if(historyKline.size()>0){
+        if (historyKline != null && historyKline.size() > 0) {
             Kline kline = historyKline.get(historyKline.size() - 1);
             //ticker.setLowPrice(new BigDecimal(kline.getHigh()));
             ticker.setHighPrice(new BigDecimal(kline.getHigh()));
