@@ -48,7 +48,7 @@ public class MarketThreadMetal {
     @Resource
     private ISysDictTypeService sysDictTypeService;
     @Async
-    @Scheduled(cron = "*/2 * * * * ?")
+    @Scheduled(cron = "*/5 * * * * ?")
     public void marketThreadRun() throws URISyntaxException {
         if (Objects.equals(clientName, "echo2")){
             Set<String> strings = new HashSet<>();
@@ -58,6 +58,7 @@ public class MarketThreadMetal {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    log.info("开始获取行情数据，合计{}个", strings.size());
                     JSONArray jsonArray = new JSONArray();
                     //兑换
                     for (String string : strings) {
@@ -90,11 +91,11 @@ public class MarketThreadMetal {
                             .timeout(5000)
                             .execute().body();
                     jsonObject = JSONObject.parseObject(result);
+                    log.info("行情数据获取完成:{}", jsonObject);
                     if(!Objects.equals(jsonObject.getString("msg"), "ok")){
                         return;
                     }
                     JSONArray datas = jsonObject.getJSONObject("data").getJSONArray("kline_list");
-
                     for (int i = 0; i < datas.size(); i++) {
                         JSONObject data = datas.getJSONObject(i);
                         String cion_name = toCion(data.getString("code"));
