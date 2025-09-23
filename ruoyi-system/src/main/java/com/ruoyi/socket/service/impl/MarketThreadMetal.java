@@ -92,6 +92,9 @@ public class MarketThreadMetal {
                             .execute().body();
                     jsonObject = JSONObject.parseObject(result);
                     log.info("行情数据获取完成:{}", jsonObject);
+                    if (!Objects.equals(jsonObject.getString("msg"), "ok")) {
+                        return;
+                    }
                     JSONArray datas = jsonObject.getJSONObject("data").getJSONArray("kline_list");
                     for (int i = 0; i < datas.size(); i++) {
                         JSONObject data = datas.getJSONObject(i);
