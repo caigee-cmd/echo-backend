@@ -49,7 +49,7 @@ public class MarketThreadMetal {
     @Resource
     private ISysDictTypeService sysDictTypeService;
     @Async
-    @Scheduled(cron = "*/5 * * * * ?")
+    @Scheduled(cron = "*/10 * * * * ?")
     public void marketThreadRun() throws URISyntaxException {
         if (Objects.equals(clientName, "echo2")){
             Set<String> strings = new HashSet<>();
