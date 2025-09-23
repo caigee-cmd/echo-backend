@@ -1,6 +1,7 @@
 package com.ruoyi.socket.service.impl;
 
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson2.JSONArray;
@@ -92,14 +93,18 @@ public class MarketThreadMetal {
                             .execute().body();
                     jsonObject = JSONObject.parseObject(result);
                     log.info("行情数据获取完成:{}", jsonObject);
-                    if (!Objects.equals(jsonObject.getString("msg"), "ok")) {
-                        return;
-                    }
                     JSONArray datas = jsonObject.getJSONObject("data").getJSONArray("kline_list");
                     for (int i = 0; i < datas.size(); i++) {
                         JSONObject data = datas.getJSONObject(i);
                         String cion_name = toCion(data.getString("code"));
-                        if(data.getString("kline_type").equals("1")){
+                        if (StrUtil.isBlank(cion_name)) {
+                            continue;
+                        }
+                        String klineType = data.getString("kline_type");
+                        if (StrUtil.isBlank(klineType)) {
+                            continue;
+                        }
+                        if (klineType.equals("1")) {
                             if (cion_name.length() > 3) {
                                 webSocketUserManager.mt5KlineSendMeg(data.getJSONArray("kline_data").getJSONObject(0),cion_name);
                             }else {
