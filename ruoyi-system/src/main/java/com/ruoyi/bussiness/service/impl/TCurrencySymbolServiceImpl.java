@@ -184,12 +184,6 @@ public class TCurrencySymbolServiceImpl extends ServiceImpl<TCurrencySymbolMappe
         tCurrencySymbol.setIsShow("1");
         List<TCurrencySymbol> tCurrencySymbols = tCurrencySymbolMapper.selectTCurrencySymbolList(tCurrencySymbol);
         for (TCurrencySymbol tCurrencySymbol1: tCurrencySymbols) {
-            String logo = tCurrencySymbol1.getLogo();
-            if(logo.contains("echo-res")){
-                tCurrencySymbol1.setLogo(logo);
-            }else {
-                tCurrencySymbol1.setLogo(" https://echo-res.oss-cn-hongkong.aliyuncs.com/waihui"+    logo.substring(logo.lastIndexOf("/"),logo.length()));
-            }
             LambdaQueryWrapper<TUserCoin> queryWrapper = new LambdaQueryWrapper<TUserCoin>();
             queryWrapper.eq(TUserCoin::getCoin, tCurrencySymbol1.getCoin().toLowerCase());
             if(StpUtil.isLogin()){
