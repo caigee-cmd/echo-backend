@@ -101,7 +101,9 @@ public class TAppRechargeController extends ApiBaseController
         log.info("userid:{}, 充值参数:{}",
                 user.getUserId(), JSONUtil.toJsonPrettyStr(params));
         String type = String.valueOf(params.get("type"));
-        Setting setting = settingService.get(SettingEnum.ASSET_COIN.name());
+        Setting setting = settingService.get(SettingEnum.ASSET_CUSTOM_COIN.name());
+        log.info("userid:{}, 充值参数setting:{}",
+                user.getUserId(), JSONUtil.toJsonPrettyStr(setting));
         List<AssetCoinSetting> assetCoinSettings = JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), AssetCoinSetting.class);
         List<AssetCoinSetting> list = assetCoinSettings.stream()
                 .filter(assetCoinSetting -> assetCoinSetting.getCoinName().equals(type))
