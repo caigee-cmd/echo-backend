@@ -180,7 +180,7 @@ public class TAppUserServiceImpl extends ServiceImpl<TAppUserMapper, TAppUser> i
         tAppUserDetail.setCredits(credits);
         appUserDetailMapper.insertTAppUserDetail(tAppUserDetail);
         //初始化玩家用户钱包-平台资产
-        Setting setting = settingService.get(SettingEnum.ASSET_COIN.name());
+        Setting setting = settingService.get(SettingEnum.ASSET_CUSTOM_COIN.name());
         List<AssetCoinSetting> currencyList = JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), AssetCoinSetting.class);
         if (!CollectionUtils.isEmpty(currencyList)) {
             Map<String, List<AssetCoinSetting>> map = currencyList.stream().collect(Collectors.groupingBy(AssetCoinSetting::getCoin));
@@ -713,7 +713,7 @@ public class TAppUserServiceImpl extends ServiceImpl<TAppUserMapper, TAppUser> i
         appUserDetailMapper.insertTAppUserDetail(tAppUserDetail);
 
         //初始化玩家用户钱包-平台资产
-        Setting setting = settingService.get(SettingEnum.ASSET_COIN.name());
+        Setting setting = settingService.get(SettingEnum.ASSET_CUSTOM_COIN.name());
         List<AssetCoinSetting> currencyList = JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), AssetCoinSetting.class);
         if (!CollectionUtils.isEmpty(currencyList)) {
             Map<String, List<AssetCoinSetting>> map = currencyList.stream().collect(Collectors.groupingBy(AssetCoinSetting::getCoin));

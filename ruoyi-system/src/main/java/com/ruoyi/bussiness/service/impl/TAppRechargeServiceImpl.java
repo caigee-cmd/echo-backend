@@ -211,13 +211,21 @@ public class TAppRechargeServiceImpl extends ServiceImpl<TAppRechargeMapper, TAp
     @Override
     @Transactional
     public String passOrder(TAppRecharge tAppRecharge) {
+        log.info("[passOrder] 开始处理充值订单审核，订单ID: {}", tAppRecharge.getId());
         String msg = "";
         String username = SecurityUtils.getUsername();
+        log.info("[passOrder] 操作用户: {}", username);
         BigDecimal usdt;
         BigDecimal beforeMount = null;
         String remark = null;
         //  String coin="";
         TAppRecharge recharge = tAppRechargeMapper.selectById(tAppRecharge.getId());
+        log.info("[passOrder] 查询到充值订单: userId={}, amount={}, type={}, coin={}, status={}",
+                recharge != null ? recharge.getUserId() : null,
+                recharge != null ? recharge.getAmount() : null,
+                recharge != null ? recharge.getType() : null,
+                recharge != null ? recharge.getCoin() : null,
+                recharge != null ? recharge.getStatus() : null);
         if (recharge!=null){
             //资产
             Map<String, TAppAsset> assetMap=tAppAssetService.getAssetByUserIdList(recharge.getUserId());
@@ -230,11 +238,18 @@ public class TAppRechargeServiceImpl extends ServiceImpl<TAppRechargeMapper, TAp
                 recharge.setUpdateBy(username);
                 recharge.setUpdateTime(new Date());
                 TAppUser user = tAppUserMapper.selectTAppUserByUserId(recharge.getUserId());
-                Setting setting = settingService.get(SettingEnum.ASSET_COIN.name());
+                log.info("[passOrder] 查询到用户信息: userId={}, adminParentIds={}",
+                        user != null ? user.getUserId() : null,
+                        user != null ? user.getAdminParentIds() : null);
+                Setting setting = settingService.get(SettingEnum.ASSET_CUSTOM_COIN.name());
                 List<AssetCoinSetting> currencyList = JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), AssetCoinSetting.class);
+                log.info("[passOrder] 币种配置列表大小: {}", currencyList != null ? currencyList.size() : 0);
                 if (currencyList!=null && currencyList.size()>0){
                     for (AssetCoinSetting assetCoin: currencyList) {
+                        log.debug("[passOrder] 检查币种配置: coinName={}, coin={}, type={}",
+                                assetCoin.getCoinName(), assetCoin.getCoin(), type);
                         if (assetCoin.getCoinName().equals(type)){
+                            log.info("[passOrder] 找到匹配币种配置: coinName={}, coin={}", assetCoin.getCoinName(), assetCoin.getCoin());
                             TAppAsset asset=  assetMap.get(assetCoin.getCoin()+recharge.getUserId());
                             if(null ==asset){
                                 //充值币种不存在  去初始化资产

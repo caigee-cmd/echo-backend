@@ -183,7 +183,7 @@ public class CommonController
     @ApiOperation(value = "充值通道列表")
     @PostMapping("/getAppCurrencyList")
     public AjaxResult getAppCurrencyList() {
-        Setting setting = settingService.get(SettingEnum.ASSET_COIN.name());
+        Setting setting = settingService.get(SettingEnum.ASSET_CUSTOM_COIN.name());
         List<AssetCoinSetting> list = JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), AssetCoinSetting.class);
         return AjaxResult.success(list);
     }
@@ -335,11 +335,6 @@ public class CommonController
         map.put("APP_SIDEBAR_SETTING",setting == null ? new ArrayList<AppSidebarSetting>() :
                 JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), AppSidebarSetting.class)
                         .stream().sorted(Comparator.comparing(AppSidebarSetting::getSort)).collect(Collectors.toList()));
-        //充值通道列表
-        setting = settingService.get(SettingEnum.ASSET_COIN.name());
-        map.put("ASSET_COIN",setting == null ? new ArrayList<AssetCoinSetting>() :
-                JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), AssetCoinSetting.class));
-        //充值通道列表
         setting = settingService.get(SettingEnum.ASSET_CUSTOM_COIN.name());
         map.put("ASSET_CUSTOM_COIN", setting == null ? new ArrayList<AssetCoinSetting>() :
                 JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), AssetCoinSetting.class));

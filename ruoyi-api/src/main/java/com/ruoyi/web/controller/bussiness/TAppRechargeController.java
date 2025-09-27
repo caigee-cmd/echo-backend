@@ -136,7 +136,7 @@ public class TAppRechargeController extends ApiBaseController
     @PostMapping("/getAdress")
     public AjaxResult getAdress() {
         Map<String,  Map<String, String>>  map = new HashMap<>();
-        Setting setting = settingService.get(SettingEnum.ASSET_COIN.name());
+        Setting setting = settingService.get(SettingEnum.ASSET_CUSTOM_COIN.name());
         if(setting == null){
             return AjaxResult.success();
         }

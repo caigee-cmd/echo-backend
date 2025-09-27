@@ -28,7 +28,7 @@ public class SysSettingController extends BaseController {
     @PutMapping(value = "/put/{key}")
     public AjaxResult saveConfig(@PathVariable String key, @RequestBody String configValue) {
         SettingEnum settingEnum = SettingEnum.valueOf(key);
-        if (settingEnum.equals(SettingEnum.WITHDRAWAL_CHANNEL_SETTING) || settingEnum.equals(SettingEnum.ASSET_COIN)) {
+        if (settingEnum.equals(SettingEnum.WITHDRAWAL_CHANNEL_SETTING) || settingEnum.equals(SettingEnum.ASSET_CUSTOM_COIN)) {
             LoginUser loginUser = SecurityUtils.getLoginUser();
             if (!loginUser.getUser().isAdmin()) {
                 return AjaxResult.success("您没有操作权限，请联系管理员！");
@@ -147,10 +147,6 @@ public class SysSettingController extends BaseController {
                 return setting == null ?
                         AjaxResult.success(new SmsSetting()) :
                         AjaxResult.success(JSONUtil.toBean(setting.getSettingValue(), SmsSetting.class));
-            case ASSET_COIN:
-                return setting == null ?
-                        AjaxResult.success(new AssetCoinSetting()) :
-                        AjaxResult.success(JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), AssetCoinSetting.class));
             case MARKET_URL:
                 return setting == null ?
                         AjaxResult.success(new MarketUrlSetting()) :

@@ -162,7 +162,7 @@ public class TActivityRechargeServiceImpl extends ServiceImpl<TActivityRechargeM
                         usdt=rechargeRebate.getRebateMaxAmount();
                     }
                 }
-                Setting setting = settingService.get(SettingEnum.ASSET_COIN.name());
+                Setting setting = settingService.get(SettingEnum.ASSET_CUSTOM_COIN.name());
                 List<AssetCoinSetting> currencyList = JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), AssetCoinSetting.class);
                 if (!CollectionUtils.isEmpty(currencyList)){
                     for (AssetCoinSetting dict: currencyList) {
