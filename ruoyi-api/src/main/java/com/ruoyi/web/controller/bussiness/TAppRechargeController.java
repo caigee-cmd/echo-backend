@@ -98,27 +98,32 @@ public class TAppRechargeController extends ApiBaseController
             log.debug("userid:{}, 非正常用户，不可充值", user.getUserId());
             return AjaxResult.success();
         }
+        log.info("userid:{}, 充值参数:{}",
+                user.getUserId(), JSONUtil.toJsonPrettyStr(params));
         String type = String.valueOf(params.get("type"));
         Setting setting = settingService.get(SettingEnum.ASSET_COIN.name());
         List<AssetCoinSetting> assetCoinSettings = JSONUtil.toList(JSONUtil.parseArray(setting.getSettingValue()), AssetCoinSetting.class);
-        List<AssetCoinSetting> list = assetCoinSettings.stream().filter(assetCoinSetting -> {
-            return assetCoinSetting.getCoinName().equals(type);
-        }).collect(Collectors.toList());
+        List<AssetCoinSetting> list = assetCoinSettings.stream()
+                .filter(assetCoinSetting -> assetCoinSetting.getCoinName().equals(type))
+                .collect(Collectors.toList());
         BigDecimal amount = new BigDecimal(String.valueOf(params.get("amount")));
-        if(amount !=null && amount.compareTo(BigDecimal.ZERO)>0){
-            if(amount.compareTo(list.get(0).getRechargeMin())<0){
-                return AjaxResult.error(MessageUtils.message("recharge.amout.min",list.get(0).getRechargeMin()));
+        if (amount.compareTo(BigDecimal.ZERO) > 0) {
+            if (list.isEmpty()) {
+                return AjaxResult.error("Unsupported coin type: " + type);
             }
-            if(list.get(0).getRechargeMax().compareTo(amount)<0){
-                return AjaxResult.error(MessageUtils.message("recharge.amout.max",list.get(0).getRechargeMax()));
+            if (amount.compareTo(list.get(0).getRechargeMin()) < 0) {
+                return AjaxResult.error(MessageUtils.message("recharge.amout.min", list.get(0).getRechargeMin()));
+            }
+            if (list.get(0).getRechargeMax().compareTo(amount) < 0) {
+                return AjaxResult.error(MessageUtils.message("recharge.amout.max", list.get(0).getRechargeMax()));
             }
             user.setParams(params);
         }
         tAppRechargeService.insertTAppRecharge(user);
 
         HashMap<String, Object> object = new HashMap<>();
-        object.put(CacheConstants.RECHARGE_KEY,CacheConstants.RECHARGE_KEY);
-        redisUtil.addStream(redisStreamNames,object);
+        object.put(CacheConstants.RECHARGE_KEY, CacheConstants.RECHARGE_KEY);
+        redisUtil.addStream(redisStreamNames, object);
         return AjaxResult.success();
     }
 
