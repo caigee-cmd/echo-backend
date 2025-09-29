@@ -1,5 +1,6 @@
 package com.ruoyi.bussiness.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -136,6 +137,9 @@ public class TSecondCoinConfigServiceImpl extends ServiceImpl<TSecondCoinConfigM
         }
         if(StringUtils.isEmpty(tSecondCoinConfig.getShowSymbol())){
             tSecondCoinConfig.setShowSymbol(tSecondCoinConfig.getCoin().toUpperCase()+"/USDT");
+        }
+        if (StrUtil.isNotBlank(tSecondCoinConfig.getLogo())) {
+            tSecondCoinConfig.setLogo(tSecondCoinConfig.getLogo());
         }
         tSecondCoinConfigMapper.insertTSecondCoinConfig(tSecondCoinConfig);
         //周期复制
