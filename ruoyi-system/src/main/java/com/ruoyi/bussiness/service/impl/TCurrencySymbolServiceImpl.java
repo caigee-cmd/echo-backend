@@ -84,8 +84,6 @@ public class TCurrencySymbolServiceImpl extends ServiceImpl<TCurrencySymbolMappe
     @Override
     public int insertTCurrencySymbol(TCurrencySymbol tCurrencySymbol)
     {
-
-
         tCurrencySymbol.setSymbol(tCurrencySymbol.getCoin().toLowerCase()+"usdt");
         tCurrencySymbol.setShowSymbol(StringUtils.isNotBlank(tCurrencySymbol.getShowSymbol())?tCurrencySymbol.getShowSymbol().toUpperCase():(tCurrencySymbol.getCoin()+"/usdt").toUpperCase());
         tCurrencySymbol.setCoin(tCurrencySymbol.getCoin().toLowerCase());
@@ -95,7 +93,7 @@ public class TCurrencySymbolServiceImpl extends ServiceImpl<TCurrencySymbolMappe
         tCurrencySymbol.setCreateBy(SecurityUtils.getUsername());
         tCurrencySymbol.setUpdateTime(DateUtils.getNowDate());
         List<KlineSymbol> klist = klineSymbolMapper.selectList(new LambdaQueryWrapper<KlineSymbol>().eq(KlineSymbol::getSymbol, tCurrencySymbol.getCoin().toUpperCase()));
-        if (!CollectionUtils.isEmpty(klist)){
+        if (!CollectionUtils.isEmpty(klist) && StringUtils.isEmpty(tCurrencySymbol.getLogo())) {
             tCurrencySymbol.setLogo(klist.get(0).getLogo());
         }
         if (tCurrencySymbol.getMarket().equals("echo") && StringUtils.isEmpty(tCurrencySymbol.getLogo())) {
