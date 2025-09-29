@@ -98,7 +98,7 @@ public class TCurrencySymbolServiceImpl extends ServiceImpl<TCurrencySymbolMappe
         if (!CollectionUtils.isEmpty(klist)){
             tCurrencySymbol.setLogo(klist.get(0).getLogo());
         }
-        if(tCurrencySymbol.getMarket().equals("echo")){
+        if (tCurrencySymbol.getMarket().equals("echo") && StringUtils.isEmpty(tCurrencySymbol.getLogo())) {
             KlineSymbol klineSymbol = klineSymbolMapper.selectOne(new LambdaQueryWrapper<KlineSymbol>().eq(KlineSymbol::getMarket, tCurrencySymbol.getMarket()).eq(KlineSymbol::getSymbol, tCurrencySymbol.getCoin().toLowerCase()));
             tCurrencySymbol.setLogo(klineSymbol.getLogo());
         }
