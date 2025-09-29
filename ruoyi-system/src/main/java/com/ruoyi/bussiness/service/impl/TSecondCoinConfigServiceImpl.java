@@ -115,7 +115,7 @@ public class TSecondCoinConfigServiceImpl extends ServiceImpl<TSecondCoinConfigM
             KlineSymbol klineSymbol = new KlineSymbol();
             klineSymbol.setSlug(tSecondCoinConfig.getCoin().toLowerCase());
             List<KlineSymbol> klineSymbols = klineSymbolMapper.selectKlineSymbolList(klineSymbol);
-            if(!CollectionUtils.isEmpty(klineSymbols)){
+            if (!CollectionUtils.isEmpty(klineSymbols) && StrUtil.isEmpty(tSecondCoinConfig.getLogo())) {
                 tSecondCoinConfig.setLogo(klineSymbols.get(0).getLogo());
             }
         }else  if(tSecondCoinConfig.getMarket().equals("mt5") || tSecondCoinConfig.getMarket().equals("metal")){
@@ -125,7 +125,7 @@ public class TSecondCoinConfigServiceImpl extends ServiceImpl<TSecondCoinConfigM
             KlineSymbol klineSymbol = new KlineSymbol();
             klineSymbol.setSlug(tSecondCoinConfig.getSymbol().toUpperCase());
             List<KlineSymbol> klineSymbols = klineSymbolMapper.selectKlineSymbolList(klineSymbol);
-            if(!CollectionUtils.isEmpty(klineSymbols)){
+            if (!CollectionUtils.isEmpty(klineSymbols) && StrUtil.isEmpty(tSecondCoinConfig.getLogo())) {
                 tSecondCoinConfig.setLogo(klineSymbols.get(0).getLogo());
             }
         }else  if(tSecondCoinConfig.getMarket().equals("echo")){
@@ -133,13 +133,12 @@ public class TSecondCoinConfigServiceImpl extends ServiceImpl<TSecondCoinConfigM
             tSecondCoinConfig.setCoin(tSecondCoinConfig.getCoin().toLowerCase());
             tSecondCoinConfig.setSymbol(tSecondCoinConfig.getCoin().toLowerCase()+"usdt");
             tSecondCoinConfig.setBaseCoin("usdt");
-            tSecondCoinConfig.setLogo(klineSymbol.getLogo());
+            if (StrUtil.isEmpty(tSecondCoinConfig.getLogo())) {
+                tSecondCoinConfig.setLogo(klineSymbol.getLogo());
+            }
         }
         if(StringUtils.isEmpty(tSecondCoinConfig.getShowSymbol())){
             tSecondCoinConfig.setShowSymbol(tSecondCoinConfig.getCoin().toUpperCase()+"/USDT");
-        }
-        if (StrUtil.isNotBlank(tSecondCoinConfig.getLogo())) {
-            tSecondCoinConfig.setLogo(tSecondCoinConfig.getLogo());
         }
         tSecondCoinConfigMapper.insertTSecondCoinConfig(tSecondCoinConfig);
         //周期复制

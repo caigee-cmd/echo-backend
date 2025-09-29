@@ -1,4 +1,6 @@
 package com.ruoyi.bussiness.service.impl;
+
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -79,7 +81,7 @@ public class TSymbolManageServiceImpl extends ServiceImpl<TSymbolManageMapper, T
         tSymbolManage.setDelFlag("0");
         tSymbolManage.setSymbol(tSymbolManage.getSymbol().toLowerCase());
         List<KlineSymbol> kList = klineSymbolMapper.selectList(new LambdaQueryWrapper<KlineSymbol>().eq(KlineSymbol::getSymbol, tSymbolManage.getSymbol().toUpperCase()));
-        if (!CollectionUtils.isEmpty(kList)){
+        if (!CollectionUtils.isEmpty(kList) && StrUtil.isEmpty(tSymbolManage.getLogo())) {
             tSymbolManage.setLogo(kList.get(0).getLogo());
         }
         int i = tSymbolManageMapper.insertTSymbolManage(tSymbolManage);
